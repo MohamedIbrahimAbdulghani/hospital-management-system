@@ -32,21 +32,21 @@
                     @else
                     @if (Route::has('login'))
                         <a
-                            href="{{ route('login') }}"
+                            href="{{ route('choose-role') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
                         >
                             {{ __('auth.login') }}
                         </a>
                     @endif
 
-                    @if (Route::has('register'))
+                    {{-- @if (Route::has('register'))
                         <a
                             href="{{ route('register') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
                         >
                             {{ __('auth.register') }}
                         </a>
-                    @endif
+                    @endif --}}
 
                     @endauth
                 </nav>
