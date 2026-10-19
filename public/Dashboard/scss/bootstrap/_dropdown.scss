@@ -1,4 +1,7 @@
-.dropup, .dropright, .dropdown, .dropleft {
+.dropup,
+.dropright,
+.dropdown,
+.dropleft {
   position: relative;
 }
 
@@ -195,7 +198,11 @@
 }
 
 .dropdown-menu {
-  &[x-placement^="top"], &[x-placement^="right"], &[x-placement^="bottom"], &[x-placement^="left"] {
+
+  &[x-placement^="top"],
+  &[x-placement^="right"],
+  &[x-placement^="bottom"],
+  &[x-placement^="left"] {
     right: auto;
     bottom: auto;
   }
@@ -220,19 +227,22 @@
   background-color: transparent;
   border: 0;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: #141c2b;
     text-decoration: none;
     background-color: $gray-100;
   }
 
-  &.active, &:active {
+  &.active,
+  &:active {
     color: $white;
     text-decoration: none;
     background-color: $primary;
   }
 
-  &.disabled, &:disabled {
+  &.disabled,
+  &:disabled {
     color: $gray-600;
     pointer-events: none;
     background-color: transparent;
@@ -267,7 +277,8 @@
   }
 }
 
-.dropup .dropdown-toggle-split::after, .dropright .dropdown-toggle-split::after {
+.dropup .dropdown-toggle-split::after,
+.dropright .dropdown-toggle-split::after {
   margin-left: 0;
 }
 
@@ -295,7 +306,9 @@
 
 @media (min-width: 768px) {
   .dropdown {
-    &.d-cart .dropdown-menu, &.message .dropdown-menu {
+
+    &.d-cart .dropdown-menu,
+    &.message .dropdown-menu {
       width: 20.5rem !important;
     }
   }

@@ -13,6 +13,7 @@ use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter;
 use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes;
 use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath;
 use Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect;
+use App\Http\Middleware\SetLocaleFromSession;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
@@ -42,9 +43,12 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->web(append: [
+            SetLocaleFromSession::class,
             CheckActiveUser::class,
             CheckMustChangePassword::class,
         ]);
+
+        $middleware->redirectGuestsTo(fn (Request $request) => route('choose-role'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

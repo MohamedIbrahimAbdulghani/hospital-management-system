@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
     <head>
         @include('partials.head')
     </head>
@@ -21,6 +21,9 @@
             <flux:spacer />
 
             <flux:sidebar.nav>
+                <flux:sidebar.item icon="globe-alt" :href="route('locale.switch', app()->getLocale() == 'ar' ? 'en' : 'ar')">
+                    {{ app()->getLocale() == 'ar' ? 'English (EN)' : 'العربية (AR)' }}
+                </flux:sidebar.item>
                 <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
                     {{ __('Repository') }}
                 </flux:sidebar.item>
@@ -38,6 +41,10 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <flux:spacer />
+
+            <div class="me-2">
+                <x-language-switcher variant="compact" />
+            </div>
 
             <flux:dropdown position="top" align="end">
                 <flux:profile

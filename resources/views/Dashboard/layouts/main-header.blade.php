@@ -18,45 +18,42 @@
 					</div>
 					<div class="main-header-right">
 						<ul class="nav">
-							<li class="">
-								<div class="dropdown  nav-itemd-none d-md-flex">
-									<a href="#" class="d-flex  nav-item nav-link pl-0 country-flag1" data-toggle="dropdown" aria-expanded="false">
-										<span class="avatar country-Flag mr-0 align-self-center bg-transparent"><img src="{{URL::asset('Dashboard/img/flags/us_flag.jpg')}}" alt="img"></span>
-										<div class="my-auto">
-											<strong class="mr-2 ml-2 my-auto">English</strong>
+							<li class="nav-item">
+								<div class="dropdown d-flex">
+									<a href="#" class="d-flex nav-item nav-link pl-0 pr-0 country-flag1 align-items-center" data-toggle="dropdown" aria-expanded="false" title="{{ App::getLocale() == 'ar' ? 'تغيير اللغة' : 'Change Language' }}">
+										<span class="avatar country-Flag mr-1 ml-1 align-self-center bg-transparent">
+											<img src="{{ URL::asset('Dashboard/img/flags/' . (App::getLocale() == 'ar' ? 'eg_flag.svg' : 'us_flag.svg')) }}" 
+												 alt="{{ App::getLocale() }}" 
+												 style="width: 24px; height: 16px; object-fit: cover; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.15);">
+										</span>
+										<div class="my-auto d-none d-sm-inline-block">
+											<strong class="mr-1 ml-1 my-auto text-dark">{{ App::getLocale() == 'ar' ? 'العربية' : 'English' }}</strong>
 										</div>
+										<i class="fe fe-chevron-down tx-11 text-muted mr-1 ml-1"></i>
 									</a>
-									<div class="dropdown-menu dropdown-menu-left dropdown-menu-arrow" x-placement="bottom-end">
-										<a href="#" class="dropdown-item d-flex ">
-											<span class="avatar  ml-3 align-self-center bg-transparent"><img src="{{URL::asset('Dashboard/img/flags/french_flag.jpg')}}" alt="img"></span>
-											<div class="d-flex">
-												<span class="mt-2">French</span>
-											</div>
-										</a>
-										<a href="#" class="dropdown-item d-flex">
-											<span class="avatar  ml-3 align-self-center bg-transparent"><img src="{{URL::asset('Dashboard/img/flags/germany_flag.jpg')}}" alt="img"></span>
-											<div class="d-flex">
-												<span class="mt-2">Germany</span>
-											</div>
-										</a>
-										<a href="#" class="dropdown-item d-flex">
-											<span class="avatar ml-3 align-self-center bg-transparent"><img src="{{URL::asset('Dashboard/img/flags/italy_flag.jpg')}}" alt="img"></span>
-											<div class="d-flex">
-												<span class="mt-2">Italy</span>
-											</div>
-										</a>
-										<a href="#" class="dropdown-item d-flex">
-											<span class="avatar ml-3 align-self-center bg-transparent"><img src="{{URL::asset('Dashboard/img/flags/russia_flag.jpg')}}" alt="img"></span>
-											<div class="d-flex">
-												<span class="mt-2">Russia</span>
-											</div>
-										</a>
-										<a href="#" class="dropdown-item d-flex">
-											<span class="avatar  ml-3 align-self-center bg-transparent"><img src="{{URL::asset('Dashboard/img/flags/spain_flag.jpg')}}" alt="img"></span>
-											<div class="d-flex">
-												<span class="mt-2">spain</span>
-											</div>
-										</a>
+									<div class="dropdown-menu {{ App::getLocale() == 'ar' ? 'dropdown-menu-right' : 'dropdown-menu-left' }} dropdown-menu-arrow shadow-sm py-2" x-placement="bottom-end" style="min-width: 175px;">
+										<div class="dropdown-header text-uppercase font-weight-bold tx-11 text-muted px-3 py-1">
+											<i class="fas fa-globe ml-1 mr-1"></i> {{ App::getLocale() == 'ar' ? 'اختر اللغة' : 'Select Language' }}
+										</div>
+										@foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+											<a href="{{ route('locale.switch', $localeCode) }}" 
+											   class="dropdown-item d-flex align-items-center py-2 px-3" 
+											   rel="alternate" 
+											   hreflang="{{ $localeCode }}"
+											   style="{{ App::getLocale() == $localeCode ? 'background: #fdf3ee; font-weight: 700; color: #141c2b;' : 'color: #141c2b;' }}">
+												<span class="avatar mr-2 ml-2 align-self-center bg-transparent" style="width: 22px; height: 15px;">
+													<img src="{{ URL::asset('Dashboard/img/flags/' . ($localeCode == 'ar' ? 'eg_flag.svg' : 'us_flag.svg')) }}" 
+														 alt="{{ $properties['native'] }}" 
+														 style="width: 22px; height: 15px; object-fit: cover; border-radius: 2px;">
+												</span>
+												<div class="d-flex flex-grow-1 justify-content-between align-items-center">
+													<span class="tx-13">{{ $properties['native'] }}</span>
+													@if(App::getLocale() == $localeCode)
+														<i class="fe fe-check text-success ml-1 mr-1" style="font-size: 13px;"></i>
+													@endif
+												</div>
+											</a>
+										@endforeach
 									</div>
 								</div>
 							</li>

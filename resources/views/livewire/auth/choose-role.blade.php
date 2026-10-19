@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     @include('partials.head')
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Cairo', 'Inter', sans-serif;
             min-height: 100vh;
             background: #020817;
             overflow-x: hidden;
@@ -276,6 +276,11 @@
     <div class="page-wrapper">
         <div class="glass-card">
 
+            <!-- ── Language Switcher Header ── -->
+            <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 1rem;">
+                <x-language-switcher variant="glass" />
+            </div>
+
             <!-- ── Brand Header ── -->
             <div class="brand-header">
                 <div class="brand-logo">
@@ -284,11 +289,11 @@
                     </svg>
                 </div>
                 <h1 class="brand-title">{{ config('app.name', 'Hospital System') }}</h1>
-                <p class="brand-subtitle">{{ __('Select your role to continue') }}</p>
+                <p class="brand-subtitle">{{ app()->getLocale() == 'ar' ? 'اختر بوابتك لتسجيل الدخول والمتابعة' : __('Select your role to continue') }}</p>
             </div>
 
             <!-- ── Roles ── -->
-            <p class="section-label">{{ __('I am a...') }}</p>
+            <p class="section-label">{{ app()->getLocale() == 'ar' ? 'اختر البوابة' : __('I am a...') }}</p>
             <div class="roles-grid">
 
                 <!-- Admin -->
@@ -298,8 +303,8 @@
                             <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1zm0 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4 10H8v-1c0-1.33 2.67-2 4-2s4 .67 4 2v1z"/>
                         </svg>
                     </div>
-                    <span class="role-name">Admin</span>
-                    <span class="role-desc">System management &amp; control</span>
+                    <span class="role-name">{{ app()->getLocale() == 'ar' ? 'مدير النظام' : 'Admin' }}</span>
+                    <span class="role-desc">{{ app()->getLocale() == 'ar' ? 'لوحة تحكم وإدارة ومراقبة النظام' : 'System management & control' }}</span>
                 </a>
 
                 <!-- Doctor -->
@@ -311,8 +316,8 @@
                             <rect x="15" y="11" width="6" height="2" rx="1" fill="rgba(255,255,255,0.85)"/>
                         </svg>
                     </div>
-                    <span class="role-name">Doctor</span>
-                    <span class="role-desc">Medical staff &amp; professionals</span>
+                    <span class="role-name">{{ app()->getLocale() == 'ar' ? 'طبيب' : 'Doctor' }}</span>
+                    <span class="role-desc">{{ app()->getLocale() == 'ar' ? 'العيادات والمواعيد وجدول الكشوفات' : 'Medical staff & professionals' }}</span>
                 </a>
 
                 <!-- Patient -->
@@ -322,8 +327,8 @@
                             <path d="M12 2C9.24 2 7 4.24 7 7s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 12c-5.33 0-8 2.67-8 4v1h16v-1c0-1.33-2.67-4-8-4z"/>
                         </svg>
                     </div>
-                    <span class="role-name">Patient</span>
-                    <span class="role-desc">View health records &amp; appointments</span>
+                    <span class="role-name">{{ app()->getLocale() == 'ar' ? 'مريض' : 'Patient' }}</span>
+                    <span class="role-desc">{{ app()->getLocale() == 'ar' ? 'الملف الطبي والمواعيد والكشوفات' : 'View health records & appointments' }}</span>
                 </a>
 
                 <!-- HR -->
@@ -333,8 +338,8 @@
                             <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V18h14v-1.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V18h6v-1.5c0-2.33-4.67-3.5-7-3.5z"/>
                         </svg>
                     </div>
-                    <span class="role-name">HR Staff</span>
-                    <span class="role-desc">Human resources &amp; reception</span>
+                    <span class="role-name">{{ app()->getLocale() == 'ar' ? 'الموارد البشرية' : 'HR Staff' }}</span>
+                    <span class="role-desc">{{ app()->getLocale() == 'ar' ? 'شؤون الموظفين والاستقبال والعمليات' : 'Human resources & reception' }}</span>
                 </a>
 
             </div>
@@ -352,10 +357,10 @@
                         <line x1="19" y1="8" x2="19" y2="14"/>
                         <line x1="22" y1="11" x2="16" y2="11"/>
                     </svg>
-                    {{ __('Create Account') }}
+                    {{ app()->getLocale() == 'ar' ? 'إنشاء حساب جديد للمرضى' : __('Create Account') }}
                     <span class="patient-badge">
                         <svg width="7" height="7" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="4"/><path d="M12 14c-7 0-7 3.5-7 3.5V21h14v-3.5S19 14 12 14z"/></svg>
-                        Patients Only
+                        {{ app()->getLocale() == 'ar' ? 'خاص بالمرضى' : 'Patients Only' }}
                     </span>
                 </a>
                 @endif
@@ -366,7 +371,7 @@
 
         <!-- Page footer -->
         <div class="page-footer">
-            <a href="{{ route('home') }}">&larr; Back to Home</a>
+            <a href="{{ route('home') }}">&larr; {{ app()->getLocale() == 'ar' ? 'العودة للصفحة الرئيسية' : 'Back to Home' }}</a>
             &nbsp;&middot;&nbsp;
             {{ config('app.name') }} &copy; {{ date('Y') }}
         </div>

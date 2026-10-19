@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
     <head>
         @include('partials.head')
     </head>
@@ -18,6 +18,16 @@
             <flux:spacer />
 
             <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
+                <flux:tooltip :content="app()->getLocale() == 'ar' ? 'Switch to English' : 'التبديل إلى العربية'" position="bottom">
+                    <flux:navbar.item
+                        class="!h-10 [&>div>svg]:size-5"
+                        icon="globe-alt"
+                        :href="route('locale.switch', app()->getLocale() == 'ar' ? 'en' : 'ar')"
+                        :label="app()->getLocale() == 'ar' ? 'English' : 'العربية'"
+                    >
+                        <span class="text-xs font-bold">{{ app()->getLocale() == 'ar' ? 'EN' : 'ع' }}</span>
+                    </flux:navbar.item>
+                </flux:tooltip>
                 <flux:tooltip :content="__('Search')" position="bottom">
                     <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#" :label="__('Search')" />
                 </flux:tooltip>

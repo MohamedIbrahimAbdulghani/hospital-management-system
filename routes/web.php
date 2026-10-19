@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\LocalizationController;
 use App\Livewire\Auth\ForceChangePassword;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\Security;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+// راوت تبديل اللغة الموحد لجميع صفحات الموقع
+Route::get('/locale/{locale}', [LocalizationController::class, 'switch'])->name('locale.switch');
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
