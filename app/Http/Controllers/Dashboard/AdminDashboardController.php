@@ -17,10 +17,10 @@ class AdminDashboardController extends Controller
     public function index(): View
     {
         $stats = [
-            'doctors_count' => Doctor::count(),
-            'patients_count' => Patient::count(),
+            'doctors_count'         => Doctor::count(),
+            'patients_count'        => Patient::count(),
             'specializations_count' => Specialization::count(),
-            'staff_count' => User::whereIn('role', ['admin', 'hr'])->count(),
+            'staff_count'           => User::whereIn('role', ['admin', 'hr'])->count(),
         ];
 
         return view('Dashboard.Admin.dashboard', compact('stats'));

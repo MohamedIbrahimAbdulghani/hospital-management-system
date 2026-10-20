@@ -27,13 +27,21 @@ class FortifyServiceProvider extends ServiceProvider
             $user = $request->user();
 
             if ($user) {
-                return match ($user->role) {
-                    'admin' => redirect()->route('admin.dashboard'),
-                    'doctor' => redirect()->route('doctor.dashboard'),
-                    'hr' => redirect()->route('hr.dashboard'),
-                    'patient' => redirect()->route('patient.dashboard'),
-                    default => redirect()->route('dashboard'),
+                $routeName = match ($user->role) {
+                    'admin' => 'admin.dashboard',
+                    'doctor' => 'doctor.dashboard',
+                    'hr' => 'hr.dashboard',
+                    'patient' => 'patient.dashboard',
+                    default => 'dashboard',
                 };
+
+                $url = route($routeName);
+                if (class_exists(\Mcamara\LaravelLocalization\Facades\LaravelLocalization::class)) {
+                    $locale = session('locale', app()->getLocale());
+                    $url = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($locale, $url);
+                }
+
+                return redirect()->to($url);
             }
 
             return redirect()->route('dashboard');

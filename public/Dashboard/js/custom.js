@@ -2,7 +2,13 @@ $(function() {
 	'use strict'
 	
 	// ______________LOADER
-	$("#global-loader").fadeOut("slow");
+	if (typeof window.hideGlobalLoader === 'function') {
+		// Handled by unified global-loader
+	} else {
+		window.addEventListener('load', function() {
+			$("#global-loader").fadeOut("slow");
+		});
+	}
 	
 	
 	// This template is mobile first so active menu in navbar

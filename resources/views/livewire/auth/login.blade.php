@@ -74,8 +74,9 @@
         overflow: hidden;
         background: #0f172a;
         display: flex;
-        align-items: flex-end;
-        padding: 4.5rem 4.5rem 4rem 4.5rem;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 3rem 6rem;
     }
 
     .login-hero-bg {
@@ -98,9 +99,9 @@
         inset: 0;
         background: linear-gradient(
             180deg,
-            rgba(15, 23, 42, 0.20) 0%,
-            rgba(15, 23, 42, 0.55) 45%,
-            rgba(15, 23, 42, 0.94) 100%
+            rgba(15, 23, 42, 0.15) 0%,
+            rgba(15, 23, 42, 0.45) 50%,
+            rgba(15, 23, 42, 0.85) 100%
         );
         z-index: 2;
     }
@@ -111,8 +112,12 @@
         color: #ffffff;
         max-width: 540px;
         width: 100%;
-        margin-inline: 1rem;
-        margin-bottom: 1rem;
+        margin-inline-start: 2.5rem;
+        margin-inline-end: auto;
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
         animation: fadeInHero 0.8s ease-out;
     }
 
@@ -143,14 +148,15 @@
         line-height: 1.35;
         margin-bottom: 0.9rem;
         color: #ffffff;
-        text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        text-shadow: 0 2px 14px rgba(0,0,0,0.6);
     }
 
     .login-hero-desc {
         font-size: 0.95rem;
         line-height: 1.65;
-        color: rgba(255, 255, 255, 0.85);
+        color: rgba(255, 255, 255, 0.92);
         margin-bottom: 1.5rem;
+        text-shadow: 0 1px 8px rgba(0,0,0,0.5);
     }
 
     .login-hero-features {
@@ -171,6 +177,11 @@
         border-radius: 20px;
         font-size: 12.5px;
         color: #f1f5f9;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .login-hero-pill:hover {
+        background: rgba(15, 23, 42, 0.85);
+        transform: translateY(-2px);
     }
 
     /* Right Side: Form */
@@ -406,12 +417,15 @@
     /* Responsive */
     @media (max-width: 991px) {
         .login-hero-side {
-            min-height: 280px;
-            padding: 2.5rem 2rem;
-            align-items: flex-end;
+            min-height: 320px;
+            padding: 2rem 1.5rem;
+            align-items: center;
+        }
+        .login-hero-content {
+            padding: 1.5rem;
         }
         .login-hero-title {
-            font-size: 1.5rem;
+            font-size: 1.45rem;
         }
     }
     @media (max-width: 767px) {
@@ -559,7 +573,7 @@
                     </div>
                 @endif
 
-                @if ($errors->any())
+                @if ($errors->any() && !$errors->has('email') && !$errors->has('password'))
                     <div class="alert alert-danger py-2 px-3 mb-3 tx-13 rounded">
                         <ul class="mb-0 pr-3 pl-3">
                             @foreach ($errors->all() as $error)
@@ -684,5 +698,18 @@
             icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const btn  = document.getElementById('login-button');
+        if (form && btn) {
+            form.addEventListener('submit', function() {
+                if (typeof form.checkValidity === 'function' && !form.checkValidity()) return;
+                btn.style.pointerEvents = 'none';
+                btn.style.opacity = '0.85';
+                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>{{ app()->getLocale() === "ar" ? "جاري تسجيل الدخول..." : "Signing in..." }}</span>';
+            });
+        }
+    });
 </script>
 @endsection

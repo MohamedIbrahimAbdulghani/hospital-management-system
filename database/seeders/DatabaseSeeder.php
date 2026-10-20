@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'mohamedibrahimabdulghani@gmail.com'],
             [
                 'name' => 'Mohamed Ibrahim Abdulghani',
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make('123'),
                 'role' => 'admin',
                 'is_active' => true,
                 'must_change_password' => false,
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'doctor@hospital.com'],
             [
                 'name' => 'د. محمد يوسف',
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make('123'),
                 'role' => 'doctor',
                 'is_active' => true,
                 'must_change_password' => false,
@@ -75,7 +75,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'hr@hospital.com'],
             [
                 'name' => 'أيمن سعيد (مسؤول HR)',
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make('123'),
                 'role' => 'hr',
                 'is_active' => true,
                 'must_change_password' => false,
@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'patient@hospital.com'],
             [
                 'name' => 'محمود حسن (مريض)',
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make('123'),
                 'role' => 'patient',
                 'is_active' => true,
                 'must_change_password' => false,

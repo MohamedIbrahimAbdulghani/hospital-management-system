@@ -264,6 +264,7 @@
     </style>
 </head>
 <body>
+    @include('partials.global-loader')
 
     <!-- Background -->
     <div class="bg-orbs">

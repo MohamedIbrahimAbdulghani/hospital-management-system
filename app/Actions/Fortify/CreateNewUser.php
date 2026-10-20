@@ -20,7 +20,19 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    $parts = array_filter(preg_split('/\s+/u', trim((string) $value)));
+                    if (count($parts) < 3) {
+                        $fail(app()->getLocale() === 'ar'
+                            ? 'يرجى إدخال الاسم ثلاثياً على الأقل (مثال: محمد أحمد علي).'
+                            : 'Please enter your full name (at least 3 parts, e.g. first, middle, and last name).');
+                    }
+                },
+            ],
             'email' => [
                 'required',
                 'string',
@@ -30,6 +42,8 @@ class CreateNewUser implements CreatesNewUsers
             ],
             'password' => ['required', 'string', 'confirmed', 'min:6'],
             'phone' => ['nullable', 'string', 'max:20'],
+        ], [
+            'name.required' => app()->getLocale() === 'ar' ? 'حقل الاسم الكامل مطلوب.' : 'The name field is required.',
         ])->validate();
 
         return DB::transaction(function () use ($input) {

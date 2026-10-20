@@ -11,11 +11,7 @@
 	</head>
 
 	<body class="main-body bg-primary-transparent">
-		<!-- Loader -->
-		<div id="global-loader">
-			<img src="{{URL::asset('Dashboard/img/loader.svg')}}" class="loader-img" alt="Loader">
-		</div>
-		<!-- /Loader -->
+		@include('partials.global-loader')
 		@yield('content')
 		@include('Dashboard.layouts.footer-scripts')
 	</body>

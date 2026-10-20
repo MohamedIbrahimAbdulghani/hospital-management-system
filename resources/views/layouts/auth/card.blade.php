@@ -4,6 +4,7 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-neutral-100 antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
+        @include('partials.global-loader')
         <div class="fixed top-4 end-4 z-50">
             <x-language-switcher />
         </div>

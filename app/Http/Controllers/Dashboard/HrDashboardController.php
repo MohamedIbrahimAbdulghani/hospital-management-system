@@ -16,7 +16,7 @@ class HrDashboardController extends Controller
     public function index(): View
     {
         $stats = [
-            'doctors_count' => Doctor::count(),
+            'doctors_count'  => Doctor::count(),
             'patients_count' => Patient::count(),
             'hr_staff_count' => HrStaff::count(),
         ];
