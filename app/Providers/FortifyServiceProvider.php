@@ -76,6 +76,21 @@ class FortifyServiceProvider extends ServiceProvider
                 }
             }
         );
+
+        $this->app->instance(
+            \Laravel\Fortify\Contracts\TwoFactorLoginResponse::class,
+            new class($redirectToLocalizedDashboard) implements \Laravel\Fortify\Contracts\TwoFactorLoginResponse
+            {
+                public function __construct(
+                    private \Closure $redirect
+                ) {}
+
+                public function toResponse($request)
+                {
+                    return ($this->redirect)($request);
+                }
+            }
+        );
     }
 
     /**
@@ -83,6 +98,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configurePipeline();
         $this->configureAuthentication();
         $this->configureActions();
         $this->configureViews();
@@ -90,46 +106,44 @@ class FortifyServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure authentication and role-specific validation.
+     * Configure Fortify authentication pipeline.
+     */
+    private function configurePipeline(): void
+    {
+        Fortify::authenticateThrough(function (Request $request) {
+            return array_filter([
+                config('fortify.limiters.login') ? null : \Laravel\Fortify\Actions\EnsureLoginIsNotThrottled::class,
+                config('fortify.lowercase_usernames') ? \Laravel\Fortify\Actions\CanonicalizeUsername::class : null,
+                \App\Actions\Fortify\RedirectIfTwoFactorAuthenticatable::class,
+                \Laravel\Fortify\Actions\AttemptToAuthenticate::class,
+                \Laravel\Fortify\Actions\PrepareAuthenticatedSession::class,
+            ]);
+        });
+    }
+
+    /**
+     * Configure authentication and role-agnostic credential validation.
+     * Supports Email OR Mobile number with timing-attack mitigation.
      */
     private function configureAuthentication(): void
     {
         Fortify::authenticateUsing(function (Request $request) {
-            $email = $request->input(Fortify::username());
+            $login = $request->input(Fortify::username());
             $password = $request->input('password');
-            $selectedRole = $request->input('role');
 
-            $user = User::where('email', $email)->first();
+            // Find user by either Email or Phone number
+            $user = User::where('email', $login)
+                ->orWhere('phone', $login)
+                ->first();
 
-            if (! $user || ! Hash::check($password, $user->password)) {
+            // Constant-time hash verification to defeat timing attacks and user enumeration
+            $dummyHash = '$2y$12$1234567890123456789012ujyZ9mQ1E5yZqg3p3n0dDkO8sLqfO2u';
+            $passwordMatches = Hash::check($password, $user?->password ?? $dummyHash);
+
+            // Any failure (non-existent email/phone, bad password, deactivated account)
+            // returns null, triggering the exact same generic error without disclosing reason
+            if (! $user || ! $passwordMatches || ! $user->is_active) {
                 return null;
-            }
-
-            // Verify role if a specific portal role was chosen
-            if ($selectedRole && in_array($selectedRole, ['admin', 'doctor', 'hr', 'patient'], true)) {
-                if ($user->role !== $selectedRole) {
-                    $roleNamesAr = [
-                        'admin' => 'مدير نظام',
-                        'doctor' => 'طبيب',
-                        'hr' => 'موارد بشرية',
-                        'patient' => 'مريض',
-                    ];
-
-                    $expected = $roleNamesAr[$selectedRole] ?? $selectedRole;
-                    $actual = $roleNamesAr[$user->role] ?? $user->role;
-
-                    throw ValidationException::withMessages([
-                        Fortify::username() => [
-                            "بيانات هذا الحساب خاصة بـ ({$actual})، ولا يمكن استخدامها لتسجيل الدخول لبوابة ({$expected}). يرجى اختيار البوابة الصحيحة لحسابك.",
-                        ],
-                    ]);
-                }
-            }
-
-            if (! $user->is_active) {
-                throw ValidationException::withMessages([
-                    Fortify::username() => [__('auth.account_deactivated')],
-                ]);
             }
 
             return $user;
@@ -154,6 +168,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(fn () => view('livewire.auth.register'));
         Fortify::resetPasswordView(fn () => view('livewire.auth.reset-password'));
         Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
+        Fortify::twoFactorChallengeView(fn () => view('livewire.auth.two-factor-challenge'));
     }
 
     /**

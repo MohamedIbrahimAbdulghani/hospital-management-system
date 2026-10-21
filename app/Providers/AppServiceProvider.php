@@ -24,6 +24,55 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureAuthAuditLogs();
+    }
+
+    /**
+     * Configure authentication audit logging.
+     */
+    protected function configureAuthAuditLogs(): void
+    {
+        \Illuminate\Support\Facades\Event::listen(\Illuminate\Auth\Events\Login::class, function ($event) {
+            if ($event->user instanceof \App\Models\User) {
+                \App\Models\AuditLog::record(
+                    action: 'login_success',
+                    email: $event->user->email,
+                    userId: $event->user->id,
+                    details: ['role' => $event->user->role, 'guard' => $event->guard]
+                );
+            }
+        });
+
+        \Illuminate\Support\Facades\Event::listen(\Illuminate\Auth\Events\Failed::class, function ($event) {
+            $email = $event->credentials['email'] ?? $event->credentials['phone'] ?? request('email');
+            \App\Models\AuditLog::record(
+                action: 'login_failed',
+                email: $email,
+                userId: $event->user?->id,
+                details: ['ip' => request()->ip(), 'guard' => $event->guard]
+            );
+        });
+
+        \Illuminate\Support\Facades\Event::listen(\Illuminate\Auth\Events\Lockout::class, function ($event) {
+            $email = $event->request->input('email') ?? $event->request->input('phone');
+            \App\Models\AuditLog::record(
+                action: 'login_locked',
+                email: $email,
+                userId: null,
+                details: ['ip' => $event->request->ip(), 'reason' => 'rate_limit_exceeded']
+            );
+        });
+
+        \Illuminate\Support\Facades\Event::listen(\Illuminate\Auth\Events\Logout::class, function ($event) {
+            if ($event->user instanceof \App\Models\User) {
+                \App\Models\AuditLog::record(
+                    action: 'logout',
+                    email: $event->user->email,
+                    userId: $event->user->id,
+                    details: ['role' => $event->user->role]
+                );
+            }
+        });
     }
 
     /**

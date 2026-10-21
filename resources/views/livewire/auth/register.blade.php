@@ -653,21 +653,13 @@
 
                 </form>
 
-                {{-- رابط تسجيل الدخول للمريض --}}
+                {{-- رابط تسجيل الدخول الموحد --}}
                 <div class="mt-4 text-center">
                     <span class="tx-13 text-muted">
                         {{ app()->getLocale() === 'ar' ? 'لديك حساب مريض بالفعل؟' : 'Already have a patient account?' }}
                     </span>
-                    <a href="{{ route('login', ['role' => 'patient']) }}" class="font-weight-bold text-primary ml-1 mr-1 tx-13">
+                    <a href="{{ route('login') }}" class="font-weight-bold text-primary ml-1 mr-1 tx-13">
                         {{ app()->getLocale() === 'ar' ? 'تسجيل الدخول' : 'Sign In' }}
-                    </a>
-                </div>
-
-                {{-- زر الرجوع لاختيار الرول --}}
-                <div class="mt-3 text-center">
-                    <a href="{{ route('choose-role') }}" class="back-role-link">
-                        <span class="arrow-icon">←</span>
-                        <span>{{ app()->getLocale() === 'ar' ? 'الرجوع لاختيار نوع الحساب' : 'Back to role selection' }}</span>
                     </a>
                 </div>
 

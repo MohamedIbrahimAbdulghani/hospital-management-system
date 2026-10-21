@@ -78,8 +78,18 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::saved(function (User $user) {
-            if (! empty($user->role) && ! $user->hasRole($user->role)) {
-                $user->syncRoles([$user->role]);
+            if (! empty($user->role)) {
+                try {
+                    if (! $user->hasRole($user->role)) {
+                        $user->syncRoles([$user->role]);
+                    }
+                } catch (\Spatie\Permission\Exceptions\RoleDoesNotExist $e) {
+                    \Spatie\Permission\Models\Role::firstOrCreate([
+                        'name' => $user->role,
+                        'guard_name' => 'web',
+                    ]);
+                    $user->syncRoles([$user->role]);
+                }
             }
         });
     }
@@ -106,6 +116,14 @@ class User extends Authenticatable
     public function hrStaff(): HasOne
     {
         return $this->hasOne(HrStaff::class, 'user_id');
+    }
+
+    /**
+     * Audit logs for this user
+     */
+    public function auditLogs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(AuditLog::class, 'user_id');
     }
 
     /**

@@ -15,6 +15,8 @@ class Specialization extends Model
         'name_en',
         'icon',
         'description',
+        'description_en',
+        'sort_order',
         'is_active',
     ];
 
@@ -22,6 +24,7 @@ class Specialization extends Model
     {
         return [
             'is_active' => 'boolean',
+            'sort_order' => 'integer',
         ];
     }
 
@@ -31,6 +34,18 @@ class Specialization extends Model
     public function getNameAttribute(): string
     {
         return app()->getLocale() === 'ar' ? $this->name_ar : ($this->name_en ?: $this->name_ar);
+    }
+
+    /**
+     * Get description according to current application locale
+     */
+    public function getDescriptionAttribute(): string
+    {
+        if (app()->getLocale() === 'ar') {
+            return $this->attributes['description'] ?? '';
+        }
+
+        return $this->description_en ?: ($this->attributes['description'] ?? '');
     }
 
     /**

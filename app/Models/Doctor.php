@@ -14,6 +14,7 @@ class Doctor extends Model
     protected $fillable = [
         'user_id',
         'specialization_id',
+        'name_en',
         'license_number',
         'title',
         'bio',
@@ -22,6 +23,7 @@ class Doctor extends Model
         'rating',
         'is_available',
         'appointments_per_day',
+        'sort_order',
     ];
 
     protected function casts(): array
@@ -32,6 +34,7 @@ class Doctor extends Model
             'rating' => 'decimal:2',
             'experience_years' => 'integer',
             'appointments_per_day' => 'integer',
+            'sort_order' => 'integer',
         ];
     }
 
@@ -49,5 +52,40 @@ class Doctor extends Model
     public function specialization(): BelongsTo
     {
         return $this->belongsTo(Specialization::class, 'specialization_id');
+    }
+
+    /**
+     * Doctor full name from linked user (supports bilingual name_en)
+     */
+    public function getNameAttribute(): string
+    {
+        if (app()->getLocale() === 'en' && !empty($this->attributes['name_en'])) {
+            return $this->attributes['name_en'];
+        }
+
+        return $this->user?->name ?? __('messages.doctor');
+    }
+
+    /**
+     * Doctor avatar with reliable fallback
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        $avatar = $this->user?->avatar;
+        if ($avatar && file_exists(public_path($avatar))) {
+            return asset($avatar);
+        }
+
+        // Clean SVG/UI avatar fallback
+        $name = urlencode($this->user?->name ?? 'Doctor');
+        return "https://ui-avatars.com/api/?name={$name}&background=1e40af&color=ffffff&size=256&bold=true";
+    }
+
+    /**
+     * Localized Specialization Name
+     */
+    public function getSpecializationNameAttribute(): string
+    {
+        return $this->specialization?->name ?? '';
     }
 }

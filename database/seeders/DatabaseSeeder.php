@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
         // 2. Medical Specializations
         $this->call(SpecializationSeeder::class);
 
+        // 3. Site Settings (Emergency and Hotline phones)
+        $this->call(SiteSettingSeeder::class);
+
         // 3. Super Admin user
         $admin = User::firstOrCreate(
             ['email' => 'mohamedibrahimabdulghani@gmail.com'],

@@ -1,266 +1,1500 @@
+@php
+    $locale = app()->getLocale();
+    $isRtl  = $locale === 'ar';
+    $emergencyPhone = $settings->emergency_phone ?? \App\Models\SiteSetting::get('emergency_phone', '19000');
+    $hotlinePhone   = $settings->hotline_phone ?? \App\Models\SiteSetting::get('hotline_phone', '16000');
+    $hospitalEmail  = $settings->hospital_email ?? \App\Models\SiteSetting::get('hospital_email', 'support@aura-hospital.com');
+    $hospitalAddress = $settings->hospital_address ?? ($isRtl
+        ? \App\Models\SiteSetting::get('hospital_address_ar', 'طريق الملك فهد، حي العقيق الطبي')
+        : \App\Models\SiteSetting::get('hospital_address_en', 'King Fahd Road, Al-Aqeeq Medical District'));
+@endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="{{ str_replace('_', '-', $locale) }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $isRtl ? 'مستشفى أورا التخصصي - رعاية طبية فائقة' : 'Aura Medical Hospital - Advanced Healthcare' }}</title>
+    <meta name="description" content="{{ $isRtl ? 'مستشفى أورا التخصصي، كوادر طبية استشارية متمرسة وخدمة طوارئ 24/7 لضمان أعلى معايير الجودة والسلامة.' : 'Aura Medical Hospital provides premier medical consultants, surgical precision, and 24/7 emergency care.' }}">
 
-        <!-- <title>{{ __('Welcome') }} - {{ config('app.name', 'Laravel') }}</title> -->
-         <title>{{__('messages.title')}}</title>
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <!-- Google Fonts (Tajawal for Arabic, Plus Jakarta Sans for English) -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
-        @fonts
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        <!-- Styles -->
-        <style>
-            @layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-translate-x:0;--tw-translate-y:0;--tw-translate-z:0;--tw-rotate-x:initial;--tw-rotate-y:initial;--tw-rotate-z:initial;--tw-skew-x:initial;--tw-skew-y:initial;--tw-space-x-reverse:0;--tw-border-style:solid;--tw-leading:initial;--tw-font-weight:initial;--tw-shadow:0 0 #0000;--tw-shadow-color:initial;--tw-shadow-alpha:100%;--tw-inset-shadow:0 0 #0000;--tw-inset-shadow-color:initial;--tw-inset-shadow-alpha:100%;--tw-ring-color:initial;--tw-ring-shadow:0 0 #0000;--tw-inset-ring-color:initial;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-inset:initial;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-offset-shadow:0 0 #0000;--tw-blur:initial;--tw-brightness:initial;--tw-contrast:initial;--tw-grayscale:initial;--tw-hue-rotate:initial;--tw-invert:initial;--tw-opacity:initial;--tw-saturate:initial;--tw-sepia:initial;--tw-drop-shadow:initial;--tw-drop-shadow-color:initial;--tw-drop-shadow-alpha:100%;--tw-drop-shadow-size:initial;--tw-duration:initial;--tw-content:""}}}@layer theme{:root,:host{--font-sans:"Instrument Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";--font-serif:ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;--font-mono:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;--color-red-50:oklch(97.1% .013 17.38);--color-red-100:oklch(93.6% .032 17.717);--color-red-200:oklch(88.5% .062 18.334);--color-red-300:oklch(80.8% .114 19.571);--color-red-400:oklch(70.4% .191 22.216);--color-red-500:oklch(63.7% .237 25.331);--color-red-600:oklch(57.7% .245 27.325);--color-red-700:oklch(50.5% .213 27.518);--color-red-800:oklch(44.4% .177 26.899);--color-red-900:oklch(39.6% .141 25.723);--color-red-950:oklch(25.8% .092 26.042);--color-orange-50:oklch(98% .016 73.684);--color-orange-100:oklch(95.4% .038 75.164);--color-orange-200:oklch(90.1% .076 70.697);--color-orange-300:oklch(83.7% .128 66.29);--color-orange-400:oklch(75% .183 55.934);--color-orange-500:oklch(70.5% .213 47.604);--color-orange-600:oklch(64.6% .222 41.116);--color-orange-700:oklch(55.3% .195 38.402);--color-orange-800:oklch(47% .157 37.304);--color-orange-900:oklch(40.8% .123 38.172);--color-orange-950:oklch(26.6% .079 36.259);--color-amber-50:oklch(98.7% .022 95.277);--color-amber-100:oklch(96.2% .059 95.617);--color-amber-200:oklch(92.4% .12 95.746);--color-amber-300:oklch(87.9% .169 91.605);--color-amber-400:oklch(82.8% .189 84.429);--color-amber-500:oklch(76.9% .188 70.08);--color-amber-600:oklch(66.6% .179 58.318);--color-amber-700:oklch(55.5% .163 48.998);--color-amber-800:oklch(47.3% .137 46.201);--color-amber-900:oklch(41.4% .112 45.904);--color-amber-950:oklch(27.9% .077 45.635);--color-yellow-50:oklch(98.7% .026 102.212);--color-yellow-100:oklch(97.3% .071 103.193);--color-yellow-200:oklch(94.5% .129 101.54);--color-yellow-300:oklch(90.5% .182 98.111);--color-yellow-400:oklch(85.2% .199 91.936);--color-yellow-500:oklch(79.5% .184 86.047);--color-yellow-600:oklch(68.1% .162 75.834);--color-yellow-700:oklch(55.4% .135 66.442);--color-yellow-800:oklch(47.6% .114 61.907);--color-yellow-900:oklch(42.1% .095 57.708);--color-yellow-950:oklch(28.6% .066 53.813);--color-lime-50:oklch(98.6% .031 120.757);--color-lime-100:oklch(96.7% .067 122.328);--color-lime-200:oklch(93.8% .127 124.321);--color-lime-300:oklch(89.7% .196 126.665);--color-lime-400:oklch(84.1% .238 128.85);--color-lime-500:oklch(76.8% .233 130.85);--color-lime-600:oklch(64.8% .2 131.684);--color-lime-700:oklch(53.2% .157 131.589);--color-lime-800:oklch(45.3% .124 130.933);--color-lime-900:oklch(40.5% .101 131.063);--color-lime-950:oklch(27.4% .072 132.109);--color-green-50:oklch(98.2% .018 155.826);--color-green-100:oklch(96.2% .044 156.743);--color-green-200:oklch(92.5% .084 155.995);--color-green-300:oklch(87.1% .15 154.449);--color-green-400:oklch(79.2% .209 151.711);--color-green-500:oklch(72.3% .219 149.579);--color-green-600:oklch(62.7% .194 149.214);--color-green-700:oklch(52.7% .154 150.069);--color-green-800:oklch(44.8% .119 151.328);--color-green-900:oklch(39.3% .095 152.535);--color-green-950:oklch(26.6% .065 152.934);--color-emerald-50:oklch(97.9% .021 166.113);--color-emerald-100:oklch(95% .052 163.051);--color-emerald-200:oklch(90.5% .093 164.15);--color-emerald-300:oklch(84.5% .143 164.978);--color-emerald-400:oklch(76.5% .177 163.223);--color-emerald-500:oklch(69.6% .17 162.48);--color-emerald-600:oklch(59.6% .145 163.225);--color-emerald-700:oklch(50.8% .118 165.612);--color-emerald-800:oklch(43.2% .095 166.913);--color-emerald-900:oklch(37.8% .077 168.94);--color-emerald-950:oklch(26.2% .051 172.552);--color-teal-50:oklch(98.4% .014 180.72);--color-teal-100:oklch(95.3% .051 180.801);--color-teal-200:oklch(91% .096 180.426);--color-teal-300:oklch(85.5% .138 181.071);--color-teal-400:oklch(77.7% .152 181.912);--color-teal-500:oklch(70.4% .14 182.503);--color-teal-600:oklch(60% .118 184.704);--color-teal-700:oklch(51.1% .096 186.391);--color-teal-800:oklch(43.7% .078 188.216);--color-teal-900:oklch(38.6% .063 188.416);--color-teal-950:oklch(27.7% .046 192.524);--color-cyan-50:oklch(98.4% .019 200.873);--color-cyan-100:oklch(95.6% .045 203.388);--color-cyan-200:oklch(91.7% .08 205.041);--color-cyan-300:oklch(86.5% .127 207.078);--color-cyan-400:oklch(78.9% .154 211.53);--color-cyan-500:oklch(71.5% .143 215.221);--color-cyan-600:oklch(60.9% .126 221.723);--color-cyan-700:oklch(52% .105 223.128);--color-cyan-800:oklch(45% .085 224.283);--color-cyan-900:oklch(39.8% .07 227.392);--color-cyan-950:oklch(30.2% .056 229.695);--color-sky-50:oklch(97.7% .013 236.62);--color-sky-100:oklch(95.1% .026 236.824);--color-sky-200:oklch(90.1% .058 230.902);--color-sky-300:oklch(82.8% .111 230.318);--color-sky-400:oklch(74.6% .16 232.661);--color-sky-500:oklch(68.5% .169 237.323);--color-sky-600:oklch(58.8% .158 241.966);--color-sky-700:oklch(50% .134 242.749);--color-sky-800:oklch(44.3% .11 240.79);--color-sky-900:oklch(39.1% .09 240.876);--color-sky-950:oklch(29.3% .066 243.157);--color-blue-50:oklch(97% .014 254.604);--color-blue-100:oklch(93.2% .032 255.585);--color-blue-200:oklch(88.2% .059 254.128);--color-blue-300:oklch(80.9% .105 251.813);--color-blue-400:oklch(70.7% .165 254.624);--color-blue-500:oklch(62.3% .214 259.815);--color-blue-600:oklch(54.6% .245 262.881);--color-blue-700:oklch(48.8% .243 264.376);--color-blue-800:oklch(42.4% .199 265.638);--color-blue-900:oklch(37.9% .146 265.522);--color-blue-950:oklch(28.2% .091 267.935);--color-indigo-50:oklch(96.2% .018 272.314);--color-indigo-100:oklch(93% .034 272.788);--color-indigo-200:oklch(87% .065 274.039);--color-indigo-300:oklch(78.5% .115 274.713);--color-indigo-400:oklch(67.3% .182 276.935);--color-indigo-500:oklch(58.5% .233 277.117);--color-indigo-600:oklch(51.1% .262 276.966);--color-indigo-700:oklch(45.7% .24 277.023);--color-indigo-800:oklch(39.8% .195 277.366);--color-indigo-900:oklch(35.9% .144 278.697);--color-indigo-950:oklch(25.7% .09 281.288);--color-violet-50:oklch(96.9% .016 293.756);--color-violet-100:oklch(94.3% .029 294.588);--color-violet-200:oklch(89.4% .057 293.283);--color-violet-300:oklch(81.1% .111 293.571);--color-violet-400:oklch(70.2% .183 293.541);--color-violet-500:oklch(60.6% .25 292.717);--color-violet-600:oklch(54.1% .281 293.009);--color-violet-700:oklch(49.1% .27 292.581);--color-violet-800:oklch(43.2% .232 292.759);--color-violet-900:oklch(38% .189 293.745);--color-violet-950:oklch(28.3% .141 291.089);--color-purple-50:oklch(97.7% .014 308.299);--color-purple-100:oklch(94.6% .033 307.174);--color-purple-200:oklch(90.2% .063 306.703);--color-purple-300:oklch(82.7% .119 306.383);--color-purple-400:oklch(71.4% .203 305.504);--color-purple-500:oklch(62.7% .265 303.9);--color-purple-600:oklch(55.8% .288 302.321);--color-purple-700:oklch(49.6% .265 301.924);--color-purple-800:oklch(43.8% .218 303.724);--color-purple-900:oklch(38.1% .176 304.987);--color-purple-950:oklch(29.1% .149 302.717);--color-fuchsia-50:oklch(97.7% .017 320.058);--color-fuchsia-100:oklch(95.2% .037 318.852);--color-fuchsia-200:oklch(90.3% .076 319.62);--color-fuchsia-300:oklch(83.3% .145 321.434);--color-fuchsia-400:oklch(74% .238 322.16);--color-fuchsia-500:oklch(66.7% .295 322.15);--color-fuchsia-600:oklch(59.1% .293 322.896);--color-fuchsia-700:oklch(51.8% .253 323.949);--color-fuchsia-800:oklch(45.2% .211 324.591);--color-fuchsia-900:oklch(40.1% .17 325.612);--color-fuchsia-950:oklch(29.3% .136 325.661);--color-pink-50:oklch(97.1% .014 343.198);--color-pink-100:oklch(94.8% .028 342.258);--color-pink-200:oklch(89.9% .061 343.231);--color-pink-300:oklch(82.3% .12 346.018);--color-pink-400:oklch(71.8% .202 349.761);--color-pink-500:oklch(65.6% .241 354.308);--color-pink-600:oklch(59.2% .249 .584);--color-pink-700:oklch(52.5% .223 3.958);--color-pink-800:oklch(45.9% .187 3.815);--color-pink-900:oklch(40.8% .153 2.432);--color-pink-950:oklch(28.4% .109 3.907);--color-rose-50:oklch(96.9% .015 12.422);--color-rose-100:oklch(94.1% .03 12.58);--color-rose-200:oklch(89.2% .058 10.001);--color-rose-300:oklch(81% .117 11.638);--color-rose-400:oklch(71.2% .194 13.428);--color-rose-500:oklch(64.5% .246 16.439);--color-rose-600:oklch(58.6% .253 17.585);--color-rose-700:oklch(51.4% .222 16.935);--color-rose-800:oklch(45.5% .188 13.697);--color-rose-900:oklch(41% .159 10.272);--color-rose-950:oklch(27.1% .105 12.094);--color-slate-50:oklch(98.4% .003 247.858);--color-slate-100:oklch(96.8% .007 247.896);--color-slate-200:oklch(92.9% .013 255.508);--color-slate-300:oklch(86.9% .022 252.894);--color-slate-400:oklch(70.4% .04 256.788);--color-slate-500:oklch(55.4% .046 257.417);--color-slate-600:oklch(44.6% .043 257.281);--color-slate-700:oklch(37.2% .044 257.287);--color-slate-800:oklch(27.9% .041 260.031);--color-slate-900:oklch(20.8% .042 265.755);--color-slate-950:oklch(12.9% .042 264.695);--color-gray-50:oklch(98.5% .002 247.839);--color-gray-100:oklch(96.7% .003 264.542);--color-gray-200:oklch(92.8% .006 264.531);--color-gray-300:oklch(87.2% .01 258.338);--color-gray-400:oklch(70.7% .022 261.325);--color-gray-500:oklch(55.1% .027 264.364);--color-gray-600:oklch(44.6% .03 256.802);--color-gray-700:oklch(37.3% .034 259.733);--color-gray-800:oklch(27.8% .033 256.848);--color-gray-900:oklch(21% .034 264.665);--color-gray-950:oklch(13% .028 261.692);--color-zinc-50:oklch(98.5% 0 0);--color-zinc-100:oklch(96.7% .001 286.375);--color-zinc-200:oklch(92% .004 286.32);--color-zinc-300:oklch(87.1% .006 286.286);--color-zinc-400:oklch(70.5% .015 286.067);--color-zinc-500:oklch(55.2% .016 285.938);--color-zinc-600:oklch(44.2% .017 285.786);--color-zinc-700:oklch(37% .013 285.805);--color-zinc-800:oklch(27.4% .006 286.033);--color-zinc-900:oklch(21% .006 285.885);--color-zinc-950:oklch(14.1% .005 285.823);--color-neutral-50:oklch(98.5% 0 0);--color-neutral-100:oklch(97% 0 0);--color-neutral-200:oklch(92.2% 0 0);--color-neutral-300:oklch(87% 0 0);--color-neutral-400:oklch(70.8% 0 0);--color-neutral-500:oklch(55.6% 0 0);--color-neutral-600:oklch(43.9% 0 0);--color-neutral-700:oklch(37.1% 0 0);--color-neutral-800:oklch(26.9% 0 0);--color-neutral-900:oklch(20.5% 0 0);--color-neutral-950:oklch(14.5% 0 0);--color-stone-50:oklch(98.5% .001 106.423);--color-stone-100:oklch(97% .001 106.424);--color-stone-200:oklch(92.3% .003 48.717);--color-stone-300:oklch(86.9% .005 56.366);--color-stone-400:oklch(70.9% .01 56.259);--color-stone-500:oklch(55.3% .013 58.071);--color-stone-600:oklch(44.4% .011 73.639);--color-stone-700:oklch(37.4% .01 67.558);--color-stone-800:oklch(26.8% .007 34.298);--color-stone-900:oklch(21.6% .006 56.043);--color-stone-950:oklch(14.7% .004 49.25);--color-black:#000;--color-white:#fff;--spacing:.25rem;--breakpoint-sm:40rem;--breakpoint-md:48rem;--breakpoint-lg:64rem;--breakpoint-xl:80rem;--breakpoint-2xl:96rem;--container-3xs:16rem;--container-2xs:18rem;--container-xs:20rem;--container-sm:24rem;--container-md:28rem;--container-lg:32rem;--container-xl:36rem;--container-2xl:42rem;--container-3xl:48rem;--container-4xl:56rem;--container-5xl:64rem;--container-6xl:72rem;--container-7xl:80rem;--text-xs:.75rem;--text-xs--line-height:calc(1 / .75);--text-sm:.875rem;--text-sm--line-height:calc(1.25 / .875);--text-base:1rem;--text-base--line-height: 1.5 ;--text-lg:1.125rem;--text-lg--line-height:calc(1.75 / 1.125);--text-xl:1.25rem;--text-xl--line-height:calc(1.75 / 1.25);--text-2xl:1.5rem;--text-2xl--line-height:calc(2 / 1.5);--text-3xl:1.875rem;--text-3xl--line-height: 1.2 ;--text-4xl:2.25rem;--text-4xl--line-height:calc(2.5 / 2.25);--text-5xl:3rem;--text-5xl--line-height:1;--text-6xl:3.75rem;--text-6xl--line-height:1;--text-7xl:4.5rem;--text-7xl--line-height:1;--text-8xl:6rem;--text-8xl--line-height:1;--text-9xl:8rem;--text-9xl--line-height:1;--font-weight-thin:100;--font-weight-extralight:200;--font-weight-light:300;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--font-weight-extrabold:800;--font-weight-black:900;--tracking-tighter:-.05em;--tracking-tight:-.025em;--tracking-normal:0em;--tracking-wide:.025em;--tracking-wider:.05em;--tracking-widest:.1em;--leading-tight:1.25;--leading-snug:1.375;--leading-normal:1.5;--leading-relaxed:1.625;--leading-loose:2;--radius-xs:.125rem;--radius-sm:.25rem;--radius-md:.375rem;--radius-lg:.5rem;--radius-xl:.75rem;--radius-2xl:1rem;--radius-3xl:1.5rem;--radius-4xl:2rem;--shadow-2xs:0 1px #0000000d;--shadow-xs:0 1px 2px 0 #0000000d;--shadow-sm:0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;--shadow-md:0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a;--shadow-lg:0 10px 15px -3px #0000001a, 0 4px 6px -4px #0000001a;--shadow-xl:0 20px 25px -5px #0000001a, 0 8px 10px -6px #0000001a;--shadow-2xl:0 25px 50px -12px #00000040;--inset-shadow-2xs:inset 0 1px #0000000d;--inset-shadow-xs:inset 0 1px 1px #0000000d;--inset-shadow-sm:inset 0 2px 4px #0000000d;--drop-shadow-xs:0 1px 1px #0000000d;--drop-shadow-sm:0 1px 2px #00000026;--drop-shadow-md:0 3px 3px #0000001f;--drop-shadow-lg:0 4px 4px #00000026;--drop-shadow-xl:0 9px 7px #0000001a;--drop-shadow-2xl:0 25px 25px #00000026;--ease-in:cubic-bezier(.4, 0, 1, 1);--ease-out:cubic-bezier(0, 0, .2, 1);--ease-in-out:cubic-bezier(.4, 0, .2, 1);--animate-spin:spin 1s linear infinite;--animate-ping:ping 1s cubic-bezier(0, 0, .2, 1) infinite;--animate-pulse:pulse 2s cubic-bezier(.4, 0, .6, 1) infinite;--animate-bounce:bounce 1s infinite;--blur-xs:4px;--blur-sm:8px;--blur-md:12px;--blur-lg:16px;--blur-xl:24px;--blur-2xl:40px;--blur-3xl:64px;--perspective-dramatic:100px;--perspective-near:300px;--perspective-normal:500px;--perspective-midrange:800px;--perspective-distant:1200px;--aspect-video:16 / 9;--default-transition-duration:.15s;--default-transition-timing-function:cubic-bezier(.4, 0, .2, 1);--default-font-family:var(--font-sans);--default-mono-font-family:var(--font-mono)}}@layer base{*,:after,:before,::backdrop{box-sizing:border-box;border:0 solid;margin:0;padding:0}::file-selector-button{box-sizing:border-box;border:0 solid;margin:0;padding:0}html,:host{-webkit-text-size-adjust:100%;tab-size:4;line-height:1.5;font-family:var(--default-font-family,ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");font-feature-settings:var(--default-font-feature-settings,normal);font-variation-settings:var(--default-font-variation-settings,normal);-webkit-tap-highlight-color:transparent}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;-webkit-text-decoration:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,samp,pre{font-family:var(--default-mono-font-family,ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);font-feature-settings:var(--default-mono-font-feature-settings,normal);font-variation-settings:var(--default-mono-font-variation-settings,normal);font-size:1em}small{font-size:80%}sub,sup{vertical-align:baseline;font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}:-moz-focusring{outline:auto}progress{vertical-align:baseline}summary{display:list-item}ol,ul,menu{list-style:none}img,svg,video,canvas,audio,iframe,embed,object{vertical-align:middle;display:block}img,video{max-width:100%;height:auto}button,input,select,optgroup,textarea{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}::file-selector-button{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}:where(select:is([multiple],[size])) optgroup{font-weight:bolder}:where(select:is([multiple],[size])) optgroup option{padding-inline-start:20px}::file-selector-button{margin-inline-end:4px}::placeholder{opacity:1}@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){::placeholder{color:currentColor}@supports (color:color-mix(in lab,red,red)){::placeholder{color:color-mix(in oklab,currentcolor 50%,transparent)}}}textarea{resize:vertical}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-date-and-time-value{min-height:1lh;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-datetime-edit{padding-block:0}::-webkit-datetime-edit-year-field{padding-block:0}::-webkit-datetime-edit-month-field{padding-block:0}::-webkit-datetime-edit-day-field{padding-block:0}::-webkit-datetime-edit-hour-field{padding-block:0}::-webkit-datetime-edit-minute-field{padding-block:0}::-webkit-datetime-edit-second-field{padding-block:0}::-webkit-datetime-edit-millisecond-field{padding-block:0}::-webkit-datetime-edit-meridiem-field{padding-block:0}::-webkit-calendar-picker-indicator{line-height:1}:-moz-ui-invalid{box-shadow:none}button,input:where([type=button],[type=reset],[type=submit]){appearance:button}::file-selector-button{appearance:button}::-webkit-inner-spin-button{height:auto}::-webkit-outer-spin-button{height:auto}[hidden]:where(:not([hidden=until-found])){display:none!important}}@layer components;@layer utilities{.absolute{position:absolute}.relative{position:relative}.static{position:static}.inset-0{inset:calc(var(--spacing) * 0)}.start{inset-inline-start:var(--spacing)}.ms-1{margin-inline-start:calc(var(--spacing) * 1)}.-mt-\[6\.6rem\]{margin-top:-6.6rem}.-mb-px{margin-bottom:-1px}.mb-1{margin-bottom:calc(var(--spacing) * 1)}.mb-2{margin-bottom:calc(var(--spacing) * 2)}.mb-4{margin-bottom:calc(var(--spacing) * 4)}.mb-6{margin-bottom:calc(var(--spacing) * 6)}.-ml-8{margin-left:calc(var(--spacing) * -8)}.contents{display:contents}.flex{display:flex}.hidden{display:none}.inline-block{display:inline-block}.inline-flex{display:inline-flex}.table{display:table}.aspect-\[335\/364\]{aspect-ratio:335/364}.h-1{height:calc(var(--spacing) * 1)}.h-1\.5{height:calc(var(--spacing) * 1.5)}.h-2{height:calc(var(--spacing) * 2)}.h-2\.5{height:calc(var(--spacing) * 2.5)}.h-3{height:calc(var(--spacing) * 3)}.h-3\.5{height:calc(var(--spacing) * 3.5)}.h-14{height:calc(var(--spacing) * 14)}.h-14\.5{height:calc(var(--spacing) * 14.5)}.min-h-screen{min-height:100vh}.w-1{width:calc(var(--spacing) * 1)}.w-1\.5{width:calc(var(--spacing) * 1.5)}.w-2{width:calc(var(--spacing) * 2)}.w-2\.5{width:calc(var(--spacing) * 2.5)}.w-3{width:calc(var(--spacing) * 3)}.w-3\.5{width:calc(var(--spacing) * 3.5)}.w-\[438px\]{width:438px}.w-full{width:100%}.max-w-\[335px\]{max-width:335px}.max-w-none{max-width:none}.flex-1{flex:1}.shrink-0{flex-shrink:0}.translate-y-0{--tw-translate-y:calc(var(--spacing) * 0);translate:var(--tw-translate-x) var(--tw-translate-y)}.transform{transform:var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,)}.flex-col{flex-direction:column}.flex-col-reverse{flex-direction:column-reverse}.items-center{align-items:center}.justify-center{justify-content:center}.justify-end{justify-content:flex-end}.gap-3{gap:calc(var(--spacing) * 3)}.gap-4{gap:calc(var(--spacing) * 4)}:where(.space-x-1>:not(:last-child)){--tw-space-x-reverse:0;margin-inline-start:calc(calc(var(--spacing) * 1) * var(--tw-space-x-reverse));margin-inline-end:calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-x-reverse)))}.overflow-hidden{overflow:hidden}.rounded-full{border-radius:3.40282e38px}.rounded-sm{border-radius:var(--radius-sm)}.rounded-ee-lg{border-end-end-radius:var(--radius-lg)}.rounded-es-lg{border-end-start-radius:var(--radius-lg)}.rounded-t-lg{border-top-left-radius:var(--radius-lg);border-top-right-radius:var(--radius-lg)}.rounded-br-lg{border-bottom-right-radius:var(--radius-lg)}.rounded-bl-lg{border-bottom-left-radius:var(--radius-lg)}.border{border-style:var(--tw-border-style);border-width:1px}.border-\[\#19140035\]{border-color:#19140035}.border-\[\#e3e3e0\]{border-color:#e3e3e0}.border-black{border-color:var(--color-black)}.border-transparent{border-color:#0000}.bg-\[\#1b1b18\]{background-color:#1b1b18}.bg-\[\#FDFDFC\]{background-color:#fdfdfc}.bg-\[\#dbdbd7\]{background-color:#dbdbd7}.bg-\[\#fff2f2\]{background-color:#fff2f2}.bg-white{background-color:var(--color-white)}.p-6{padding:calc(var(--spacing) * 6)}.px-5{padding-inline:calc(var(--spacing) * 5)}.py-1{padding-block:calc(var(--spacing) * 1)}.py-1\.5{padding-block:calc(var(--spacing) * 1.5)}.py-2{padding-block:calc(var(--spacing) * 2)}.pb-12{padding-bottom:calc(var(--spacing) * 12)}.text-sm{font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}.text-\[13px\]{font-size:13px}.leading-\[20px\]{--tw-leading:20px;line-height:20px}.leading-normal{--tw-leading:var(--leading-normal);line-height:var(--leading-normal)}.font-medium{--tw-font-weight:var(--font-weight-medium);font-weight:var(--font-weight-medium)}.text-\[\#1B1B18\],.text-\[\#1b1b18\]{color:#1b1b18}.text-\[\#706f6c\]{color:#706f6c}.text-\[\#F3BEC7\]{color:#f3bec7}.text-\[\#F8B803\]{color:#f8b803}.text-\[\#F53003\],.text-\[\#f53003\]{color:#f53003}.text-white{color:var(--color-white)}.underline{text-decoration-line:underline}.underline-offset-4{text-underline-offset:4px}.opacity-100{opacity:1}.mix-blend-color{mix-blend-mode:color}.mix-blend-darken{mix-blend-mode:darken}.mix-blend-hard-light{mix-blend-mode:hard-light}.mix-blend-multiply{mix-blend-mode:multiply}.shadow-\[0px_0px_1px_0px_rgba\(0\,0\,0\,0\.03\)\,0px_1px_2px_0px_rgba\(0\,0\,0\,0\.06\)\]{--tw-shadow:0px 0px 1px 0px var(--tw-shadow-color,#00000008), 0px 1px 2px 0px var(--tw-shadow-color,#0000000f);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.shadow-\[inset_0px_0px_0px_1px_rgba\(26\,26\,0\,0\.16\)\]{--tw-shadow:inset 0px 0px 0px 1px var(--tw-shadow-color,#1a1a0029);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.filter{filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}.transition-all{transition-property:all;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.transition-opacity{transition-property:opacity;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.delay-300{transition-delay:.3s}.delay-400{transition-delay:.4s}.duration-750{--tw-duration:.75s;transition-duration:.75s}.\[--stroke-color\:\#1B1B18\]{--stroke-color:#1b1b18}.not-has-\[nav\]\:hidden:not(:has(:is(nav))){display:none}.before\:absolute:before{content:var(--tw-content);position:absolute}.before\:start-\[0\.4rem\]:before{content:var(--tw-content);inset-inline-start:.4rem}.before\:top-0:before{content:var(--tw-content);top:calc(var(--spacing) * 0)}.before\:top-1\/2:before{content:var(--tw-content);top:50%}.before\:bottom-0:before{content:var(--tw-content);bottom:calc(var(--spacing) * 0)}.before\:bottom-1\/2:before{content:var(--tw-content);bottom:50%}.before\:left-\[0\.4rem\]:before{content:var(--tw-content);left:.4rem}.before\:border-l:before{content:var(--tw-content);border-left-style:var(--tw-border-style);border-left-width:1px}.before\:border-\[\#e3e3e0\]:before{content:var(--tw-content);border-color:#e3e3e0}@media(hover:hover){.hover\:border-\[\#1915014a\]:hover{border-color:#1915014a}.hover\:border-\[\#19140035\]:hover{border-color:#19140035}.hover\:border-black:hover{border-color:var(--color-black)}.hover\:bg-black:hover{background-color:var(--color-black)}}@media(min-width:64rem){.lg\:mb-0{margin-bottom:calc(var(--spacing) * 0)}.lg\:mb-6{margin-bottom:calc(var(--spacing) * 6)}.lg\:-ml-px{margin-left:-1px}.lg\:ml-0{margin-left:calc(var(--spacing) * 0)}.lg\:block{display:block}.lg\:aspect-auto{aspect-ratio:auto}.lg\:w-\[438px\]{width:438px}.lg\:max-w-4xl{max-width:var(--container-4xl)}.lg\:grow{flex-grow:1}.lg\:flex-row{flex-direction:row}.lg\:justify-center{justify-content:center}.lg\:rounded-ss-lg{border-start-start-radius:var(--radius-lg)}.lg\:rounded-ee-none{border-end-end-radius:0}.lg\:rounded-t-none{border-top-left-radius:0;border-top-right-radius:0}.lg\:rounded-r-lg{border-top-right-radius:var(--radius-lg);border-bottom-right-radius:var(--radius-lg)}.lg\:p-8{padding:calc(var(--spacing) * 8)}.lg\:p-20{padding:calc(var(--spacing) * 20)}}@media(prefers-color-scheme:dark){.dark\:border-\[\#3E3E3A\]{border-color:#3e3e3a}.dark\:border-\[\#eeeeec\]{border-color:#eeeeec}.dark\:bg-\[\#0a0a0a\]{background-color:#0a0a0a}.dark\:bg-\[\#1D0002\]{background-color:#1d0002}.dark\:bg-\[\#3E3E3A\]{background-color:#3e3e3a}.dark\:bg-\[\#161615\]{background-color:#161615}.dark\:bg-\[\#eeeeec\]{background-color:#eeeeec}.dark\:text-\[\#1C1C1A\]{color:#1c1c1a}.dark\:text-\[\#4B0600\]{color:#4b0600}.dark\:text-\[\#391800\]{color:#391800}.dark\:text-\[\#733000\]{color:#733000}.dark\:text-\[\#A1A09A\]{color:#a1a09a}.dark\:text-\[\#EDEDEC\]{color:#ededec}.dark\:text-\[\#F61500\]{color:#f61500}.dark\:text-\[\#FF4433\]{color:#f43}.dark\:text-black{color:var(--color-black)}.dark\:mix-blend-hard-light{mix-blend-mode:hard-light}.dark\:mix-blend-normal{mix-blend-mode:normal}.dark\:shadow-\[inset_0px_0px_0px_1px_\#fffaed2d\]{--tw-shadow:inset 0px 0px 0px 1px var(--tw-shadow-color,#fffaed2d);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.dark\:\[--stroke-color\:\#FF750F\]{--stroke-color:#ff750f}.dark\:before\:border-\[\#3E3E3A\]:before{content:var(--tw-content);border-color:#3e3e3a}@media(hover:hover){.dark\:hover\:border-\[\#3E3E3A\]:hover{border-color:#3e3e3a}.dark\:hover\:border-\[\#62605b\]:hover{border-color:#62605b}.dark\:hover\:border-white:hover{border-color:var(--color-white)}.dark\:hover\:bg-white:hover{background-color:var(--color-white)}}}@starting-style{.starting\:opacity-0{opacity:0}}@media(prefers-reduced-motion:no-preference){@starting-style{.motion-safe\:starting\:-translate-x-\[26px\]{--tw-translate-x: -26px ;translate:var(--tw-translate-x) var(--tw-translate-y)}}@starting-style{.motion-safe\:starting\:-translate-x-\[51px\]{--tw-translate-x: -51px ;translate:var(--tw-translate-x) var(--tw-translate-y)}}@starting-style{.motion-safe\:starting\:-translate-x-\[78px\]{--tw-translate-x: -78px ;translate:var(--tw-translate-x) var(--tw-translate-y)}}@starting-style{.motion-safe\:starting\:-translate-x-\[102px\]{--tw-translate-x: -102px ;translate:var(--tw-translate-x) var(--tw-translate-y)}}@starting-style{.motion-safe\:starting\:translate-y-6{--tw-translate-y:calc(var(--spacing) * 6);translate:var(--tw-translate-x) var(--tw-translate-y)}}}}@property --tw-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-translate-z{syntax:"*";inherits:false;initial-value:0}@property --tw-rotate-x{syntax:"*";inherits:false}@property --tw-rotate-y{syntax:"*";inherits:false}@property --tw-rotate-z{syntax:"*";inherits:false}@property --tw-skew-x{syntax:"*";inherits:false}@property --tw-skew-y{syntax:"*";inherits:false}@property --tw-space-x-reverse{syntax:"*";inherits:false;initial-value:0}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-leading{syntax:"*";inherits:false}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:"<length>";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-blur{syntax:"*";inherits:false}@property --tw-brightness{syntax:"*";inherits:false}@property --tw-contrast{syntax:"*";inherits:false}@property --tw-grayscale{syntax:"*";inherits:false}@property --tw-hue-rotate{syntax:"*";inherits:false}@property --tw-invert{syntax:"*";inherits:false}@property --tw-opacity{syntax:"*";inherits:false}@property --tw-saturate{syntax:"*";inherits:false}@property --tw-sepia{syntax:"*";inherits:false}@property --tw-drop-shadow{syntax:"*";inherits:false}@property --tw-drop-shadow-color{syntax:"*";inherits:false}@property --tw-drop-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-drop-shadow-size{syntax:"*";inherits:false}@property --tw-duration{syntax:"*";inherits:false}@property --tw-content{syntax:"*";inherits:false;initial-value:""}@keyframes spin{to{transform:rotate(360deg)}}@keyframes ping{75%,to{opacity:0;transform:scale(2)}}@keyframes pulse{50%{opacity:.5}}@keyframes bounce{0%,to{animation-timing-function:cubic-bezier(.8,0,1,1);transform:translateY(-25%)}50%{animation-timing-function:cubic-bezier(0,0,.2,1);transform:none}}
-        </style>
-        <style>
-            .btn-welcome-patient {
-                display: inline-flex;
-                align-items: center;
-                gap: 7px;
-                padding: 6px 16px;
-                font-size: 13px;
-                font-weight: 600;
-                color: #ffffff !important;
-                background-color: #0162e8 !important;
-                border: 1px solid #0162e8 !important;
-                border-radius: 20px !important;
-                box-shadow: 0 2px 8px rgba(1, 98, 232, 0.35);
-                text-decoration: none !important;
-                transition: all 0.2s ease-in-out;
-                cursor: pointer;
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        aura: {
+                            navy: '#084c61',
+                            teal: '#0a546e',
+                            cyan: '#0284c7',
+                            light: '#e0f2fe'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['{{ $isRtl ? "Tajawal" : "Plus Jakarta Sans" }}', 'sans-serif'],
+                    }
+                }
             }
-            .btn-welcome-patient:hover {
-                background-color: #0150bf !important;
-                border-color: #0150bf !important;
-                box-shadow: 0 4px 14px rgba(1, 98, 232, 0.5);
-                transform: translateY(-1px);
-                color: #ffffff !important;
-                text-decoration: none !important;
-            }
-            .btn-welcome-patient:active {
-                transform: translateY(0);
-            }
-            .btn-welcome-login {
-                display: inline-flex;
-                align-items: center;
-                padding: 6px 16px;
-                font-size: 13px;
-                font-weight: 600;
-                color: #141c2b !important;
-                background-color: #ffffff !important;
-                border: 1px solid #e2e8f0 !important;
-                border-radius: 20px !important;
-                text-decoration: none !important;
-                transition: all 0.2s ease;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-            }
-            .btn-welcome-login:hover {
-                border-color: #0162e8 !important;
-                color: #0162e8 !important;
-                text-decoration: none !important;
-            }
-        </style>
-    </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-        @include('partials.global-loader')
-        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
-            @if (Route::has('login'))
-                <nav class="flex items-center justify-end gap-3">
-                    <x-language-switcher />
-                    @auth
-                        <a
-                            href="{{ route('dashboard') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
-                        >
-                            Dashboard
+        }
+    </script>
+
+    <!-- Custom Modern Healthcare Stylesheet -->
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+
+    <!-- Custom JavaScript with Loop Carousel -->
+    <script src="{{ asset('js/home.js') }}"></script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+        body {
+            font-family: '{{ $isRtl ? "Tajawal" : "Plus Jakarta Sans" }}', sans-serif;
+            background-color: #fbfcfd;
+        }
+    </style>
+</head>
+<body class="selection:bg-sky-600 selection:text-white text-slate-800">
+
+    <!-- Reading / Scroll Progress Bar -->
+    <div id="scroll-progress-bar" class="scroll-progress-bar"></div>
+
+    @include('partials.global-loader')
+
+    <!-- Sticky Header & Navbar -->
+    <x-public-header />
+
+    <!-- =========================================================================
+         1. HERO SECTION (#hero)
+         ========================================================================= -->
+    <section id="hero" class="relative pt-8 pb-16 lg:pt-14 lg:pb-24 overflow-hidden bg-gradient-to-b from-sky-50/40 via-white to-slate-50/50">
+        <!-- Ambient Background Glows with Smooth Drift Animation -->
+        <div class="ambient-blob-1 absolute top-8 end-8 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="ambient-blob-2 absolute bottom-8 start-8 w-96 h-96 bg-cyan-100/40 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+
+                <!-- Right Column: Texts, CTAs, 4-Card Stats (RTL) -->
+                <div class="lg:col-span-7 text-center lg:text-start reveal reveal-delay-1">
+
+                    <!-- Pill Badge -->
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-100/80 text-sky-800 text-xs font-bold mb-6 border border-sky-200/90 shadow-sm">
+                        <i class="fas fa-shield-heart text-sky-600 text-xs"></i>
+                        <span>{{ $isRtl ? 'نحو مستقبل متطور للرعاية الطبية' : 'Pioneering Modern Healthcare' }}</span>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.3] mb-6">
+                        @if ($isRtl)
+                            رعاية طبية فائقة تضع <span class="text-sky-500">صحتك وصحة</span><br>
+                            <span class="text-sky-500">عائلتك</span> أولاً
+                        @else
+                            Premier Medical Care Putting <span class="text-sky-500">Your Health</span><br>
+                            and <span class="text-sky-500">Family</span> First
+                        @endif
+                    </h1>
+
+                    <!-- Subtitle Description -->
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8">
+                        {{ $isRtl 
+                            ? 'مستشفى أورا يقدم أحدث التقنيات الجراحية والتشخيصية بكوادر طبية استشارية متمرسة وخدمة طوارئ 24/7 مستعدة دوماً لضمان أعلى معايير بيئة استشفائية آمنة.' 
+                            : 'Aura Hospital offers surgical and diagnostic innovations backed by senior consultants and 24/7 emergency preparedness for the highest quality of patient care.' }}
+                    </p>
+
+                    <!-- CTA Buttons & Hotline -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-10">
+                        <a href="{{ route('register') }}" class="btn-shimmer btn-ripple inline-flex items-center gap-2.5 bg-[#084c61] hover:bg-[#063b4c] text-white px-7 py-3 rounded-xl font-bold text-sm shadow-md shadow-[#084c61]/20 transition transform hover:-translate-y-0.5">
+                            <span>{{ $isRtl ? 'احجز موعدك الآن' : 'Book Appointment' }}</span>
+                            <i class="fas fa-calendar-check text-sm"></i>
                         </a>
-                    @else
-                    @if (Route::has('login'))
-                        <a
-                            href="{{ route('choose-role') }}"
-                            class="btn-welcome-login"
-                            style="display: inline-flex; align-items: center; padding: 6px 16px; font-size: 13px; font-weight: 600; color: #141c2b; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.07);"
-                        >
-                            {{ __('auth.login') }}
-                        </a>
-                    @endif
 
-                    @if (Route::has('register'))
-                        <a
-                            href="{{ route('register') }}"
-                            class="btn-welcome-patient"
-                            id="btn-welcome-patient-register"
-                            style="display: inline-flex; align-items: center; gap: 7px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: #ffffff; background-color: #0162e8; border: 1px solid #0162e8; border-radius: 20px; text-decoration: none; box-shadow: 0 2px 8px rgba(1, 98, 232, 0.35);"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                                <line x1="19" y1="8" x2="19" y2="14"/>
-                                <line x1="22" y1="11" x2="16" y2="11"/>
-                            </svg>
-                            <span>{{ app()->getLocale() == 'ar' ? 'إنشاء حساب مريض' : 'Patient Registration' }}</span>
+                        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $emergencyPhone) }}" class="btn-shimmer btn-ripple inline-flex items-center gap-2 bg-[#dc2626] hover:bg-[#b91c1c] text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-rose-600/20 transition transform hover:-translate-y-0.5">
+                            <i class="fas fa-phone-volume text-sm"></i>
+                            <span>{{ $isRtl ? 'استشارة عاجلة' : 'Emergency Consultation' }}</span>
                         </a>
-                    @endif
 
-                    @endauth
-                </nav>
-            @endif
-        </header>
-        <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
-            <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
-                <div class="text-[13px] leading-[20px] flex-1 p-6 pb-12 lg:p-20 bg-white dark:bg-[#161615] dark:text-[#EDEDEC] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d] rounded-es-lg rounded-ee-lg lg:rounded-ss-lg lg:rounded-ee-none">
-                    <h1 class="mb-1 font-medium">Let's get started</h1>
-                    <p class="mb-2 text-[#706f6c] dark:text-[#A1A09A]">Laravel has an incredibly rich ecosystem. <br>We suggest starting with the following.</p>
-                    <ul class="flex flex-col mb-4 lg:mb-6">
-                        <li class="flex items-center gap-4 py-2 relative before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A] before:top-1/2 before:bottom-0 before:left-[0.4rem] before:absolute">
-                            <span class="relative py-1 bg-white dark:bg-[#161615]">
-                                <span class="flex items-center justify-center rounded-full bg-[#FDFDFC] dark:bg-[#161615] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-[#3E3E3A] border-[#e3e3e0]">
-                                    <span class="rounded-full bg-[#dbdbd7] dark:bg-[#3E3E3A] w-1.5 h-1.5"></span>
+                        <div class="inline-flex items-center gap-2 text-slate-500 text-xs font-bold ps-2">
+                            <i class="fas fa-headset text-slate-400 text-sm"></i>
+                            <span>{{ $isRtl ? 'خط المساعدة المجاني:' : 'Toll-free Hotline:' }}</span>
+                            <span dir="ltr" class="font-extrabold text-slate-700">{{ $emergencyPhone }}</span>
+                        </div>
+                    </div>
+
+                    <!-- 4 Metric Stats Cards in a Row with Animated Counters -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-slate-200/80">
+                        <!-- Card 1 -->
+                        <div class="hover-lift bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-sm text-center">
+                            <div class="text-xl sm:text-2xl font-black text-[#084c61]" data-counter="99.8" data-suffix="%">99.8%</div>
+                            <div class="text-[11px] font-bold text-slate-500 mt-1">
+                                {{ $isRtl ? 'دقة تشخيصية رقمية' : 'Diagnostic Accuracy' }}
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="hover-lift bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-sm text-center">
+                            <div class="text-xl sm:text-2xl font-black text-[#084c61]" data-counter="120" data-prefix="+ ">+ 120</div>
+                            <div class="text-[11px] font-bold text-slate-500 mt-1">
+                                {{ $isRtl ? 'طبيب واستشاري دولي' : 'Senior Consultants' }}
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="hover-lift bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-sm text-center">
+                            <div class="text-xl sm:text-2xl font-black text-rose-600 inline-flex items-center justify-center gap-1.5">
+                                <span class="emergency-pulse-dot"></span>
+                                24/7
+                            </div>
+                            <div class="text-[11px] font-bold text-slate-500 mt-1">
+                                {{ $isRtl ? 'طوارئ وإنعاش فوري' : 'Emergency & Trauma' }}
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="hover-lift bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-sm text-center">
+                            <div class="text-xl sm:text-2xl font-black text-[#084c61]">1 : 1</div>
+                            <div class="text-[11px] font-bold text-slate-500 mt-1">
+                                {{ $isRtl ? 'رعاية تمريضية فردية' : 'Personal Nursing' }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Left Column: Visual OR Surgeons Image with Smooth Floating Badge -->
+                <div class="lg:col-span-5 relative reveal reveal-delay-2">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Image Container with White Border & Shadow -->
+                        <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900 group">
+                            <img
+                                src="{{ URL::asset('Dashboard/img/hero-surgeons.jpg') }}"
+                                alt="Aura Hospital Advanced Surgical Suite"
+                                class="w-full h-[400px] sm:h-[460px] object-cover group-hover:scale-105 transition-transform duration-700"
+                                loading="eager"
+                            >
+                        </div>
+
+                        <!-- Floating Card at Bottom (Gentle Animated Float) -->
+                        <div class="animate-float-gentle absolute -bottom-6 start-3 sm:-start-6 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-slate-100 max-w-[280px] z-20">
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                    <i class="fas fa-check-circle text-emerald-500"></i>
+                                    {{ $isRtl ? 'معتمد من وزارة الصحة' : 'MOH Certified' }}
                                 </span>
-                            </span>
-                            <span>
-                                Read the
-                                <a href="https://laravel.com/docs" target="_blank" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-[#f53003] dark:text-[#FF4433] ms-1">
-                                    <span>Documentation</span>
-                                    <svg
-                                        width="10"
-                                        height="11"
-                                        viewBox="0 0 10 11"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="w-2.5 h-2.5"
-                                    >
-                                        <path
-                                            d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001"
-                                            stroke="currentColor"
-                                            stroke-linecap="square"
-                                        />
-                                    </svg>
+                                <a href="{{ route('register') }}" class="btn-ripple bg-cyan-500 hover:bg-cyan-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full transition shadow-sm">
+                                    {{ $isRtl ? 'الحجز الفوري' : 'Instant' }}
                                 </a>
-                            </span>
-                        </li>
-                        <li class="flex items-center gap-4 py-2 relative before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A] before:bottom-1/2 before:top-0 before:start-[0.4rem] before:absolute">
-                            <span class="relative py-1 bg-white dark:bg-[#161615]">
-                                <span class="flex items-center justify-center rounded-full bg-[#FDFDFC] dark:bg-[#161615] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-[#3E3E3A] border-[#e3e3e0]">
-                                    <span class="rounded-full bg-[#dbdbd7] dark:bg-[#3E3E3A] w-1.5 h-1.5"></span>
+                            </div>
+                            <div class="text-xs font-bold text-slate-900 leading-snug">
+                                {{ $isRtl ? 'نتائج الفحوص والتشخيص المبكر' : 'Early Diagnostics & Test Results' }}
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">
+                                {{ $isRtl ? 'نظام سرعة بروتوكول متقدم لسلامة المرضى' : 'Advanced safety clinical protocols' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         2. QUICK SEARCH & APPOINTMENT SCHEDULING (FLOATING BANNER)
+         ========================================================================= -->
+    <section class="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 mb-20 reveal">
+        <div class="bg-white rounded-3xl shadow-xl border border-slate-200/80 p-6 sm:p-8 hover-lift">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-5 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="card-icon-box w-10 h-10 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold shadow-sm">
+                        <i class="fas fa-calendar-alt text-base"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                        {{ $isRtl ? 'البحث السريع وتحديد المواعيد' : 'Quick Search & Appointment Scheduling' }}
+                    </h3>
+                </div>
+                <p class="text-xs text-slate-500 font-medium">
+                    {{ $isRtl ? 'اختر التخصص والفرع وتاريخ الكشف للاطلاع على المواعيد المتاحة فورياً' : 'Select specialty, clinic, and date to check instant appointment availability' }}
+                </p>
+            </div>
+
+            <form action="{{ route('register') }}" method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end pt-5">
+                <!-- Specialty Dropdown -->
+                <div class="md:col-span-3">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                        {{ $isRtl ? 'التخصص الطبي المطلوب' : 'Required Medical Specialty' }}
+                    </label>
+                    <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 transition">
+                        <option value="">{{ $isRtl ? 'كافة التخصصات الطبية' : 'All Medical Specialties' }}</option>
+                        @foreach ($departments as $dept)
+                            <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Doctor or Clinic Name -->
+                <div class="md:col-span-4">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                        {{ $isRtl ? 'اسم الطبيب أو العيادة' : 'Doctor or Clinic Name' }}
+                    </label>
+                    <div class="relative">
+                        <i class="fas fa-search absolute inset-y-0 {{ $isRtl ? 'right-3' : 'left-3' }} flex items-center text-slate-400 text-xs pointer-events-none"></i>
+                        <input
+                            type="text"
+                            placeholder="{{ $isRtl ? 'ابحث باسم دكتور أو عيادة...' : 'Search by physician or clinic...' }}"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl {{ $isRtl ? 'pr-9 pl-3.5' : 'pl-9 pr-3.5' }} py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 transition"
+                        >
+                    </div>
+                </div>
+
+                <!-- Consultation Date -->
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                        {{ $isRtl ? 'تاريخ الكشف المناسب' : 'Preferred Date' }}
+                    </label>
+                    <input
+                        type="date"
+                        value="2026-05-22"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 transition"
+                    >
+                </div>
+
+                <!-- Submit Button -->
+                <div class="md:col-span-3">
+                    <button type="submit" class="btn-shimmer btn-ripple w-full bg-[#084c61] hover:bg-[#063b4c] text-white py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
+                        <i class="fas fa-search text-xs"></i>
+                        <span>{{ $isRtl ? 'استعراض المواعيد المتاحة' : 'View Available Appointments' }}</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Popular Quick Tags -->
+            <div class="flex flex-wrap items-center gap-2 pt-4 text-xs">
+                <span class="text-slate-400 font-bold text-[11px]">{{ $isRtl ? 'شائع الآن:' : 'Trending:' }}</span>
+                <a href="#departments" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold hover:bg-sky-50 hover:text-sky-600 transition">
+                    {{ $isRtl ? 'عيادة القلب' : 'Cardiology' }}
+                </a>
+                <a href="#departments" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold hover:bg-sky-50 hover:text-sky-600 transition">
+                    {{ $isRtl ? 'عظام وروماتيزم' : 'Orthopedics' }}
+                </a>
+                <a href="#departments" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold hover:bg-sky-50 hover:text-sky-600 transition">
+                    {{ $isRtl ? 'استشارات أسنان' : 'Dentistry' }}
+                </a>
+                <a href="#departments" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold hover:bg-sky-50 hover:text-sky-600 transition">
+                    {{ $isRtl ? 'طوارئ أطفال' : 'Pediatric ER' }}
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         3. ABOUT US SECTION (#about)
+         ========================================================================= -->
+    <section id="about" class="py-16 bg-slate-50/60 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+                <span class="text-sky-600 font-bold text-xs uppercase tracking-wider bg-sky-50 px-3.5 py-1 rounded-full">
+                    {{ $isRtl ? 'من نحن' : 'About Us' }}
+                </span>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-3 mb-3">
+                    {{ $isRtl ? 'ريادة طبية وتاريخ عريق من الثقة والإنسانية' : 'Medical Leadership & Dedicated Compassion' }}
+                </h2>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto">
+                    {{ $isRtl 
+                        ? 'في مستشفى أورا، نؤمن بأن الرعاية الصحية الحقيقية تبدأ من الاهتمام بأدق تفاصيل راحة المريض وسلامته بأحدث الوسائل التكنولوجية والكوادر الطبية المرموقة.' 
+                        : 'Committed to delivering evidence-based clinical excellence through cutting-edge technologies and compassionate patient care.' }}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Pillar 1 -->
+                <div class="hover-lift reveal reveal-delay-1 bg-white rounded-2xl p-7 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="card-icon-box w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fas fa-heart-circle-check"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 mb-2">
+                            {{ $isRtl ? 'رعاية فائقة تتمحور حول المريض' : 'Patient-Centric Care' }}
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            {{ $isRtl 
+                                ? 'سلامة المريض وخصوصيته أولويتنا القصوى، حيث نصمم خطط استشفاء فردية تراعي الاحتياجات الصحية والنفسية لكل مراجع.' 
+                                : 'Patient safety and comfort are paramount, driven by individualized recovery protocols and utmost privacy.' }}
+                        </p>
+                    </div>
+                    <div class="pt-5 mt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-bold text-sky-600">
+                        <i class="fas fa-check-circle text-xs"></i>
+                        <span>{{ $isRtl ? 'معايير جودة معتمدة دولياً' : 'JCI Standard Protocols' }}</span>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="hover-lift reveal reveal-delay-2 bg-white rounded-2xl p-7 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="card-icon-box w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 mb-2">
+                            {{ $isRtl ? 'تقنيات تشخيصية وجراحية روبوتية' : 'Precision & Robotic Surgery' }}
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            {{ $isRtl 
+                                ? 'أحدث أجهزة الرنين المغناطيسي 3T ومختبرات آلية وغرف عمليات رقمية تضمن دقة التشخيص وتسرع من وتيرة الشفاء.' 
+                                : '3T MRI, automated clinical laboratories, and robotic capsules delivering swift, definitive surgical precision.' }}
+                        </p>
+                    </div>
+                    <div class="pt-5 mt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-bold text-sky-600">
+                        <i class="fas fa-check-circle text-xs"></i>
+                        <span>{{ $isRtl ? 'تجهيزات رقمية بمعيار ألماني' : 'High Precision Diagnostics' }}</span>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="hover-lift reveal reveal-delay-3 bg-white rounded-2xl p-7 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="card-icon-box w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 mb-2">
+                            {{ $isRtl ? 'كوادر طبية معتمدة دولياً' : 'World-Class Medical Faculty' }}
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            {{ $isRtl 
+                                ? 'نخبة من الأطباء والاستشاريين الحاصلين على البورد الأمريكي والأوروبي لمتابعة أدق الحالات الجراحية والطبية.' 
+                                : 'Board-certified medical consultants bringing international clinical standards to every patient interaction.' }}
+                        </p>
+                    </div>
+                    <div class="pt-5 mt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-bold text-sky-600">
+                        <i class="fas fa-check-circle text-xs"></i>
+                        <span>{{ $isRtl ? 'أكثر من 120 استشاري' : 'Top Tier Consultants' }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         4. MEDICAL DEPARTMENTS & SPECIALIZED CENTERS (#departments - 3 Visible Cards with Continuous Loop)
+         ========================================================================= -->
+    <section
+        id="departments"
+        class="py-16 bg-white relative"
+        x-data="infiniteCarousel()"
+    >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Title Header with Navigation Buttons -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 reveal">
+                <div>
+                    <span class="text-sky-600 font-bold text-xs uppercase tracking-wider bg-sky-50 px-3.5 py-1 rounded-full">
+                        {{ $isRtl ? 'التميز الإكلينيكي' : 'Clinical Excellence' }}
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-3 mb-2">
+                        {{ $isRtl ? 'الأقسام الطبية والمراكز التخصصية' : 'Medical Departments & Specialized Centers' }}
+                    </h2>
+                    <p class="text-slate-600 text-xs sm:text-sm max-w-xl">
+                        {{ $isRtl ? 'مجمع أرقى الخدمات الطبية مع نخبة من الاستشاريين (3 في كل عرض) واستخدم الأسهم للتنقل المستمر.' : 'Comprehensive clinical departments (3 visible at a time) with continuous infinite loop.' }}
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- 3-Card Carousel Wrapper -->
+            <div class="slider-wrapper">
+                <!-- Floating Side Prev Button -->
+                <button
+                    type="button"
+                    @click="prev()"
+                    class="slider-side-btn btn-prev flex"
+                    aria-label="Previous"
+                >
+                    <i class="fas {{ $isRtl ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i>
+                </button>
+
+                <!-- Cards Slider Track inside Viewport -->
+                <div class="slider-viewport">
+                    <div x-ref="track" class="slider-track">
+
+                    <!-- 1. Cardiology & Vascular Surgery -->
+                    <div class="slider-card hover-lift bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
+                                    <i class="fas fa-heart-pulse"></i>
+                                </div>
+                                <span class="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+                                    {{ $isRtl ? 'طوارئ 24 ساعة' : '24/7 ER' }}
                                 </span>
-                            </span>
-                            <span>
-                                Watch video tutorials at
-                                <a href="https://laracasts.com" target="_blank" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-[#f53003] dark:text-[#FF4433] ms-1">
-                                    <span>Laracasts</span>
-                                    <svg
-                                        width="10"
-                                        height="11"
-                                        viewBox="0 0 10 11"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="w-2.5 h-2.5"
-                                    >
-                                        <path
-                                            d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001"
-                                            stroke="currentColor"
-                                            stroke-linecap="square"
-                                        />
-                                    </svg>
-                                </a>
-                            </span>
-                        </li>
-                    </ul>
-                    <ul class="flex gap-3 text-sm leading-normal">
-                        <li>
-                            <a href="https://cloud.laravel.com" target="_blank" class="inline-block dark:bg-[#eeeeec] dark:border-[#eeeeec] dark:text-[#1C1C1A] dark:hover:bg-white dark:hover:border-white hover:bg-black hover:border-black px-5 py-1.5 bg-[#1b1b18] rounded-sm border border-black text-white text-sm leading-normal">
-                                Deploy now
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-2">
+                                {{ $isRtl ? 'جراحة القلب والأوعية الدموية' : 'Cardiovascular Surgery' }}
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">
+                                {{ $isRtl 
+                                    ? 'خدمات قسطرة قلبية علاجية ثلاثية الأبعاد، جراحات القلب المفتوح المعقدة، وزراعة الشرايين التاجية بإشراف نخبة من كبار الجراحين.' 
+                                    : '3D catheterization interventions, complex open-heart surgeries, and coronary artery grafting directed by top surgeons.' }}
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+                            <span class="font-bold text-slate-600">{{ $isRtl ? '18 استشاري معتمد' : '18 Consultants' }}</span>
+                            <a href="{{ route('register') }}" class="text-sky-600 hover:text-sky-700 font-bold inline-flex items-center gap-1.5 transition">
+                                <span>{{ $isRtl ? 'عرض تفاصيل القسم' : 'View Details' }}</span>
+                                <i class="fas fa-arrow-left text-[10px]"></i>
                             </a>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+
+                    <!-- 2. Pediatrics & Neonatology -->
+                    <div class="slider-card hover-lift bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl">
+                                    <i class="fas fa-baby"></i>
+                                </div>
+                                <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-full">
+                                    {{ $isRtl ? 'أحدث التقنيات' : 'Modern NICU' }}
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-2">
+                                {{ $isRtl ? 'طب الأطفال وحديثي الولادة' : 'Pediatrics & Neonatology' }}
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">
+                                {{ $isRtl 
+                                    ? 'وحدة عناية مركزة متطورة للمبتسرين، عيادات تخصصية لأمراض المناعة، والنمو والتكامل، وإشراف متواصل على صحة وتغذية الطفل.' 
+                                    : 'Advanced neonatal intensive care units, pediatric immunology clinics, developmental tracking, and specialized childcare.' }}
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+                            <span class="font-bold text-slate-600">{{ $isRtl ? '16 استشاري أطفال' : '16 Pediatricians' }}</span>
+                            <a href="{{ route('register') }}" class="text-sky-600 hover:text-sky-700 font-bold inline-flex items-center gap-1.5 transition">
+                                <span>{{ $isRtl ? 'عرض تفاصيل القسم' : 'View Details' }}</span>
+                                <i class="fas fa-arrow-left text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 3. Orthopedics & Joint Surgery -->
+                    <div class="slider-card hover-lift bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
+                                    <i class="fas fa-bone"></i>
+                                </div>
+                                <span class="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full">
+                                    {{ $isRtl ? 'تدخل روبوتي' : 'Robotic Surgery' }}
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-2">
+                                {{ $isRtl ? 'جراحة العظام والمفاصل' : 'Orthopedic & Joint Surgery' }}
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">
+                                {{ $isRtl 
+                                    ? 'استبدال مفاصل الركبة والحوض بمساعدة الذراع الروبوتي المعقد، علاج العمود الفقري، ورعاية التأهيل الرياضي الحركي.' 
+                                    : 'Robotic-assisted knee and hip arthroplasty, spinal deformity corrective surgery, and sports rehabilitation medicine.' }}
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+                            <span class="font-bold text-slate-600">{{ $isRtl ? '22 جراح واستشاري' : '22 Surgeons' }}</span>
+                            <a href="{{ route('register') }}" class="text-sky-600 hover:text-sky-700 font-bold inline-flex items-center gap-1.5 transition">
+                                <span>{{ $isRtl ? 'عرض تفاصيل القسم' : 'View Details' }}</span>
+                                <i class="fas fa-arrow-left text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 4. Internal Medicine & Gastroenterology -->
+                    <div class="slider-card hover-lift bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl">
+                                    <i class="fas fa-stethoscope"></i>
+                                </div>
+                                <span class="text-[11px] font-bold text-sky-700 bg-sky-50 px-2.5 py-1 rounded-full">
+                                    {{ $isRtl ? 'مناظير تشخيصية' : 'Endoscopy' }}
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-2">
+                                {{ $isRtl ? 'الباطنة والجهاز الهضمي' : 'Internal Medicine & Gastroenterology' }}
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">
+                                {{ $isRtl 
+                                    ? 'وحدة مناظير الجهاز الهضمي والقولون التشخيصية والعلاجية، برامج علاج أمراض الكبد المزمنة، والرعاية الطبية الشاملة.' 
+                                    : 'Advanced upper and lower GI diagnostic and therapeutic endoscopy, chronic hepatology treatment, and comprehensive care.' }}
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+                            <span class="font-bold text-slate-600">{{ $isRtl ? '19 استشاري باطنة' : '19 Internists' }}</span>
+                            <a href="{{ route('register') }}" class="text-sky-600 hover:text-sky-700 font-bold inline-flex items-center gap-1.5 transition">
+                                <span>{{ $isRtl ? 'عرض تفاصيل القسم' : 'View Details' }}</span>
+                                <i class="fas fa-arrow-left text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 5. Neurology & Spine Surgery -->
+                    <div class="slider-card hover-lift bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <span class="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-full">
+                                    {{ $isRtl ? 'جراحة ميكروسكوبية' : 'Microsurgery' }}
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-2">
+                                {{ $isRtl ? 'المخ والأعصاب والعمود الفقري' : 'Neurology & Spine' }}
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">
+                                {{ $isRtl 
+                                    ? 'جراحة الأعصاب المجهرية الدقيقة، علاج السكتات الدماغية في الدقائق الذهبية الأولى، وجراحات تثبيت الفقرات الحديثة.' 
+                                    : 'Precision microscopic neurosurgery, golden-hour stroke management interventions, and minimally invasive spine stabilization.' }}
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+                            <span class="font-bold text-slate-600">{{ $isRtl ? '21 استشاري مخ وأعصاب' : '21 Neurologists' }}</span>
+                            <a href="{{ route('register') }}" class="text-sky-600 hover:text-sky-700 font-bold inline-flex items-center gap-1.5 transition">
+                                <span>{{ $isRtl ? 'عرض تفاصيل القسم' : 'View Details' }}</span>
+                                <i class="fas fa-arrow-left text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 6. Obstetrics & Women's Health -->
+                    <div class="slider-card hover-lift bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                                    <i class="fas fa-venus"></i>
+                                </div>
+                                <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                                    {{ $isRtl ? 'أمومة آمنة' : 'Maternity' }}
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-2">
+                                {{ $isRtl ? 'النساء والتوليد وصحة المرأة' : 'Obstetrics & Women\'s Health' }}
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">
+                                {{ $isRtl 
+                                    ? 'رعاية متكاملة للحمل الحرج، أحدث أجنحة ومستشفى ولادة مجهزة بالكامل، وجراحات المناظير النسائية ودلائل الإخصاب المساعد.' 
+                                    : 'Comprehensive high-risk obstetrics, modern birthing suites, gynecological laparoscopy, and reproductive care.' }}
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+                            <span class="font-bold text-slate-600">{{ $isRtl ? '15 طبيبة واستشارية' : '15 Gynecologists' }}</span>
+                            <a href="{{ route('register') }}" class="text-sky-600 hover:text-sky-700 font-bold inline-flex items-center gap-1.5 transition">
+                                <span>{{ $isRtl ? 'عرض تفاصيل القسم' : 'View Details' }}</span>
+                                <i class="fas fa-arrow-left text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-[#fff2f2] dark:bg-[#1D0002] relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-[335/364] lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden">
-                    {{-- Laravel Logo --}}
-                    <svg class="w-full text-[#F53003] dark:text-[#F61500] transition-all translate-y-0 opacity-100 max-w-none duration-750 starting:opacity-0 motion-safe:starting:translate-y-6" viewBox="0 0 438 104" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.2036 -3H0V102.197H49.5189V86.7187H17.2036V-3Z" fill="currentColor" />
-                        <path d="M110.256 41.6337C108.061 38.1275 104.945 35.3731 100.905 33.3681C96.8667 31.3647 92.8016 30.3618 88.7131 30.3618C83.4247 30.3618 78.5885 31.3389 74.201 33.2923C69.8111 35.2456 66.0474 37.928 62.9059 41.3333C59.7643 44.7401 57.3198 48.6726 55.5754 53.1293C53.8287 57.589 52.9572 62.274 52.9572 67.1813C52.9572 72.1925 53.8287 76.8995 55.5754 81.3069C57.3191 85.7173 59.7636 89.6241 62.9059 93.0293C66.0474 96.4361 69.8119 99.1155 74.201 101.069C78.5885 103.022 83.4247 103.999 88.7131 103.999C92.8016 103.999 96.8667 102.997 100.905 100.994C104.945 98.9911 108.061 96.2359 110.256 92.7282V102.195H126.563V32.1642H110.256V41.6337ZM108.76 75.7472C107.762 78.4531 106.366 80.8078 104.572 82.8112C102.776 84.8161 100.606 86.4183 98.0637 87.6206C95.5202 88.823 92.7004 89.4238 89.6103 89.4238C86.5178 89.4238 83.7252 88.823 81.2324 87.6206C78.7388 86.4183 76.5949 84.8161 74.7998 82.8112C73.004 80.8078 71.6319 78.4531 70.6856 75.7472C69.7356 73.0421 69.2644 70.1868 69.2644 67.1821C69.2644 64.1758 69.7356 61.3205 70.6856 58.6154C71.6319 55.9102 73.004 53.5571 74.7998 51.5522C76.5949 49.5495 78.738 47.9451 81.2324 46.7427C83.7252 45.5404 86.5178 44.9396 89.6103 44.9396C92.7012 44.9396 95.5202 45.5404 98.0637 46.7427C100.606 47.9451 102.776 49.5487 104.572 51.5522C106.367 53.5571 107.762 55.9102 108.76 58.6154C109.756 61.3205 110.256 64.1758 110.256 67.1821C110.256 70.1868 109.756 73.0421 108.76 75.7472Z" fill="currentColor" />
-                        <path d="M242.805 41.6337C240.611 38.1275 237.494 35.3731 233.455 33.3681C229.416 31.3647 225.351 30.3618 221.262 30.3618C215.974 30.3618 211.138 31.3389 206.75 33.2923C202.36 35.2456 198.597 37.928 195.455 41.3333C192.314 44.7401 189.869 48.6726 188.125 53.1293C186.378 57.589 185.507 62.274 185.507 67.1813C185.507 72.1925 186.378 76.8995 188.125 81.3069C189.868 85.7173 192.313 89.6241 195.455 93.0293C198.597 96.4361 202.361 99.1155 206.75 101.069C211.138 103.022 215.974 103.999 221.262 103.999C225.351 103.999 229.416 102.997 233.455 100.994C237.494 98.9911 240.611 96.2359 242.805 92.7282V102.195H259.112V32.1642H242.805V41.6337ZM241.31 75.7472C240.312 78.4531 238.916 80.8078 237.122 82.8112C235.326 84.8161 233.156 86.4183 230.614 87.6206C228.07 88.823 225.251 89.4238 222.16 89.4238C219.068 89.4238 216.275 88.823 213.782 87.6206C211.289 86.4183 209.145 84.8161 207.35 82.8112C205.554 80.8078 204.182 78.4531 203.236 75.7472C202.286 73.0421 201.814 70.1868 201.814 67.1821C201.814 64.1758 202.286 61.3205 203.236 58.6154C204.182 55.9102 205.554 53.5571 207.35 51.5522C209.145 49.5495 211.288 47.9451 213.782 46.7427C216.275 45.5404 219.068 44.9396 222.16 44.9396C225.251 44.9396 228.07 45.5404 230.614 46.7427C233.156 47.9451 235.326 49.5487 237.122 51.5522C238.917 53.5571 240.312 55.9102 241.31 58.6154C242.306 61.3205 242.806 64.1758 242.806 67.1821C242.805 70.1868 242.305 73.0421 241.31 75.7472Z" fill="currentColor" />
-                        <path d="M438 -3H421.694V102.197H438V-3Z" fill="currentColor" />
-                        <path d="M139.43 102.197H155.735V48.2834H183.712V32.1665H139.43V102.197Z" fill="currentColor" />
-                        <path d="M324.49 32.1665L303.995 85.794L283.498 32.1665H266.983L293.748 102.197H314.242L341.006 32.1665H324.49Z" fill="currentColor" />
-                        <path d="M376.571 30.3656C356.603 30.3656 340.797 46.8497 340.797 67.1828C340.797 89.6597 356.094 104 378.661 104C391.29 104 399.354 99.1488 409.206 88.5848L398.189 80.0226C398.183 80.031 389.874 90.9895 377.468 90.9895C363.048 90.9895 356.977 79.3111 356.977 73.269H411.075C413.917 50.1328 398.775 30.3656 376.571 30.3656ZM357.02 61.0967C357.145 59.7487 359.023 43.3761 376.442 43.3761C393.861 43.3761 395.978 59.7464 396.099 61.0967H357.02Z" fill="currentColor" />
-                    </svg>
+            </div>
 
-                    {{-- 13 --}}
-                    <svg class="w-[438px] max-w-none relative -mt-[6.6rem] -ml-8 lg:ml-0 [--stroke-color:#1B1B18] dark:[--stroke-color:#FF750F]" viewBox="0 0 440 392" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g class="mix-blend-darken dark:mix-blend-normal transition-all delay-300 opacity-100 duration-750 starting:opacity-0 text-[#1B1B18] dark:text-black">
-                            <mask id="path-1-mask" maskUnits="userSpaceOnUse" x="-0.328613" y="103" width="338" height="299" fill="black">
-                                <rect fill="white" x="-0.328613" y="103" width="338" height="299"/>
-                                <path d="M234.936 400.8C204.136 400.8 178.936 392.4 159.336 375.6C140.136 358.8 130.536 337 130.536 310.2H200.736C200.736 318.2 203.736 324.8 209.736 330C215.736 335.2 223.736 337.8 233.736 337.8C243.336 337.8 251.136 335 257.136 329.4C263.536 323.8 266.736 316.6 266.736 307.8C266.736 299.8 263.936 293.2 258.336 288C252.736 282.8 245.536 280.2 236.736 280.2H199.536V218.4H236.736C243.536 218.4 249.336 216 254.136 211.2C258.936 206.4 261.336 200.4 261.336 193.2C261.336 184.8 258.736 178.2 253.536 173.4C248.336 168.6 241.736 166.2 233.736 166.2C226.536 166.2 220.336 168.4 215.136 172.8C210.336 177.2 207.936 182.8 207.936 189.6H141.336C141.336 164.8 150.136 144.6 167.736 129C185.336 113 207.936 105 235.536 105C263.136 105 285.536 112.2 302.736 126.6C320.336 141 329.136 160 329.136 183.6C329.136 200.8 324.536 214.8 315.336 225.6C306.136 236 294.336 243.2 279.936 247.2C297.136 252 310.736 260.2 320.736 271.8C331.136 283.4 336.336 298 336.336 315.6C336.336 340.4 326.936 360.8 308.136 376.8C289.336 392.8 264.936 400.8 234.936 400.8Z"/>
-                                <path d="M26.8714 167.6H1.67139V105.2H94.6714V400.2H26.8714V167.6Z"/>
-                            </mask>
-                            <path d="M234.936 400.8C204.136 400.8 178.936 392.4 159.336 375.6C140.136 358.8 130.536 337 130.536 310.2H200.736C200.736 318.2 203.736 324.8 209.736 330C215.736 335.2 223.736 337.8 233.736 337.8C243.336 337.8 251.136 335 257.136 329.4C263.536 323.8 266.736 316.6 266.736 307.8C266.736 299.8 263.936 293.2 258.336 288C252.736 282.8 245.536 280.2 236.736 280.2H199.536V218.4H236.736C243.536 218.4 249.336 216 254.136 211.2C258.936 206.4 261.336 200.4 261.336 193.2C261.336 184.8 258.736 178.2 253.536 173.4C248.336 168.6 241.736 166.2 233.736 166.2C226.536 166.2 220.336 168.4 215.136 172.8C210.336 177.2 207.936 182.8 207.936 189.6H141.336C141.336 164.8 150.136 144.6 167.736 129C185.336 113 207.936 105 235.536 105C263.136 105 285.536 112.2 302.736 126.6C320.336 141 329.136 160 329.136 183.6C329.136 200.8 324.536 214.8 315.336 225.6C306.136 236 294.336 243.2 279.936 247.2C297.136 252 310.736 260.2 320.736 271.8C331.136 283.4 336.336 298 336.336 315.6C336.336 340.4 326.936 360.8 308.136 376.8C289.336 392.8 264.936 400.8 234.936 400.8Z" fill="currentColor"/>
-                            <path d="M26.8714 167.6H1.67139V105.2H94.6714V400.2H26.8714V167.6Z" fill="currentColor"/>
-                            <path d="M234.936 400.8C204.136 400.8 178.936 392.4 159.336 375.6C140.136 358.8 130.536 337 130.536 310.2H200.736C200.736 318.2 203.736 324.8 209.736 330C215.736 335.2 223.736 337.8 233.736 337.8C243.336 337.8 251.136 335 257.136 329.4C263.536 323.8 266.736 316.6 266.736 307.8C266.736 299.8 263.936 293.2 258.336 288C252.736 282.8 245.536 280.2 236.736 280.2H199.536V218.4H236.736C243.536 218.4 249.336 216 254.136 211.2C258.936 206.4 261.336 200.4 261.336 193.2C261.336 184.8 258.736 178.2 253.536 173.4C248.336 168.6 241.736 166.2 233.736 166.2C226.536 166.2 220.336 168.4 215.136 172.8C210.336 177.2 207.936 182.8 207.936 189.6H141.336C141.336 164.8 150.136 144.6 167.736 129C185.336 113 207.936 105 235.536 105C263.136 105 285.536 112.2 302.736 126.6C320.336 141 329.136 160 329.136 183.6C329.136 200.8 324.536 214.8 315.336 225.6C306.136 236 294.336 243.2 279.936 247.2C297.136 252 310.736 260.2 320.736 271.8C331.136 283.4 336.336 298 336.336 315.6C336.336 340.4 326.936 360.8 308.136 376.8C289.336 392.8 264.936 400.8 234.936 400.8Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-1-mask)"/>
-                            <path d="M26.8714 167.6H1.67139V105.2H94.6714V400.2H26.8714V167.6Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-1-mask)"/>
-                        </g>
-
-                        <g class="transition-all delay-400 opacity-100 duration-750 starting:opacity-0 motion-safe:starting:-translate-x-[26px] text-[#F3BEC7] dark:text-[#4B0600]">
-                            <mask id="path-2-mask" maskUnits="userSpaceOnUse" x="25.3357" y="103" width="338" height="299" fill="black">
-                                <rect fill="white" x="25.3357" y="103" width="338" height="299"/>
-                                <path d="M260.6 400.8C229.8 400.8 204.6 392.4 185 375.6C165.8 358.8 156.2 337 156.2 310.2H226.4C226.4 318.2 229.4 324.8 235.4 330C241.4 335.2 249.4 337.8 259.4 337.8C269 337.8 276.8 335 282.8 329.4C289.2 323.8 292.4 316.6 292.4 307.8C292.4 299.8 289.6 293.2 284 288C278.4 282.8 271.2 280.2 262.4 280.2H225.2V218.4H262.4C269.2 218.4 275 216 279.8 211.2C284.6 206.4 287 200.4 287 193.2C287 184.8 284.4 178.2 279.2 173.4C274 168.6 267.4 166.2 259.4 166.2C252.2 166.2 246 168.4 240.8 172.8C236 177.2 233.6 182.8 233.6 189.6H167C167 164.8 175.8 144.6 193.4 129C211 113 233.6 105 261.2 105C288.8 105 311.2 112.2 328.4 126.6C346 141 354.8 160 354.8 183.6C354.8 200.8 350.2 214.8 341 225.6C331.8 236 320 243.2 305.6 247.2C322.8 252 336.4 260.2 346.4 271.8C356.8 283.4 362 298 362 315.6C362 340.4 352.6 360.8 333.8 376.8C315 392.8 290.6 400.8 260.6 400.8Z"/>
-                                <path d="M52.5357 167.6H27.3357V105.2H120.336V400.2H52.5357V167.6Z"/>
-                            </mask>
-                            <path d="M260.6 400.8C229.8 400.8 204.6 392.4 185 375.6C165.8 358.8 156.2 337 156.2 310.2H226.4C226.4 318.2 229.4 324.8 235.4 330C241.4 335.2 249.4 337.8 259.4 337.8C269 337.8 276.8 335 282.8 329.4C289.2 323.8 292.4 316.6 292.4 307.8C292.4 299.8 289.6 293.2 284 288C278.4 282.8 271.2 280.2 262.4 280.2H225.2V218.4H262.4C269.2 218.4 275 216 279.8 211.2C284.6 206.4 287 200.4 287 193.2C287 184.8 284.4 178.2 279.2 173.4C274 168.6 267.4 166.2 259.4 166.2C252.2 166.2 246 168.4 240.8 172.8C236 177.2 233.6 182.8 233.6 189.6H167C167 164.8 175.8 144.6 193.4 129C211 113 233.6 105 261.2 105C288.8 105 311.2 112.2 328.4 126.6C346 141 354.8 160 354.8 183.6C354.8 200.8 350.2 214.8 341 225.6C331.8 236 320 243.2 305.6 247.2C322.8 252 336.4 260.2 346.4 271.8C356.8 283.4 362 298 362 315.6C362 340.4 352.6 360.8 333.8 376.8C315 392.8 290.6 400.8 260.6 400.8Z" fill="currentColor"/>
-                            <path d="M52.5357 167.6H27.3357V105.2H120.336V400.2H52.5357V167.6Z" fill="currentColor"/>
-                            <path d="M260.6 400.8C229.8 400.8 204.6 392.4 185 375.6C165.8 358.8 156.2 337 156.2 310.2H226.4C226.4 318.2 229.4 324.8 235.4 330C241.4 335.2 249.4 337.8 259.4 337.8C269 337.8 276.8 335 282.8 329.4C289.2 323.8 292.4 316.6 292.4 307.8C292.4 299.8 289.6 293.2 284 288C278.4 282.8 271.2 280.2 262.4 280.2H225.2V218.4H262.4C269.2 218.4 275 216 279.8 211.2C284.6 206.4 287 200.4 287 193.2C287 184.8 284.4 178.2 279.2 173.4C274 168.6 267.4 166.2 259.4 166.2C252.2 166.2 246 168.4 240.8 172.8C236 177.2 233.6 182.8 233.6 189.6H167C167 164.8 175.8 144.6 193.4 129C211 113 233.6 105 261.2 105C288.8 105 311.2 112.2 328.4 126.6C346 141 354.8 160 354.8 183.6C354.8 200.8 350.2 214.8 341 225.6C331.8 236 320 243.2 305.6 247.2C322.8 252 336.4 260.2 346.4 271.8C356.8 283.4 362 298 362 315.6C362 340.4 352.6 360.8 333.8 376.8C315 392.8 290.6 400.8 260.6 400.8Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-2-mask)"/>
-                            <path d="M52.5357 167.6H27.3357V105.2H120.336V400.2H52.5357V167.6Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-2-mask)"/>
-                        </g>
-
-                        <g class="mix-blend-color dark:mix-blend-hard-light transition-all delay-400 opacity-100 duration-750 starting:opacity-0 motion-safe:starting:-translate-x-[51px] text-[#F8B803] dark:text-[#391800]">
-                            <mask id="path-3-mask" maskUnits="userSpaceOnUse" x="51" y="103" width="338" height="299" fill="black">
-                                <rect fill="white" x="51" y="103" width="338" height="299"/>
-                                <path d="M286.264 400.8C255.464 400.8 230.264 392.4 210.664 375.6C191.464 358.8 181.864 337 181.864 310.2H252.064C252.064 318.2 255.064 324.8 261.064 330C267.064 335.2 275.064 337.8 285.064 337.8C294.664 337.8 302.464 335 308.464 329.4C314.864 323.8 318.064 316.6 318.064 307.8C318.064 299.8 315.264 293.2 309.664 288C304.064 282.8 296.864 280.2 288.064 280.2H250.864V218.4H288.064C294.864 218.4 300.664 216 305.464 211.2C310.264 206.4 312.664 200.4 312.664 193.2C312.664 184.8 310.064 178.2 304.864 173.4C299.664 168.6 293.064 166.2 285.064 166.2C277.864 166.2 271.664 168.4 266.464 172.8C261.664 177.2 259.264 182.8 259.264 189.6H192.664C192.664 164.8 201.464 144.6 219.064 129C236.664 113 259.264 105 286.864 105C314.464 105 336.864 112.2 354.064 126.6C371.664 141 380.464 160 380.464 183.6C380.464 200.8 375.864 214.8 366.664 225.6C357.464 236 345.664 243.2 331.264 247.2C348.464 252 362.064 260.2 372.064 271.8C382.464 283.4 387.664 298 387.664 315.6C387.664 340.4 378.264 360.8 359.464 376.8C340.664 392.8 316.264 400.8 286.264 400.8Z"/>
-                                <path d="M78.2 167.6H53V105.2H146V400.2H78.2V167.6Z"/>
-                            </mask>
-                            <path d="M286.264 400.8C255.464 400.8 230.264 392.4 210.664 375.6C191.464 358.8 181.864 337 181.864 310.2H252.064C252.064 318.2 255.064 324.8 261.064 330C267.064 335.2 275.064 337.8 285.064 337.8C294.664 337.8 302.464 335 308.464 329.4C314.864 323.8 318.064 316.6 318.064 307.8C318.064 299.8 315.264 293.2 309.664 288C304.064 282.8 296.864 280.2 288.064 280.2H250.864V218.4H288.064C294.864 218.4 300.664 216 305.464 211.2C310.264 206.4 312.664 200.4 312.664 193.2C312.664 184.8 310.064 178.2 304.864 173.4C299.664 168.6 293.064 166.2 285.064 166.2C277.864 166.2 271.664 168.4 266.464 172.8C261.664 177.2 259.264 182.8 259.264 189.6H192.664C192.664 164.8 201.464 144.6 219.064 129C236.664 113 259.264 105 286.864 105C314.464 105 336.864 112.2 354.064 126.6C371.664 141 380.464 160 380.464 183.6C380.464 200.8 375.864 214.8 366.664 225.6C357.464 236 345.664 243.2 331.264 247.2C348.464 252 362.064 260.2 372.064 271.8C382.464 283.4 387.664 298 387.664 315.6C387.664 340.4 378.264 360.8 359.464 376.8C340.664 392.8 316.264 400.8 286.264 400.8Z" fill="currentColor"/>
-                            <path d="M78.2 167.6H53V105.2H146V400.2H78.2V167.6Z" fill="currentColor"/>
-                            <path d="M286.264 400.8C255.464 400.8 230.264 392.4 210.664 375.6C191.464 358.8 181.864 337 181.864 310.2H252.064C252.064 318.2 255.064 324.8 261.064 330C267.064 335.2 275.064 337.8 285.064 337.8C294.664 337.8 302.464 335 308.464 329.4C314.864 323.8 318.064 316.6 318.064 307.8C318.064 299.8 315.264 293.2 309.664 288C304.064 282.8 296.864 280.2 288.064 280.2H250.864V218.4H288.064C294.864 218.4 300.664 216 305.464 211.2C310.264 206.4 312.664 200.4 312.664 193.2C312.664 184.8 310.064 178.2 304.864 173.4C299.664 168.6 293.064 166.2 285.064 166.2C277.864 166.2 271.664 168.4 266.464 172.8C261.664 177.2 259.264 182.8 259.264 189.6H192.664C192.664 164.8 201.464 144.6 219.064 129C236.664 113 259.264 105 286.864 105C314.464 105 336.864 112.2 354.064 126.6C371.664 141 380.464 160 380.464 183.6C380.464 200.8 375.864 214.8 366.664 225.6C357.464 236 345.664 243.2 331.264 247.2C348.464 252 362.064 260.2 372.064 271.8C382.464 283.4 387.664 298 387.664 315.6C387.664 340.4 378.264 360.8 359.464 376.8C340.664 392.8 316.264 400.8 286.264 400.8Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-3-mask)"/>
-                            <path d="M78.2 167.6H53V105.2H146V400.2H78.2V167.6Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-3-mask)"/>
-                        </g>
-
-                        <g class="mix-blend-multiply dark:mix-blend-normal transition-all delay-400 opacity-100 duration-750 starting:opacity-0 motion-safe:starting:-translate-x-[78px] text-[#F3BEC7] dark:text-[#733000]">
-                            <mask id="path-4-mask" maskUnits="userSpaceOnUse" x="76.6643" y="103" width="338" height="299" fill="black">
-                                <rect fill="white" x="76.6643" y="103" width="338" height="299"/>
-                                <path d="M311.929 400.8C281.129 400.8 255.929 392.4 236.329 375.6C217.129 358.8 207.529 337 207.529 310.2H277.729C277.729 318.2 280.729 324.8 286.729 330C292.729 335.2 300.729 337.8 310.729 337.8C320.329 337.8 328.129 335 334.129 329.4C340.529 323.8 343.729 316.6 343.729 307.8C343.729 299.8 340.929 293.2 335.329 288C329.729 282.8 322.529 280.2 313.729 280.2H276.529V218.4H313.729C320.529 218.4 326.329 216 331.129 211.2C335.929 206.4 338.329 200.4 338.329 193.2C338.329 184.8 335.729 178.2 330.529 173.4C325.329 168.6 318.729 166.2 310.729 166.2C303.529 166.2 297.329 168.4 292.129 172.8C287.329 177.2 284.929 182.8 284.929 189.6H218.329C218.329 164.8 227.129 144.6 244.729 129C262.329 113 284.929 105 312.529 105C340.129 105 362.529 112.2 379.729 126.6C397.329 141 406.129 160 406.129 183.6C406.129 200.8 401.529 214.8 392.329 225.6C383.129 236 371.329 243.2 356.929 247.2C374.129 252 387.729 260.2 397.729 271.8C408.129 283.4 413.329 298 413.329 315.6C413.329 340.4 403.929 360.8 385.129 376.8C366.329 392.8 341.929 400.8 311.929 400.8Z"/>
-                                <path d="M103.864 167.6H78.6643V105.2H171.664V400.2H103.864V167.6Z"/>
-                            </mask>
-                            <path d="M311.929 400.8C281.129 400.8 255.929 392.4 236.329 375.6C217.129 358.8 207.529 337 207.529 310.2H277.729C277.729 318.2 280.729 324.8 286.729 330C292.729 335.2 300.729 337.8 310.729 337.8C320.329 337.8 328.129 335 334.129 329.4C340.529 323.8 343.729 316.6 343.729 307.8C343.729 299.8 340.929 293.2 335.329 288C329.729 282.8 322.529 280.2 313.729 280.2H276.529V218.4H313.729C320.529 218.4 326.329 216 331.129 211.2C335.929 206.4 338.329 200.4 338.329 193.2C338.329 184.8 335.729 178.2 330.529 173.4C325.329 168.6 318.729 166.2 310.729 166.2C303.529 166.2 297.329 168.4 292.129 172.8C287.329 177.2 284.929 182.8 284.929 189.6H218.329C218.329 164.8 227.129 144.6 244.729 129C262.329 113 284.929 105 312.529 105C340.129 105 362.529 112.2 379.729 126.6C397.329 141 406.129 160 406.129 183.6C406.129 200.8 401.529 214.8 392.329 225.6C383.129 236 371.329 243.2 356.929 247.2C374.129 252 387.729 260.2 397.729 271.8C408.129 283.4 413.329 298 413.329 315.6C413.329 340.4 403.929 360.8 385.129 376.8C366.329 392.8 341.929 400.8 311.929 400.8Z" fill="currentColor"/>
-                            <path d="M103.864 167.6H78.6643V105.2H171.664V400.2H103.864V167.6Z" fill="currentColor"/>
-                            <path d="M311.929 400.8C281.129 400.8 255.929 392.4 236.329 375.6C217.129 358.8 207.529 337 207.529 310.2H277.729C277.729 318.2 280.729 324.8 286.729 330C292.729 335.2 300.729 337.8 310.729 337.8C320.329 337.8 328.129 335 334.129 329.4C340.529 323.8 343.729 316.6 343.729 307.8C343.729 299.8 340.929 293.2 335.329 288C329.729 282.8 322.529 280.2 313.729 280.2H276.529V218.4H313.729C320.529 218.4 326.329 216 331.129 211.2C335.929 206.4 338.329 200.4 338.329 193.2C338.329 184.8 335.729 178.2 330.529 173.4C325.329 168.6 318.729 166.2 310.729 166.2C303.529 166.2 297.329 168.4 292.129 172.8C287.329 177.2 284.929 182.8 284.929 189.6H218.329C218.329 164.8 227.129 144.6 244.729 129C262.329 113 284.929 105 312.529 105C340.129 105 362.529 112.2 379.729 126.6C397.329 141 406.129 160 406.129 183.6C406.129 200.8 401.529 214.8 392.329 225.6C383.129 236 371.329 243.2 356.929 247.2C374.129 252 387.729 260.2 397.729 271.8C408.129 283.4 413.329 298 413.329 315.6C413.329 340.4 403.929 360.8 385.129 376.8C366.329 392.8 341.929 400.8 311.929 400.8Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-4-mask)"/>
-                            <path d="M103.864 167.6H78.6643V105.2H171.664V400.2H103.864V167.6Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-4-mask)"/>
-                        </g>
-
-                        <g class="mix-blend-hard-light transition-all delay-400 opacity-100 duration-750 starting:opacity-0 motion-safe:starting:-translate-x-[102px] text-[#F3BEC7] dark:text-[#4B0600]">
-                            <mask id="path-5-mask" maskUnits="userSpaceOnUse" x="102.329" y="103" width="338" height="299" fill="black">
-                                <rect fill="white" x="102.329" y="103" width="338" height="299"/>
-                                <path d="M337.593 400.8C306.793 400.8 281.593 392.4 261.993 375.6C242.793 358.8 233.193 337 233.193 310.2H303.393C303.393 318.2 306.393 324.8 312.393 330C318.393 335.2 326.393 337.8 336.393 337.8C345.993 337.8 353.793 335 359.793 329.4C366.193 323.8 369.393 316.6 369.393 307.8C369.393 299.8 366.593 293.2 360.993 288C355.393 282.8 348.193 280.2 339.393 280.2H302.193V218.4H339.393C346.193 218.4 351.993 216 356.793 211.2C361.593 206.4 363.993 200.4 363.993 193.2C363.993 184.8 361.393 178.2 356.193 173.4C350.993 168.6 344.393 166.2 336.393 166.2C329.193 166.2 322.993 168.4 317.793 172.8C312.993 177.2 310.593 182.8 310.593 189.6H243.993C243.993 164.8 252.793 144.6 270.393 129C287.993 113 310.593 105 338.193 105C365.793 105 388.193 112.2 405.393 126.6C422.993 141 431.793 160 431.793 183.6C431.793 200.8 427.193 214.8 417.993 225.6C408.793 236 396.993 243.2 382.593 247.2C399.793 252 413.393 260.2 423.393 271.8C433.793 283.4 438.993 298 438.993 315.6C438.993 340.4 429.593 360.8 410.793 376.8C391.993 392.8 367.593 400.8 337.593 400.8Z"/>
-                                <path d="M129.529 167.6H104.329V105.2H197.329V400.2H129.529V167.6Z"/>
-                            </mask>
-                            <path d="M337.593 400.8C306.793 400.8 281.593 392.4 261.993 375.6C242.793 358.8 233.193 337 233.193 310.2H303.393C303.393 318.2 306.393 324.8 312.393 330C318.393 335.2 326.393 337.8 336.393 337.8C345.993 337.8 353.793 335 359.793 329.4C366.193 323.8 369.393 316.6 369.393 307.8C369.393 299.8 366.593 293.2 360.993 288C355.393 282.8 348.193 280.2 339.393 280.2H302.193V218.4H339.393C346.193 218.4 351.993 216 356.793 211.2C361.593 206.4 363.993 200.4 363.993 193.2C363.993 184.8 361.393 178.2 356.193 173.4C350.993 168.6 344.393 166.2 336.393 166.2C329.193 166.2 322.993 168.4 317.793 172.8C312.993 177.2 310.593 182.8 310.593 189.6H243.993C243.993 164.8 252.793 144.6 270.393 129C287.993 113 310.593 105 338.193 105C365.793 105 388.193 112.2 405.393 126.6C422.993 141 431.793 160 431.793 183.6C431.793 200.8 427.193 214.8 417.993 225.6C408.793 236 396.993 243.2 382.593 247.2C399.793 252 413.393 260.2 423.393 271.8C433.793 283.4 438.993 298 438.993 315.6C438.993 340.4 429.593 360.8 410.793 376.8C391.993 392.8 367.593 400.8 337.593 400.8Z" fill="currentColor"/>
-                            <path d="M129.529 167.6H104.329V105.2H197.329V400.2H129.529V167.6Z" fill="currentColor"/>
-                            <path d="M337.593 400.8C306.793 400.8 281.593 392.4 261.993 375.6C242.793 358.8 233.193 337 233.193 310.2H303.393C303.393 318.2 306.393 324.8 312.393 330C318.393 335.2 326.393 337.8 336.393 337.8C345.993 337.8 353.793 335 359.793 329.4C366.193 323.8 369.393 316.6 369.393 307.8C369.393 299.8 366.593 293.2 360.993 288C355.393 282.8 348.193 280.2 339.393 280.2H302.193V218.4H339.393C346.193 218.4 351.993 216 356.793 211.2C361.593 206.4 363.993 200.4 363.993 193.2C363.993 184.8 361.393 178.2 356.193 173.4C350.993 168.6 344.393 166.2 336.393 166.2C329.193 166.2 322.993 168.4 317.793 172.8C312.993 177.2 310.593 182.8 310.593 189.6H243.993C243.993 164.8 252.793 144.6 270.393 129C287.993 113 310.593 105 338.193 105C365.793 105 388.193 112.2 405.393 126.6C422.993 141 431.793 160 431.793 183.6C431.793 200.8 427.193 214.8 417.993 225.6C408.793 236 396.993 243.2 382.593 247.2C399.793 252 413.393 260.2 423.393 271.8C433.793 283.4 438.993 298 438.993 315.6C438.993 340.4 429.593 360.8 410.793 376.8C391.993 392.8 367.593 400.8 337.593 400.8Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-5-mask)"/>
-                            <path d="M129.529 167.6H104.329V105.2H197.329V400.2H129.529V167.6Z" stroke="var(--stroke-color)" stroke-width="2.4" mask="url(#path-5-mask)"/>
-                        </g>
-                    </svg>
-                    <div class="absolute inset-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]"></div>
-                </div>
-            </main>
+            <!-- Floating Side Next Button -->
+            <button
+                type="button"
+                @click="next()"
+                class="slider-side-btn btn-next flex"
+                aria-label="Next"
+            >
+                <i class="fas {{ $isRtl ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i>
+            </button>
         </div>
 
-        @if (Route::has('login'))
-            <div class="h-14.5 hidden lg:block"></div>
-        @endif
-    </body>
+    </div>
+</section>
+
+<!-- =========================================================================
+     5. MEDICAL SERVICES CAROUSEL SECTION (#services - 3 Visible Cards with Continuous Loop)
+     ========================================================================= -->
+<section
+    id="services"
+    class="py-16 bg-slate-50/70 relative"
+    x-data="infiniteCarousel()"
+>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section Header with Navigation Buttons -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 reveal">
+            <div>
+                <span class="text-sky-600 font-bold text-xs uppercase tracking-wider bg-sky-50 px-3.5 py-1 rounded-full">
+                    {{ $isRtl ? 'الخدمات الطبية الشاملة' : 'Integrated Services' }}
+                </span>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-3 mb-2">
+                    {{ $isRtl ? 'خدمات علاجية وتشخيصية ترتقي بصحتك' : 'Comprehensive Healthcare Solutions' }}
+                </h2>
+                <p class="text-slate-600 text-xs sm:text-sm max-w-xl">
+                    {{ $isRtl ? 'استعرض أبرز خدماتنا المتقدمة (3 في كل عرض) واستخدم أزرار التنقل للتنقل المستمر.' : 'Explore 3 services at a time with continuous loop side navigation.' }}
+                </p>
+            </div>
+
+        </div>
+
+        <!-- 3-Card Carousel Wrapper -->
+        <div class="slider-wrapper">
+            <!-- Floating Side Prev Button -->
+            <button
+                type="button"
+                @click="prev()"
+                class="slider-side-btn btn-prev flex"
+                aria-label="Previous"
+            >
+                <i class="fas {{ $isRtl ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i>
+            </button>
+
+            <!-- Cards Slider Track inside Viewport -->
+            <div class="slider-viewport">
+                <div x-ref="track" class="slider-track">
+                    @forelse ($services as $service)
+                        <div class="slider-card hover-lift bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="card-icon-box w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl mb-4">
+                                    <i class="fas {{ str_starts_with($service->icon ?? '', 'fa-') ? $service->icon : ($service->icon ? 'fa-' . $service->icon : 'fa-briefcase-medical') }}"></i>
+                                </div>
+                                <h3 class="text-base font-bold text-slate-900 mb-2">
+                                    {{ $service->title }}
+                                </h3>
+                                <p class="text-xs text-slate-500 leading-relaxed mb-6">
+                                    {{ $service->description }}
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                                <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                                    {{ $isRtl ? 'متاح فورياً' : 'Available' }}
+                                </span>
+                                <a href="{{ route('register') }}" class="text-sky-600 hover:text-sky-700 font-bold inline-flex items-center gap-1.5 transition">
+                                    <span>{{ $isRtl ? 'طلب الخدمة' : 'Request Service' }}</span>
+                                    <i class="fas fa-arrow-left text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="slider-card bg-white rounded-2xl p-6 text-center text-slate-400">
+                            {{ $isRtl ? 'لا توجد خدمات حالياً' : 'No services available' }}
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Floating Side Next Button -->
+            <button
+                type="button"
+                @click="next()"
+                class="slider-side-btn btn-next flex"
+                aria-label="Next"
+            >
+                <i class="fas {{ $isRtl ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i>
+            </button>
+        </div>
+
+    </div>
+</section>
+
+    <!-- =========================================================================
+         6. STATS & ACCREDITATIONS SECTION (LAVENDER / ICE-BLUE CONTAINER)
+         ========================================================================= -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-16 reveal">
+        <div class="bg-[#f0f4ff] rounded-3xl p-8 sm:p-12 lg:p-16 border border-blue-100/60 shadow-sm">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+
+                <!-- 2x2 Cards Grid (Left in RTL, Right in LTR) -->
+                <div class="lg:col-span-7 order-2 lg:order-1">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                        <!-- Card 1: 250,000+ Patients -->
+                        <div class="hover-lift bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full">
+                                    {{ $isRtl ? '+120 تخصص' : '+120 Specialties' }}
+                                </span>
+                            </div>
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-black text-slate-900 mb-1" data-counter="250000" data-prefix="+ " data-format="comma">+ 250,000</div>
+                                <div class="text-xs font-bold text-slate-800 mb-1">
+                                    {{ $isRtl ? 'مرضى سنوياً يتلقون رعايتنا' : 'Patients Treated Annually' }}
+                                </div>
+                                <div class="text-[11px] text-slate-500 leading-relaxed">
+                                    {{ $isRtl ? 'نعتز بثقة أسرهم ضمن خدمات العيادات الخارجية ومراكز الطوارئ.' : 'Entrusted by families across outpatient clinics and trauma centers.' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: 45+ Units -->
+                        <div class="hover-lift bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-lg">
+                                    <i class="fas fa-hospital-user"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                    {{ $isRtl ? 'تجهيز عالمي' : 'Global Standards' }}
+                                </span>
+                            </div>
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-black text-slate-900 mb-1" data-counter="45" data-prefix="+">+45</div>
+                                <div class="text-xs font-bold text-slate-800 mb-1">
+                                    {{ $isRtl ? 'أقسام ووحدات علاجية تخصصية' : 'Specialized Clinical Units' }}
+                                </div>
+                                <div class="text-[11px] text-slate-500 leading-relaxed">
+                                    {{ $isRtl ? 'تغطي كافة الضرورات الجراحية والتشخيصية والرعاية المركزة.' : 'Covering all surgical, diagnostic, and critical intensive care needs.' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: 15 Digital OR Capsules -->
+                        <div class="hover-lift bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg">
+                                    <i class="fas fa-shield-virus"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">
+                                    {{ $isRtl ? 'معيار ألماني' : 'German Standard' }}
+                                </span>
+                            </div>
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-black text-slate-900 mb-1" data-counter="15">15</div>
+                                <div class="text-xs font-bold text-slate-800 mb-1">
+                                    {{ $isRtl ? 'غرفة عمليات كبسولة رقمية' : 'Digital OR Capsules' }}
+                                </div>
+                                <div class="text-[11px] text-slate-500 leading-relaxed">
+                                    {{ $isRtl ? 'أنظمة تعقيم هوائي نقي ومجهزة بأحدث روبوتات الجراحة الدقيقة.' : 'Laminar air sterilization equipped with state-of-the-art robotic surgery.' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Under 7 Minutes ER Response -->
+                        <div class="hover-lift bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="card-icon-box w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-lg">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full">
+                                    {{ $isRtl ? 'استجابة فائقة' : 'Ultra Fast' }}
+                                </span>
+                            </div>
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-black text-slate-900 mb-1">&lt; 7 دقائق</div>
+                                <div class="text-xs font-bold text-slate-800 mb-1">
+                                    {{ $isRtl ? 'متوسط وقت التدخل السريع للحوادث' : 'Average Trauma Response Time' }}
+                                </div>
+                                <div class="text-[11px] text-slate-500 leading-relaxed">
+                                    {{ $isRtl ? 'فريق طوارئ متأهب على مدار الساعة لإنقاذ الحالات فوراً.' : 'Dedicated critical trauma team ready 24/7 for life-saving care.' }}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Text & Accreditations (Right in RTL, Left in LTR) -->
+                <div class="lg:col-span-5 order-1 lg:order-2 text-center lg:text-start">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 text-blue-800 text-xs font-bold mb-4">
+                        <i class="fas fa-certificate text-sky-600"></i>
+                        <span>{{ $isRtl ? 'شهادات واعتمادات دولية' : 'Accreditations & Quality' }}</span>
+                    </div>
+
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight mb-4">
+                        {{ $isRtl ? 'أرقام وإنجازات تعكس ثقة مجتمعنا ورسالتنا الإنسانية' : 'Numbers & Milestones Reflecting Community Trust' }}
+                    </h2>
+
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-8">
+                        {{ $isRtl 
+                            ? 'نفخر بأعلى معايير جودة الرعاية الطبية وفق متطلبات الهيئة المشتركة الدولية (JCI) والمركز السعودي لاعتماد المنشآت الصحية (CBAHI).' 
+                            : 'Proud to operate under rigorous global benchmarks aligned with Joint Commission International (JCI) and CBAHI standards.' }}
+                    </p>
+
+                    <!-- Accreditation Badges -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                        <div class="hover-lift flex items-center gap-3 bg-white px-4 py-2.5 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <i class="fas fa-shield-halved text-sky-600 text-2xl"></i>
+                            <div class="text-start">
+                                <div class="text-xs font-black text-slate-900">JCI Accredited</div>
+                                <div class="text-[10px] text-slate-500 font-semibold">{{ $isRtl ? 'اعتماد الجودة العالمي' : 'International Quality' }}</div>
+                            </div>
+                        </div>
+
+                        <div class="hover-lift flex items-center gap-3 bg-white px-4 py-2.5 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <i class="fas fa-medal text-emerald-600 text-2xl"></i>
+                            <div class="text-start">
+                                <div class="text-xs font-black text-slate-900">CBAHI</div>
+                                <div class="text-[10px] text-slate-500 font-semibold">{{ $isRtl ? 'اعتماد المركز السعودي' : 'Saudi National Accreditation' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         7. MEDICAL DOCTORS & FACULTY CAROUSEL SECTION (#doctors - 3 Visible Cards with Continuous Loop)
+         ========================================================================= -->
+    <section
+        id="doctors"
+        class="py-16 bg-white relative"
+        x-data="infiniteCarousel()"
+    >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header with Navigation Buttons -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 reveal">
+                <div>
+                    <span class="text-sky-600 font-bold text-xs uppercase tracking-wider bg-sky-50 px-3.5 py-1 rounded-full">
+                        {{ $isRtl ? 'الكادر الطبي الاستشاري' : 'Consultant Faculty' }}
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-3 mb-2">
+                        {{ $isRtl ? 'نخبة كبار الأطباء والاستشاريين' : 'Distinguished Senior Consultants' }}
+                    </h2>
+                    <p class="text-slate-600 text-xs sm:text-sm max-w-xl">
+                        {{ $isRtl ? 'اختر طبيبك المعالج من بين خيرة الخبرات الاستشارية (3 في كل عرض) واستخدم الأسهم للتنقل المستمر.' : 'Meet senior faculty members (3 at a time) with continuous loop side navigation.' }}
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- 3-Card Carousel Wrapper -->
+            <div class="slider-wrapper">
+                <!-- Floating Side Prev Button -->
+                <button
+                    type="button"
+                    @click="prev()"
+                    class="slider-side-btn btn-prev flex"
+                    aria-label="Previous"
+                >
+                    <i class="fas {{ $isRtl ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i>
+                </button>
+
+                <!-- Cards Slider Track inside Viewport -->
+                <div class="slider-viewport">
+                    <div x-ref="track" class="slider-track">
+                    @forelse ($doctors as $doc)
+                        <div class="slider-card hover-lift bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col justify-between">
+                            <div>
+                                <!-- Image box -->
+                                <div class="h-56 bg-slate-100 overflow-hidden relative group">
+                                    <img
+                                        src="{{ $doc->avatar_url }}"
+                                        alt="{{ $doc->name }}"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        loading="lazy"
+                                    >
+                                    <span class="absolute top-3 end-3 bg-white/90 backdrop-blur-md text-[#084c61] text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                                        {{ $doc->specialization_name }}
+                                    </span>
+                                </div>
+
+                                <!-- Body -->
+                                <div class="p-5">
+                                    <div class="flex items-center justify-between text-xs mb-1">
+                                        <div class="text-amber-500 font-bold flex items-center gap-1">
+                                            <i class="fas fa-star text-[11px]"></i>
+                                            <span>{{ number_format((float)($doc->rating ?? 4.9), 1) }}</span>
+                                        </div>
+                                        <span class="text-slate-400 text-[11px]">
+                                            {{ $isRtl ? '+12 سنة خبرة' : '+12 yrs exp' }}
+                                        </span>
+                                    </div>
+
+                                    <h4 class="text-base font-bold text-slate-900 mb-1">
+                                        {{ $doc->name }}
+                                    </h4>
+                                    <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
+                                        {{ $doc->bio ?? ($isRtl ? 'استشاري حاصل على الزمالة الدولية، متخصص في أحدث التدخلات الدقيقة.' : 'Senior consultant specialized in modern interventional protocols.') }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="p-5 pt-0">
+                                <a href="{{ route('register') }}" class="btn-ripple w-full py-2.5 px-4 rounded-xl bg-sky-50 hover:bg-[#084c61] text-sky-700 hover:text-white font-bold text-xs flex items-center justify-center gap-2 transition duration-200">
+                                    <i class="fas fa-calendar-check text-xs"></i>
+                                    <span>{{ $isRtl ? 'حجز موعد كشف' : 'Book Consultation' }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="slider-card bg-white rounded-2xl p-6 text-center text-slate-400">
+                            {{ $isRtl ? 'لا يوجد أطباء متاحون حالياً' : 'No doctors available' }}
+                        </div>
+                    @endforelse
+                    </div>
+                </div>
+
+                <!-- Floating Side Next Button -->
+                <button
+                    type="button"
+                    @click="next()"
+                    class="slider-side-btn btn-next flex"
+                    aria-label="Next"
+                >
+                    <i class="fas {{ $isRtl ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         8. SENIOR BOARD CERTIFIED CONSULTANTS BANNER
+         ========================================================================= -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-16 reveal">
+        <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-10 lg:p-12 shadow-sm hover-lift">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+
+                <!-- Left Column: Doctor Consultation Image -->
+                <div class="lg:col-span-6 relative">
+                    <div class="rounded-2xl overflow-hidden shadow-lg border-2 border-slate-100 relative group">
+                        <img
+                            src="{{ URL::asset('Dashboard/img/doctor-consultation.jpg') }}"
+                            alt="Aura Hospital Senior Medical Faculty"
+                            class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <!-- Floating Dark Glassmorphic Pill at bottom of image -->
+                        <div class="absolute bottom-4 inset-x-4 bg-slate-900/85 backdrop-blur-md text-white p-3.5 rounded-xl text-center shadow-lg">
+                            <div class="text-xs font-bold">{{ $isRtl ? 'عيادات الاستشارة الخارجية المتكاملة' : 'Integrated Outpatient Specialty Clinics' }}</div>
+                            <div class="text-[10px] text-slate-300 mt-0.5">{{ $isRtl ? 'أكثر من 40 عيادة تخصصية بأحدث تجهيزات الفحص السريع' : 'Over 40 clinics equipped with instant diagnostics' }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Consultant Faculty Details -->
+                <div class="lg:col-span-6 text-start">
+                    <span class="text-sky-600 font-bold text-xs uppercase tracking-wider bg-sky-50 px-3.5 py-1 rounded-full">
+                        {{ $isRtl ? 'النخبة الطبية' : 'Medical Faculty' }}
+                    </span>
+
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3 mb-4 leading-snug">
+                        {{ $isRtl ? 'استشاريون معتمدون من البورد الأمريكي والكندي والأوروبي' : 'Board-Certified Consultants (American, Canadian & European)' }}
+                    </h2>
+
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+                        {{ $isRtl 
+                            ? 'نحرص على استقطاب أعضاء يمتلكون سجلات بحثية وعلاجية مشهوداً لها دولياً، يرافقهم طاقم تمريض مدرب على بروتوكولات الرعاية التخصصية وإدارة الصدمات للنهوض والرعاية.' 
+                            : 'We host internationally recognized physicians supported by specialized clinical nursing trained in trauma management and advanced recovery.' }}
+                    </p>
+
+                    <!-- 3 Checklist Items -->
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center gap-3 text-xs font-semibold text-slate-700">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </span>
+                            <span>{{ $isRtl ? 'فحص شامل ومطابقة التوافق الطبي قبل أي تدخل دوائي' : 'Comprehensive screening and drug compatibility before treatment' }}</span>
+                        </div>
+
+                        <div class="flex items-center gap-3 text-xs font-semibold text-slate-700">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </span>
+                            <span>{{ $isRtl ? 'أحدث أنظمة الأشعة والتداخلات الدقيقة والمناظير على مدار الساعة' : 'State-of-the-art 24/7 radiology, interventional, and endoscopy units' }}</span>
+                        </div>
+
+                        <div class="flex items-center gap-3 text-xs font-semibold text-slate-700">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </span>
+                            <span>{{ $isRtl ? 'استشارات صوتية ومباشرة عن بعد عبر بوابة المريض الذكية' : 'Remote telehealth audio/video consultations via the patient portal' }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Button: Browse Doctors -->
+                    <a href="#doctors" class="btn-ripple inline-flex items-center gap-2.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold px-6 py-3 rounded-xl text-xs transition">
+                        <i class="fas fa-user-doctor text-sky-600"></i>
+                        <span>{{ $isRtl ? 'تصفح الدليل الكامل للأطباء والاستشاريين' : 'Browse All Doctors & Faculty' }}</span>
+                        <i class="fas fa-arrow-left text-[11px]"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         9. DIGITAL PHARMACY SECTION (#pharmacy)
+         ========================================================================= -->
+    <section id="pharmacy" class="py-16 bg-gradient-to-br from-emerald-50/60 via-teal-50/30 to-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+
+                <!-- Left Content -->
+                <div class="lg:col-span-6 reveal reveal-delay-1 text-start">
+                    <span class="text-emerald-700 font-bold text-xs uppercase tracking-wider bg-emerald-100/70 px-3.5 py-1 rounded-full">
+                        {{ $isRtl ? 'الصيدلية الذكية' : 'Smart Digital Pharmacy' }}
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-3 mb-4 leading-tight">
+                        {{ $isRtl ? 'صيدلية المستشفى الرقمية على مدار 24 ساعة' : '24/7 Digital In-House Pharmacy' }}
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+                        {{ $isRtl 
+                            ? 'صرف فوري للوصفات الطبية الإلكترونية المعتمدة مع خدمة توصيل الأدوية للمنزل ومتابعة برامج العلاج للأمراض المزمنة بدقة متناهية.' 
+                            : 'Automated dispensing of verified e-prescriptions, doorstep medication delivery, and chronic refill tracking.' }}
+                    </p>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900">{{ $isRtl ? 'تزامن مباشر مع ملف المريض' : 'Direct Electronic Health Record Sync' }}</h4>
+                                <p class="text-[11px] text-slate-500">{{ $isRtl ? 'تصل الوصفة للصيدلي بمجرد اعتماد الطبيب لها في العيادة.' : 'Prescriptions flow directly into the pharmacy queue.' }}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900">{{ $isRtl ? 'فحص التعارضات الدوائية آلياً' : 'Automated Drug Safety & Interaction Screening' }}</h4>
+                                <p class="text-[11px] text-slate-500">{{ $isRtl ? 'نظام ذكي ينبه الصيدلي لأي تعارضات كيميائية أو حساسية للحفاظ على سلامتك.' : 'Safety algorithms check allergy profiles and medication contraindications.' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('login') }}" class="btn-shimmer btn-ripple inline-flex items-center gap-2 bg-[#047857] hover:bg-[#065f46] text-white px-7 py-3 rounded-xl font-bold text-xs shadow transition">
+                        <i class="fas fa-pills text-xs"></i>
+                        <span>{{ $isRtl ? 'طلب الأدوية عبر البوابة الإلكترونية' : 'Request Medication Online' }}</span>
+                    </a>
+                </div>
+
+                <!-- Right Vibrant Showcase Card -->
+                <div class="lg:col-span-6 reveal reveal-delay-2">
+                    <div class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-3xl p-8 sm:p-10 shadow-xl relative overflow-hidden hover-lift">
+                        <div class="ambient-blob-1 absolute -top-10 -right-10 w-48 h-48 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-white/20 text-white flex items-center justify-center text-3xl mb-5 shadow-sm">
+                            <i class="fas fa-prescription-bottle-medical"></i>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold mb-3">
+                            {{ $isRtl ? 'متابعة خطتك الدوائية وإعادة الصرف بضغطة زر' : 'Medication Refills & Delivery' }}
+                        </h3>
+                        <p class="text-emerald-100 text-xs sm:text-sm leading-relaxed mb-6 max-w-md">
+                            {{ $isRtl 
+                                ? 'سجل دخولك الآن عبر بوابة المرضى لمراجعة الأدوية المصروفة ومواعيد الجرعات وجدولة التوصيل المباشر.' 
+                                : 'Log in to your patient portal to review active prescriptions, dosage schedules, and doorstep delivery.' }}
+                        </p>
+                        <a href="{{ route('login') }}" class="btn-ripple inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-emerald-800 font-bold text-xs shadow hover:bg-slate-50 transition">
+                            <i class="fas fa-sign-in-alt text-xs"></i>
+                            <span>{{ $isRtl ? 'الدخول لبوابة الصيدلية' : 'Access Pharmacy Portal' }}</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         10. MEDICAL ARTICLES & HEALTH INFO CAROUSEL (#medical-info - 3 Visible Cards with Continuous Loop)
+         ========================================================================= -->
+    <section
+        id="medical-info"
+        class="py-16 bg-white relative"
+        x-data="infiniteCarousel()"
+    >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header (Clean header without redundant top arrows) -->
+            <div class="max-w-3xl mb-10 reveal text-start">
+                <span class="text-sky-600 font-bold text-xs uppercase tracking-wider bg-sky-50 px-3.5 py-1 rounded-full">
+                    {{ $isRtl ? 'التثقيف والتوعية الصحية' : 'Health Knowledge & Insights' }}
+                </span>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-3 mb-2">
+                    {{ $isRtl ? 'المعلومات الطبية وإرشادات نمط الحياة السليم' : 'Clinical Insights & Medical Advice' }}
+                </h2>
+                <p class="text-slate-600 text-xs sm:text-sm max-w-xl">
+                    {{ $isRtl ? 'مقالات وإرشادات صحية موثوقة بقلم كبار أطبائنا لتعزيز صحتك وسلامة عائلتك (3 في كل عرض).' : 'Evidence-based healthcare articles (3 visible at a time) with continuous card-by-card navigation.' }}
+                </p>
+            </div>
+
+            <!-- 3-Card Carousel Wrapper -->
+            <div class="slider-wrapper">
+                <!-- Floating Side Prev Button -->
+                <button
+                    type="button"
+                    @click="prev()"
+                    class="slider-side-btn btn-prev flex"
+                    aria-label="Previous"
+                >
+                    <i class="fas {{ $isRtl ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i>
+                </button>
+
+                <!-- Cards Slider Track inside Viewport -->
+                <div class="slider-viewport">
+                    <div x-ref="track" class="slider-track">
+                    <!-- Article 1 -->
+                    <article class="slider-card hover-lift bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="h-44 bg-rose-50 flex items-center justify-center text-rose-500 text-5xl">
+                                <i class="fas fa-heart-pulse"></i>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2">
+                                    <span class="text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full">{{ $isRtl ? 'صحة القلب' : 'Cardiology' }}</span>
+                                    <span>{{ $isRtl ? 'قراءة 4 دقائق' : '4 min read' }}</span>
+                                </div>
+                                <h4 class="text-sm font-bold text-slate-900 mb-2 leading-snug">
+                                    {{ $isRtl ? 'أهم 5 علامات تحذيرية لصحة القلب لا يجب تجاهلها أبداً' : '5 Early Cardiovascular Warning Signs Never to Ignore' }}
+                                </h4>
+                                <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+                                    {{ $isRtl ? 'إرشادات استشاريي القلب حول المؤشرات الحيوية المبكرة وأهمية الفحص الدوري لمنع الأزمات القلبية المفاجئة.' : 'Key indicators for early intervention and preventive cardiology recommendations.' }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                            <span>{{ $isRtl ? 'بقلم: د. استشاري القلب' : 'By Cardiology Faculty' }}</span>
+                            <span class="text-sky-600 font-bold hover:underline cursor-pointer">{{ $isRtl ? 'اقرأ المزيد' : 'Read More' }}</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article class="slider-card hover-lift bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="h-44 bg-emerald-50 flex items-center justify-center text-emerald-500 text-5xl">
+                                <i class="fas fa-apple-whole"></i>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2">
+                                    <span class="text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">{{ $isRtl ? 'التغذية العلاجية' : 'Nutrition' }}</span>
+                                    <span>{{ $isRtl ? 'قراءة 3 دقائق' : '3 min read' }}</span>
+                                </div>
+                                <h4 class="text-sm font-bold text-slate-900 mb-2 leading-snug">
+                                    {{ $isRtl ? 'الدليل الغذائي المتكامل لمرضى السكري والضغط' : 'Comprehensive Dietary Protocol for Diabetes & Hypertension' }}
+                                </h4>
+                                <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+                                    {{ $isRtl ? 'نصائح عملية لتنظيم الوجبات وضبط مستويات الجلوكوز في الدم وتعزيز اللياقة البدنية والوقاية من المضاعفات.' : 'Actionable nutritional advice for maintaining stable blood glycemic indexes and wellness.' }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                            <span>{{ $isRtl ? 'بقلم: عيادة التغذية' : 'By Clinical Nutrition' }}</span>
+                            <span class="text-sky-600 font-bold hover:underline cursor-pointer">{{ $isRtl ? 'اقرأ المزيد' : 'Read More' }}</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article class="slider-card hover-lift bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="h-44 bg-purple-50 flex items-center justify-center text-purple-500 text-5xl">
+                                <i class="fas fa-shield-virus"></i>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2">
+                                    <span class="text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full">{{ $isRtl ? 'المناعة والوقاية' : 'Immunology' }}</span>
+                                    <span>{{ $isRtl ? 'قراءة 5 دقائق' : '5 min read' }}</span>
+                                </div>
+                                <h4 class="text-sm font-bold text-slate-900 mb-2 leading-snug">
+                                    {{ $isRtl ? 'طرق تقوية المناعة الطبيعية خلال مواسم تغير الطقس' : 'Strengthening Natural Immunity During Seasonal Transitions' }}
+                                </h4>
+                                <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+                                    {{ $isRtl ? 'إرشادات الأطباء حول لقاحات الإنفلونزا والمكملات الغذائية لدعم مناعة كبار السن والأطفال وتجنب العدوى.' : 'Specialist advice on vaccinations and lifestyle practices for pediatric and geriatric health.' }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                            <span>{{ $isRtl ? 'بقلم: قسم المناعة' : 'By Immunology Dept' }}</span>
+                            <span class="text-sky-600 font-bold hover:underline cursor-pointer">{{ $isRtl ? 'اقرأ المزيد' : 'Read More' }}</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 4 -->
+                    <article class="slider-card hover-lift bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="h-44 bg-sky-50 flex items-center justify-center text-sky-500 text-5xl">
+                                <i class="fas fa-bone"></i>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2">
+                                    <span class="text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full">{{ $isRtl ? 'جراحة العظام' : 'Orthopedics' }}</span>
+                                    <span>{{ $isRtl ? 'قراءة 4 دقائق' : '4 min read' }}</span>
+                                </div>
+                                <h4 class="text-sm font-bold text-slate-900 mb-2 leading-snug">
+                                    {{ $isRtl ? 'أحدث التطورات في استبدال المفاصل بالذراع الروبوتي' : 'Robotic Knee & Hip Arthroplasty Innovations' }}
+                                </h4>
+                                <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+                                    {{ $isRtl ? 'كيف تسهم جراحة العظام بمساعدة الروبوت في تقليل فترة الإقامة بالمستشفى والعودة السريعة للحياة الطبيعية.' : 'How robotic precision surgery minimizes recovery time and optimizes implant longevity.' }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                            <span>{{ $isRtl ? 'بقلم: جراحة المفاصل' : 'By Joint Surgery' }}</span>
+                            <span class="text-sky-600 font-bold hover:underline cursor-pointer">{{ $isRtl ? 'اقرأ المزيد' : 'Read More' }}</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 5 -->
+                    <article class="slider-card hover-lift bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="h-44 bg-indigo-50 flex items-center justify-center text-indigo-500 text-5xl">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2">
+                                    <span class="text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full">{{ $isRtl ? 'المخ والأعصاب' : 'Neurology' }}</span>
+                                    <span>{{ $isRtl ? 'قراءة 3 دقائق' : '3 min read' }}</span>
+                                </div>
+                                <h4 class="text-sm font-bold text-slate-900 mb-2 leading-snug">
+                                    {{ $isRtl ? 'الصداع المزمن وأعراض الجهاز العصبي: متى يجب استشارة الطبيب؟' : 'Chronic Headaches: When to Seek Neurological Consultation' }}
+                                </h4>
+                                <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+                                    {{ $isRtl ? 'مؤشرات دقيقة للتفرقة بين الصداع التوتري الشائع ومؤشرات السكتة الدماغية أو اضطرابات الأعصاب الدقيقة.' : 'Distinguishing tension headaches from neurological red flags requiring rapid intervention.' }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                            <span>{{ $isRtl ? 'بقلم: استشاري الأعصاب' : 'By Neurology Faculty' }}</span>
+                            <span class="text-sky-600 font-bold hover:underline cursor-pointer">{{ $isRtl ? 'اقرأ المزيد' : 'Read More' }}</span>
+                        </div>
+                    </article>
+                    </div>
+                </div>
+
+                <!-- Floating Side Next Button -->
+                <button
+                    type="button"
+                    @click="next()"
+                    class="slider-side-btn btn-next flex"
+                    aria-label="Next"
+                >
+                    <i class="fas {{ $isRtl ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         11. ONLINE BOOKING & PATIENT PORTAL CTA BANNER
+         ========================================================================= -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-20 reveal">
+        <div class="bg-gradient-to-r from-[#035c81] via-[#0284c7] to-[#084c61] rounded-3xl p-8 sm:p-12 lg:p-14 text-white shadow-2xl relative overflow-hidden">
+            <!-- Decorative Background Graphic -->
+            <div class="ambient-blob-1 absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+
+                <!-- Left Column: Instant Booking Floating Card -->
+                <div class="lg:col-span-5 order-2 lg:order-1">
+                    <div class="bg-white rounded-2xl p-6 text-slate-900 shadow-2xl max-w-md mx-auto lg:mx-0">
+                        <div class="flex items-center gap-3 pb-4 mb-4 border-b border-slate-100">
+                            <div class="card-icon-box w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold">
+                                <i class="fas fa-calendar-check text-base"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900">
+                                    {{ $isRtl ? 'حجز موعد عاجل' : 'Instant Appointment Booking' }}
+                                </h4>
+                                <p class="text-[10px] text-slate-500">
+                                    {{ $isRtl ? 'تأكيد فوري برقم تذكرة رقمية' : 'Instant confirmation with digital pass' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <form action="{{ route('register') }}" method="GET" class="space-y-3.5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">
+                                    {{ $isRtl ? 'رقم الهوية الوطنية أو الإقامة' : 'National ID / Residence Number' }}
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="1xxxxxxxx"
+                                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 transition"
+                                >
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">
+                                    {{ $isRtl ? 'رقم الجوال لتلقي الرمز' : 'Mobile Phone Number' }}
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="055 000 0000"
+                                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 transition"
+                                >
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="btn-shimmer btn-ripple w-full bg-[#047857] hover:bg-[#065f46] text-white py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow transition"
+                            >
+                                <i class="fas fa-check text-xs"></i>
+                                <span>{{ $isRtl ? 'تأكيد الحجز الفوري' : 'Confirm Instant Booking' }}</span>
+                            </button>
+                        </form>
+
+                        <p class="text-[10px] text-slate-400 text-center mt-3">
+                            {{ $isRtl ? 'بياناتك محمية ومشفرة وفق أعلى معايير أمن المعلومات الصحية' : 'Protected by strict healthcare encryption standards' }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Portal Callout & Action Buttons -->
+                <div class="lg:col-span-7 order-1 lg:order-2 text-center lg:text-start">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 text-white border border-white/20 text-xs font-bold mb-4">
+                        <i class="fas fa-shield-alt text-xs"></i>
+                        <span>{{ $isRtl ? 'خدمة دفع وحجز فوري' : 'Instant Payment & Booking' }}</span>
+                    </div>
+
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-snug mb-4">
+                        {{ $isRtl ? 'احجز كشفك الطبي الإلكتروني وسجل ملفك الصحي بضغطة زر' : 'Book Your Electronic Medical Appointment & Register in Seconds' }}
+                    </h2>
+
+                    <p class="text-xs sm:text-sm text-sky-100 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+                        {{ $isRtl 
+                            ? 'وفّر وقت الانتظار وأتم كافة مواعيدك، وتابع الفحوصات الطبية، وصرف الأدوية عبر بوابتنا الإلكترونية الآمنة والمعتمدة رسمياً لأجلك.' 
+                            : 'Save waiting time, manage visits, monitor laboratory results, and request prescriptions through our certified patient portal.' }}
+                    </p>
+
+                    <!-- Buttons Row -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                        <a href="{{ route('register') }}" class="btn-shimmer btn-ripple bg-white hover:bg-slate-100 text-[#084c61] font-bold px-6 py-3 rounded-xl text-xs shadow-md transition flex items-center gap-2">
+                            <i class="fas fa-user-plus text-xs"></i>
+                            <span>{{ $isRtl ? 'تسجيل حساب مريض جديد' : 'Register New Patient' }}</span>
+                        </a>
+
+                        <a href="{{ route('login') }}" class="btn-shimmer btn-ripple bg-transparent hover:bg-white/10 border border-white/40 text-white font-bold px-6 py-3 rounded-xl text-xs transition flex items-center gap-2">
+                            <i class="fas fa-sign-in-alt text-xs"></i>
+                            <span>{{ $isRtl ? 'الدخول لتداول الملف الطبي' : 'Sign in to Patient Portal' }}</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         12. FOOTER SECTION
+         ========================================================================= -->
+    <footer class="bg-white border-t border-slate-200/80 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-100">
+
+                <!-- Col 1: Brand & Accreditations -->
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center">
+                            <i class="fas fa-hospital text-sm"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-base font-extrabold text-slate-900 leading-tight">
+                                {{ $isRtl ? 'مستشفى أورا التخصصي' : 'Aura Medical Hospital' }}
+                            </span>
+                            <span class="text-[10px] text-sky-600 font-semibold">
+                                {{ $isRtl ? 'Aura Medical Hospital' : 'Healthcare Center' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-500 leading-relaxed mb-6">
+                        {{ $isRtl 
+                            ? 'صرح طبي رائد يجمع نخبة العقول الطبية وأحدث تقنيات التشخيص والجراحة لتقديم بيئة استشفائية آمنة وفق أعلى معايير الجودة العالمية.' 
+                            : 'A premier medical institution combining world-class clinical minds and modern diagnostic technologies.' }}
+                    </p>
+
+                    <!-- Micro Accreditation Badges -->
+                    <div class="flex items-center gap-3 text-[11px] font-bold text-slate-600">
+                        <span class="inline-flex items-center gap-1.5"><i class="fas fa-shield-alt text-sky-600"></i> {{ $isRtl ? 'معتمد من كباهي' : 'CBAHI Accredited' }}</span>
+                        <span class="text-slate-300">|</span>
+                        <span class="inline-flex items-center gap-1.5"><i class="fas fa-award text-emerald-600"></i> JCI Quality</span>
+                    </div>
+                </div>
+
+                <!-- Col 2: Clinical Departments & Clinics -->
+                <div>
+                    <h5 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">
+                        {{ $isRtl ? 'الأقسام الطبية والعيادات' : 'Departments & Clinics' }}
+                    </h5>
+                    <ul class="space-y-2.5 text-xs text-slate-500">
+                        <li><a href="#departments" class="hover:text-sky-600 transition">{{ $isRtl ? 'مراكز جراحة القلب والأوعية الدموية' : 'Cardiovascular Surgery Center' }}</a></li>
+                        <li><a href="#departments" class="hover:text-sky-600 transition">{{ $isRtl ? 'قسم السكتة الدماغية والأعصاب المتقدمة' : 'Stroke & Advanced Neurology' }}</a></li>
+                        <li><a href="#departments" class="hover:text-sky-600 transition">{{ $isRtl ? 'مراكز جراحة المفاصل والعمود الفقري' : 'Joint & Spine Surgery Center' }}</a></li>
+                        <li><a href="#departments" class="hover:text-sky-600 transition">{{ $isRtl ? 'وحدة الأورام والعلاج الإشعاعي الدقيق' : 'Oncology & Precision Radiotherapy' }}</a></li>
+                        <li><a href="#departments" class="hover:text-sky-600 transition">{{ $isRtl ? 'قسم النساء والولادة وطب الأطفال الفائق' : 'Maternity & Neonatal Care' }}</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Quick Services & Links -->
+                <div>
+                    <h5 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">
+                        {{ $isRtl ? 'روابط وخدمات سريعة' : 'Quick Services & Links' }}
+                    </h5>
+                    <ul class="space-y-2.5 text-xs text-slate-500">
+                        <li><a href="{{ route('register') }}" class="hover:text-sky-600 transition">{{ $isRtl ? 'حجز موعد عيادة خارجية' : 'Book Outpatient Visit' }}</a></li>
+                        <li><a href="{{ route('login') }}" class="hover:text-sky-600 transition">{{ $isRtl ? 'الاستعلام عن نتائج التحاليل والأشعة' : 'Lab & Radiology Results' }}</a></li>
+                        <li><a href="#pharmacy" class="hover:text-sky-600 transition">{{ $isRtl ? 'دليل الأدوية وصيدلية أورا الذكية' : 'Digital In-House Pharmacy' }}</a></li>
+                        <li><a href="{{ route('home') }}" class="hover:text-sky-600 transition">{{ $isRtl ? 'سياسات المرضى والحقوق والمسؤولية' : 'Patient Bill of Rights' }}</a></li>
+                        <li><a href="#doctors" class="hover:text-sky-600 transition">{{ $isRtl ? 'جدول العيادات وتوافر الأطباء' : 'Physician Duty Schedules' }}</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Hours & Branch Info -->
+                <div>
+                    <h5 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">
+                        {{ $isRtl ? 'ساعات العمل والفروع' : 'Hours & Branches' }}
+                    </h5>
+                    <div class="space-y-3 text-xs text-slate-600">
+                        <div class="flex items-center gap-2.5">
+                            <i class="far fa-clock text-slate-400"></i>
+                            <span>{{ $isRtl ? 'العيادات الخارجية: 8:00 ص - 10:00 م' : 'Outpatient: 8:00 AM - 10:00 PM' }}</span>
+                        </div>
+                        <div class="flex items-center gap-2.5 text-rose-600 font-bold">
+                            <i class="fas fa-truck-medical"></i>
+                            <span>{{ $isRtl ? 'قسم الطوارئ والإسعاف: متاح 24/7' : 'Emergency & Trauma: 24/7 Active' }}</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <i class="fas fa-location-dot text-slate-400 mt-0.5"></i>
+                            <span>{{ $hospitalAddress }}</span>
+                        </div>
+                        <div class="flex items-center gap-2.5 text-slate-800 font-bold">
+                            <i class="fas fa-phone text-sky-600"></i>
+                            <span dir="ltr">{{ $emergencyPhone }} / 011 000 1900</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright Strip -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+                <div>
+                    {{ $isRtl 
+                        ? 'جميع الحقوق محفوظة © ' . date('Y') . ' مستشفى أورا التخصصي - مرخص من الهيئة العامة للاعتماد والرقابة الصحية.' 
+                        : '© ' . date('Y') . ' Aura Medical Hospital. All rights reserved. Certified by Health Accreditation Authority.' }}
+                </div>
+                <div class="text-[11px] text-slate-400">
+                    {{ $isRtl ? 'من شأنها تسليم الرعاية التي ترضيكم جميعاً' : 'Dedicated to delivering care that brings total peace of mind' }}
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to top button -->
+    <button id="back-to-top-btn" class="btn-back-to-top" aria-label="{{ $isRtl ? 'الرجوع للأعلى' : 'Back to top' }}">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+</body>
 </html>

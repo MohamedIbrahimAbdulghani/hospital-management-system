@@ -16,35 +16,45 @@ Route::group([
     ],
 ], function () {
 
-    // 1. Admin Portal Routes
+    // 1. Admin Portal Routes: /admin/dashboard
     Route::middleware(['auth', 'role:admin'])
-        ->prefix('dashboard/admin')
+        ->prefix('admin')
         ->name('admin.')
         ->group(function () {
-            Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+            Route::get('/settings', [\App\Http\Controllers\Dashboard\AdminSettingsController::class, 'index'])->name('settings.index');
+            Route::post('/settings', [\App\Http\Controllers\Dashboard\AdminSettingsController::class, 'update'])->name('settings.update');
         });
+    Route::get('/dashboard/admin', fn () => redirect()->route('admin.dashboard'))
+        ->middleware(['auth', 'role:admin']);
 
-    // 2. Doctor Portal Routes
+    // 2. Doctor Portal Routes: /doctor/dashboard
     Route::middleware(['auth', 'role:doctor'])
-        ->prefix('dashboard/doctor')
+        ->prefix('doctor')
         ->name('doctor.')
         ->group(function () {
-            Route::get('/', [DoctorDashboardController::class, 'index'])->name('dashboard');
+            Route::get('/dashboard', [DoctorDashboardController::class, 'index'])->name('dashboard');
         });
+    Route::get('/dashboard/doctor', fn () => redirect()->route('doctor.dashboard'))
+        ->middleware(['auth', 'role:doctor']);
 
-    // 3. HR Portal Routes
+    // 3. HR Portal Routes: /hr/dashboard
     Route::middleware(['auth', 'role:hr'])
-        ->prefix('dashboard/hr')
+        ->prefix('hr')
         ->name('hr.')
         ->group(function () {
-            Route::get('/', [HrDashboardController::class, 'index'])->name('dashboard');
+            Route::get('/dashboard', [HrDashboardController::class, 'index'])->name('dashboard');
         });
+    Route::get('/dashboard/hr', fn () => redirect()->route('hr.dashboard'))
+        ->middleware(['auth', 'role:hr']);
 
-    // 4. Patient Portal Routes
+    // 4. Patient Portal Routes: /patient/dashboard
     Route::middleware(['auth', 'role:patient'])
-        ->prefix('dashboard/patient')
+        ->prefix('patient')
         ->name('patient.')
         ->group(function () {
-            Route::get('/', [PatientDashboardController::class, 'index'])->name('dashboard');
+            Route::get('/dashboard', [PatientDashboardController::class, 'index'])->name('dashboard');
         });
+    Route::get('/dashboard/patient', fn () => redirect()->route('patient.dashboard'))
+        ->middleware(['auth', 'role:patient']);
 });

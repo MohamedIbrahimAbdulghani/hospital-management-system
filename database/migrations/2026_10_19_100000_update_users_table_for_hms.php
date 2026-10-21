@@ -14,19 +14,29 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // is_active instead of hard-delete
-            $table->boolean('is_active')->default(true)->after('remember_token');
+            if (! Schema::hasColumn('users', 'is_active')) {
+                $table->boolean('is_active')->default(true)->after('remember_token');
+            }
 
             // Force password change on first login (for staff created by admin)
-            $table->boolean('must_change_password')->default(false)->after('is_active');
+            if (! Schema::hasColumn('users', 'must_change_password')) {
+                $table->boolean('must_change_password')->default(false)->after('is_active');
+            }
 
             // Soft deletes
-            $table->softDeletes()->after('updated_at');
+            if (! Schema::hasColumn('users', 'deleted_at')) {
+                $table->softDeletes()->after('updated_at');
+            }
 
             // Phone number
-            $table->string('phone', 20)->nullable()->after('name');
+            if (! Schema::hasColumn('users', 'phone')) {
+                $table->string('phone', 20)->nullable()->after('name');
+            }
 
             // Avatar / profile picture
-            $table->string('avatar')->nullable()->after('phone');
+            if (! Schema::hasColumn('users', 'avatar')) {
+                $table->string('avatar')->nullable()->after('phone');
+            }
         });
     }
 

@@ -1,57 +1,17 @@
-@php
-    $selectedRole = request('role', old('role'));
-    $roleInfo = match ($selectedRole) {
-        'admin' => [
-            'name_ar' => 'مدير النظام',
-            'name_en' => 'System Admin',
-            'class'   => 'role-admin',
-            'icon'    => 'fas fa-shield-alt',
-            'emoji'   => '🛡️',
-            'desc_ar' => 'لوحة تحكم وإدارة صلاحيات النظام بالكامل',
-            'desc_en' => 'Full system administration and permissions control',
-        ],
-        'doctor' => [
-            'name_ar' => 'طبيب',
-            'name_en' => 'Doctor Portal',
-            'class'   => 'role-doctor',
-            'icon'    => 'fas fa-user-md',
-            'emoji'   => '🩺',
-            'desc_ar' => 'إدارة الكشوفات، المرضى، والملفات الطبية',
-            'desc_en' => 'Patient records, appointments, and clinic workflow',
-        ],
-        'hr' => [
-            'name_ar' => 'الموارد البشرية والاستقبال',
-            'name_en' => 'HR Staff Portal',
-            'class'   => 'role-hr',
-            'icon'    => 'fas fa-id-card-alt',
-            'emoji'   => '👔',
-            'desc_ar' => 'شؤون الكادر الطبي، الموظفين والمواعيد',
-            'desc_en' => 'Staff management, reception, and shift schedules',
-        ],
-        'patient' => [
-            'name_ar' => 'مريض',
-            'name_en' => 'Patient Portal',
-            'class'   => 'role-patient',
-            'icon'    => 'fas fa-user',
-            'emoji'   => '👤',
-            'desc_ar' => 'متابعة المواعيد، الفحوصات والملف الطبي',
-            'desc_en' => 'Medical history, lab results, and appointments',
-        ],
-        default => null,
-    };
-@endphp
-
 @extends('Dashboard.layouts.master2')
+
+@section('title', app()->getLocale() === 'ar' ? 'تسجيل الدخول الموحد - نظام إدارة المستشفى' : 'Unified Sign In - Hospital Management System')
 
 @section('css')
 <link href="{{ URL::asset('Dashboard/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css') }}" rel="stylesheet">
 <style>
-    /* Reset & Viewport setup */
+    /* Reset & Viewport setup matching Register */
     html, body {
         height: 100%;
         margin: 0;
         padding: 0;
         background-color: #ffffff;
+        font-family: 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     .login-container-fluid {
@@ -67,7 +27,7 @@
         margin: 0;
     }
 
-    /* Left Side: Modern Doctor Hero Showcase */
+    /* Left Side: Exact Same Hero Showcase as Register */
     .login-hero-side {
         position: relative;
         min-height: 100vh;
@@ -184,7 +144,7 @@
         transform: translateY(-2px);
     }
 
-    /* Right Side: Form */
+    /* Right Side: Form (Identical layout to Register) */
     .login-form-side {
         min-height: 100vh;
         height: 100vh;
@@ -225,7 +185,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
     }
     .brand-logo-img {
         height: 42px;
@@ -243,71 +203,6 @@
         color: #0162e8;
     }
 
-    /* Role Badge Card */
-    .role-badge-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
-        border-radius: 12px;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    .role-badge-card.role-admin {
-        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        border-color: #fecaca;
-        color: #991b1b;
-    }
-    .role-badge-card.role-doctor {
-        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-        border-color: #a7f3d0;
-        color: #065f46;
-    }
-    .role-badge-card.role-hr {
-        background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-        border-color: #e9d5ff;
-        color: #6b21a8;
-    }
-    .role-badge-card.role-patient {
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        border-color: #bfdbfe;
-        color: #1e40af;
-    }
-    .role-badge-icon {
-        font-size: 1.6rem;
-        line-height: 1;
-    }
-    .role-badge-title {
-        font-size: 13.5px;
-        font-weight: 700;
-        margin-bottom: 2px;
-    }
-    .role-badge-desc {
-        font-size: 11.5px;
-        opacity: 0.85;
-    }
-    .role-switch-link {
-        margin-inline-start: auto;
-        font-size: 11.5px;
-        font-weight: 700;
-        padding: 5px 12px;
-        border-radius: 6px;
-        background: #ffffff;
-        color: inherit;
-        text-decoration: none;
-        border: 1px solid rgba(0, 0, 0, 0.12);
-        white-space: nowrap;
-        transition: all 0.2s;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-    .role-switch-link:hover {
-        background: #f8fafc;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        text-decoration: none;
-        color: inherit;
-    }
-
     /* Form Inputs */
     .form-group label {
         font-size: 13px;
@@ -316,56 +211,87 @@
         margin-bottom: 6px;
         display: block;
     }
+
+    .form-input-wrapper {
+        position: relative;
+    }
+
+    .form-input-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 15px;
+        z-index: 4;
+        pointer-events: none;
+        transition: color 0.2s ease;
+    }
+    html[dir="rtl"] .form-input-icon {
+        right: 14px;
+        left: auto;
+    }
+    html[dir="ltr"] .form-input-icon {
+        left: 14px;
+        right: auto;
+    }
+
     .form-control-custom {
-        height: 46px;
-        border-radius: 10px;
+        height: 44px;
         border: 1.5px solid #e2e8f0;
-        padding: 10px 14px;
-        font-size: 14px;
-        color: #0f172a;
+        border-radius: 10px;
+        font-size: 13.5px;
+        color: #1e293b;
         background-color: #f8fafc;
-        width: 100%;
         transition: all 0.2s ease-in-out;
+    }
+    html[dir="rtl"] .form-control-custom {
+        padding-right: 42px;
+        padding-left: 42px;
+    }
+    html[dir="ltr"] .form-control-custom {
+        padding-left: 42px;
+        padding-right: 42px;
     }
     .form-control-custom:focus {
         background-color: #ffffff;
         border-color: #0162e8;
-        box-shadow: 0 0 0 3px rgba(1, 98, 232, 0.15);
+        box-shadow: 0 0 0 3.5px rgba(1, 98, 232, 0.12);
         outline: none;
     }
-
-    /* Password wrapper */
-    .password-field-wrapper {
-        position: relative;
+    .form-input-wrapper:focus-within .form-input-icon {
+        color: #0162e8;
     }
+
     .password-toggle-btn {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background: none;
+        background: transparent;
         border: none;
-        padding: 0;
         color: #94a3b8;
-        font-size: 15px;
         cursor: pointer;
-        transition: color 0.2s;
+        padding: 0 6px;
+        font-size: 15px;
         z-index: 5;
+        transition: color 0.2s;
     }
     .password-toggle-btn:hover {
-        color: #475569;
+        color: #334155;
+    }
+    html[dir="rtl"] .password-toggle-btn {
+        left: 12px;
+        right: auto;
+    }
+    html[dir="ltr"] .password-toggle-btn {
+        right: 12px;
+        left: auto;
     }
 
-    /* RTL vs LTR adjustments */
-    html[dir="rtl"] .password-toggle-btn { left: 14px; right: auto; }
-    html[dir="rtl"] .password-field-wrapper input { padding-left: 42px; padding-right: 14px; }
-    html[dir="ltr"] .password-toggle-btn { right: 14px; left: auto; }
-    html[dir="ltr"] .password-field-wrapper input { padding-right: 42px; padding-left: 14px; }
-
-    /* Submit Button (Explicit High-Contrast Gradient & Solid Colors) */
+    /* Submit Button (Identical to Register) */
     .btn-login-submit {
-        height: 48px;
+        height: 46px;
         border-radius: 10px;
-        font-size: 15px;
+        font-size: 14.5px;
         font-weight: 700;
         background-color: #0162e8 !important;
         background: linear-gradient(135deg, #0162e8 0%, #0150bf 100%) !important;
@@ -423,6 +349,7 @@
         }
         .login-hero-content {
             padding: 1.5rem;
+            margin-inline-start: 0;
         }
         .login-hero-title {
             font-size: 1.45rem;
@@ -446,7 +373,7 @@
 <div class="container-fluid login-container-fluid">
     <div class="row no-gutters login-row">
 
-        {{-- الجانب الأيسر - الصورة والشكل الجمالي --}}
+        {{-- الجانب الأيسر - الصورة والشكل الجمالي متطابق تماماً مع Register --}}
         <div class="col-md-6 col-lg-6 col-xl-7 d-none d-md-flex login-hero-side">
             <img src="{{ URL::asset('Dashboard/img/media/login.jpg') }}"
                  class="login-hero-bg"
@@ -457,7 +384,7 @@
                 @if (app()->getLocale() === 'ar')
                     <div class="login-hero-badge">
                         <i class="fas fa-hospital-alt"></i>
-                        <span>نظام إدارة المستشفيات الذكي</span>
+                        <span>{{ __('messages.unified_portal') }}</span>
                     </div>
                     <h1 class="login-hero-title">
                         رعاية صحية بمعايير عالمية وإدارة طبية متطورة
@@ -508,7 +435,7 @@
             </div>
         </div>
 
-        {{-- الجانب الأيمن - نموذج تسجيل الدخول --}}
+        {{-- الجانب الأيمن - نموذج تسجيل الدخول الموحد --}}
         <div class="col-md-6 col-lg-6 col-xl-5 login-form-side">
 
             {{-- الشريط العلوي (الرجوع للرئيسية + تبديل اللغة متطابق مع حدود الفورم) --}}
@@ -523,7 +450,7 @@
             </div>
 
             {{-- صندوق تسجيل الدخول في المنتصف --}}
-            <div class="login-box">
+            <div class="login-box auth-card">
 
                 {{-- الشعار والعنوان --}}
                 <div class="brand-header">
@@ -539,33 +466,14 @@
                 {{-- العنوان الترحيبي --}}
                 <div class="mb-3">
                     <h3 class="font-weight-bold text-dark mb-1" style="font-size: 1.5rem;">
-                        {{ app()->getLocale() === 'ar' ? 'مرحباً بعودتك!' : 'Welcome back!' }}
+                        {{ __('auth.login') }}
                     </h3>
                     <p class="text-muted tx-13 mb-0">
-                        {{ app()->getLocale() === 'ar' ? 'الرجاء تسجيل الدخول للمتابعة إلى حسابك' : 'Please sign in to access your portal' }}
+                        {{ __('auth.sign_in_desc') }}
                     </p>
                 </div>
 
-                {{-- بطاقة الدور المختار --}}
-                @if ($roleInfo)
-                    <div class="role-badge-card {{ $roleInfo['class'] }}">
-                        <span class="role-badge-icon">{{ $roleInfo['emoji'] }}</span>
-                        <div>
-                            <div class="role-badge-title">
-                                {{ app()->getLocale() === 'ar' ? 'تسجيل الدخول كـ:' : 'Signing in as:' }}
-                                <strong>{{ app()->getLocale() === 'ar' ? $roleInfo['name_ar'] : $roleInfo['name_en'] }}</strong>
-                            </div>
-                            <div class="role-badge-desc">
-                                {{ app()->getLocale() === 'ar' ? $roleInfo['desc_ar'] : $roleInfo['desc_en'] }}
-                            </div>
-                        </div>
-                        <a href="{{ route('choose-role') }}" class="role-switch-link">
-                            {{ app()->getLocale() === 'ar' ? 'تغيير' : 'Change' }}
-                        </a>
-                    </div>
-                @endif
-
-                {{-- رسائل التنبيه والخطأ --}}
+                {{-- رسائل التنبيه والنجاح --}}
                 @if (session('status'))
                     <div class="alert alert-success py-2 px-3 mb-3 tx-13 rounded">
                         <i class="fas fa-check-circle mr-1 ml-1"></i>
@@ -573,42 +481,43 @@
                     </div>
                 @endif
 
-                @if ($errors->any() && !$errors->has('email') && !$errors->has('password'))
+                {{-- رسائل الخطأ --}}
+                @if ($errors->any())
                     <div class="alert alert-danger py-2 px-3 mb-3 tx-13 rounded">
-                        <ul class="mb-0 pr-3 pl-3">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-circle mr-1 ml-1 text-danger"></i>
+                            <span>
+                                {{ $errors->first('email') ?: $errors->first() }}
+                            </span>
+                        </div>
                     </div>
                 @endif
 
-                {{-- نموذج تسجيل الدخول --}}
-                <form method="POST" action="{{ route('login.store') }}">
+                {{-- نموذج تسجيل الدخول الموحد --}}
+                <form method="POST" action="{{ route('login.store') }}" id="login-form">
                     @csrf
 
-                    @if ($selectedRole)
-                        <input type="hidden" name="role" value="{{ $selectedRole }}">
-                    @endif
-
-                    {{-- البريد الإلكتروني --}}
+                    {{-- البريد الإلكتروني أو رقم الهاتف --}}
                     <div class="form-group mb-3">
                         <label for="email">
-                            {{ app()->getLocale() === 'ar' ? 'البريد الإلكتروني' : 'Email Address' }}
+                            {{ __('auth.email_or_phone') }}
                         </label>
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            class="form-control form-control-custom @error('email') is-invalid @enderror"
-                            placeholder="name@hospital.com"
-                            value="{{ old('email') }}"
-                            required
-                            autofocus
-                            autocomplete="email"
-                        >
+                        <div class="form-input-wrapper">
+                            <i class="fas fa-user-circle form-input-icon"></i>
+                            <input
+                                id="email"
+                                name="email"
+                                type="text"
+                                class="form-control form-control-custom @error('email') is-invalid @enderror"
+                                placeholder="{{ __('auth.email_or_phone_placeholder') }}"
+                                value="{{ old('email') }}"
+                                required
+                                autofocus
+                                autocomplete="username"
+                            >
+                        </div>
                         @error('email')
-                            <div class="invalid-feedback tx-12 mt-1">{{ $message }}</div>
+                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -616,31 +525,37 @@
                     <div class="form-group mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <label for="password" class="mb-0">
-                                {{ app()->getLocale() === 'ar' ? 'كلمة المرور' : 'Password' }}
+                                {{ __('auth.password_label') }}
                             </label>
                             @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}" class="tx-12 text-primary font-weight-semibold">
-                                    {{ app()->getLocale() === 'ar' ? 'نسيت كلمة المرور؟' : 'Forgot Password?' }}
+                                    {{ __('auth.forgot_password') }}
                                 </a>
                             @endif
                         </div>
-                        <div class="password-field-wrapper">
+                        <div class="form-input-wrapper">
+                            <i class="fas fa-lock form-input-icon"></i>
                             <input
                                 id="password"
                                 name="password"
                                 type="password"
                                 class="form-control form-control-custom @error('password') is-invalid @enderror"
-                                placeholder="{{ app()->getLocale() === 'ar' ? '••••••••' : '••••••••' }}"
+                                placeholder="{{ __('auth.password_placeholder') }}"
                                 required
                                 autocomplete="current-password"
                             >
-                            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility()" aria-label="Toggle password">
-                                <i class="far fa-eye" id="password-toggle-icon"></i>
+                            <button
+                                type="button"
+                                class="password-toggle-btn"
+                                onclick="togglePasswordVisibility()"
+                                aria-label="Toggle password"
+                            >
+                                <i class="fas fa-eye" id="password-toggle-icon"></i>
                             </button>
-                            @error('password')
-                                <div class="invalid-feedback tx-12 mt-1">{{ $message }}</div>
-                            @enderror
                         </div>
+                        @error('password')
+                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     {{-- تذكرني --}}
@@ -649,32 +564,36 @@
                             <input type="checkbox" name="remember" id="remember"
                                 {{ old('remember') ? 'checked' : '' }}>
                             <span class="tx-13 mr-1 ml-1 text-muted">
-                                {{ app()->getLocale() === 'ar' ? 'تذكرني على هذا الجهاز' : 'Remember me on this device' }}
+                                {{ __('auth.remember_me') }}
                             </span>
                         </label>
                     </div>
 
-                    {{-- زر تسجيل الدخول --}}
+                    {{-- زر تسجيل الدخول الموحد --}}
                     <button class="btn btn-login-submit" type="submit" id="login-button">
                         <i class="fas fa-sign-in-alt"></i>
-                        <span>{{ app()->getLocale() === 'ar' ? 'تسجيل الدخول' : 'Sign In' }}</span>
+                        <span>{{ __('auth.login') }}</span>
                     </button>
 
                 </form>
 
-                {{-- زر الرجوع لاختيار الرول --}}
-                <div class="mt-4 text-center">
-                    <a href="{{ route('choose-role') }}" class="back-role-link">
-                        <span class="arrow-icon">←</span>
-                        <span>{{ app()->getLocale() === 'ar' ? 'الرجوع لاختيار نوع الحساب' : 'Back to role selection' }}</span>
-                    </a>
-                </div>
+                {{-- رابط إنشاء حساب للمريض --}}
+                @if (Route::has('register'))
+                    <div class="mt-4 text-center">
+                        <span class="tx-13 text-muted">
+                            {{ __('auth.dont_have_account') }}
+                        </span>
+                        <a href="{{ route('register') }}" class="font-weight-bold text-primary ml-1 mr-1 tx-13">
+                            {{ __('auth.register') }}
+                        </a>
+                    </div>
+                @endif
 
             </div>{{-- end login-box --}}
 
             {{-- الفوتر السفلي --}}
             <div class="login-footer-bar">
-                <span>&copy; {{ date('Y') }} Hospital Management System. All rights reserved.</span>
+                <span>&copy; {{ date('Y') }} {{ config('app.name', 'Hospital Management System') }}. All rights reserved.</span>
             </div>
 
         </div>{{-- end col --}}
@@ -700,7 +619,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
+        const form = document.getElementById('login-form');
         const btn  = document.getElementById('login-button');
         if (form && btn) {
             form.addEventListener('submit', function() {

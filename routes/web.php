@@ -19,13 +19,16 @@ Route::group([
         'localeViewPath',
     ],
 ], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('home');
+    Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/welcome', fn () => redirect()->route('home'))->name('welcome');
 
-    Route::get('/choose-role', function () {
-        return view('livewire.auth.choose-role');
-    })->name('choose-role');
+    Route::get('/choose-role', fn () => redirect()->route('login'))->name('choose-role');
+
+    // Two-Factor Authentication Challenge
+    Route::get('/two-factor-challenge', [\App\Http\Controllers\Auth\TwoFactorChallengeController::class, 'create'])
+        ->name('two-factor.login');
+    Route::post('/two-factor-challenge', [\App\Http\Controllers\Auth\TwoFactorChallengeController::class, 'store'])
+        ->name('two-factor.login.store');
 
     // Central dashboard redirect based on authenticated user role
     Route::get('/dashboard', function () {

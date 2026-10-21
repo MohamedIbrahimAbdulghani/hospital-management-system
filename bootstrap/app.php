@@ -23,7 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
         then: function () {
             Route::middleware('web')->group(base_path('routes/backend.php'));
-            Route::middleware('web')->group(base_path('routes/website.php'));
         },
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
@@ -48,7 +47,7 @@ return Application::configure(basePath: dirname(__DIR__))
             CheckMustChangePassword::class,
         ]);
 
-        $middleware->redirectGuestsTo(fn (Request $request) => route('choose-role'));
+        $middleware->redirectGuestsTo(fn (Request $request) => route('login'));
         $middleware->redirectUsersTo(fn (Request $request) => route('dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
