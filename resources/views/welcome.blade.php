@@ -80,144 +80,140 @@
     <x-public-header />
 
     <!-- =========================================================================
-         1. HERO SECTION (#hero)
+         1. HERO SECTION (#hero) - CINEMATIC FULLSCREEN VIDEO HERO
          ========================================================================= -->
-    <section id="hero" class="relative pt-8 pb-16 lg:pt-14 lg:pb-24 overflow-hidden bg-gradient-to-b from-sky-50/40 via-white to-slate-50/50">
-        <!-- Ambient Background Glows with Smooth Drift Animation -->
-        <div class="ambient-blob-1 absolute top-8 end-8 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="ambient-blob-2 absolute bottom-8 start-8 w-96 h-96 bg-cyan-100/40 rounded-full blur-3xl pointer-events-none"></div>
+    <section id="hero" class="relative min-h-[82vh] lg:min-h-[88vh] flex items-center justify-center overflow-hidden bg-slate-950 text-white py-16 sm:py-24">
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+        <!-- Background Video & Cinematic Multi-layer Overlay -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <!-- Fullscreen ambient hospital video (Interior, Entrance, Reception, Clinics, Care) -->
+            <video
+                autoplay
+                muted
+                loop
+                playsinline
+                poster="{{ URL::asset('Dashboard/img/hero-surgeons.jpg') }}"
+                class="absolute inset-0 w-full h-full object-cover filter brightness-[0.58] contrast-[1.12] transition-opacity duration-1000 scale-105"
+            >
+                <source src="{{ asset('videos/hospital-interior.webm') }}" type="video/webm">
+                <source src="{{ asset('videos/doctors-consulting.mp4') }}" type="video/mp4">
+                <source src="{{ asset('videos/hospital-hero.mp4') }}" type="video/mp4">
+            </video>
 
-                <!-- Right Column: Texts, CTAs, 4-Card Stats (RTL) -->
-                <div class="lg:col-span-7 text-center lg:text-start reveal reveal-delay-1">
+            <!-- Ultra-deep cinematic vignette & radial light overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/80"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/40 to-slate-950/85"></div>
 
-                    <!-- Pill Badge -->
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-100/80 text-sky-800 text-xs font-bold mb-6 border border-sky-200/90 shadow-sm">
-                        <i class="fas fa-shield-heart text-sky-600 text-xs"></i>
-                        <span>{{ $isRtl ? 'نحو مستقبل متطور للرعاية الطبية' : 'Pioneering Modern Healthcare' }}</span>
-                    </div>
+            <!-- Soft ambient cyan/blue lights for medical atmosphere -->
+            <div class="absolute top-1/4 start-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-sky-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="absolute -bottom-10 inset-x-0 h-36 bg-gradient-to-t from-[#fbfcfd] to-transparent"></div>
+        </div>
 
-                    <!-- Main Headline -->
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.3] mb-6">
-                        @if ($isRtl)
-                            رعاية طبية فائقة تضع <span class="text-sky-500">صحتك وصحة</span><br>
-                            <span class="text-sky-500">عائلتك</span> أولاً
-                        @else
-                            Premier Medical Care Putting <span class="text-sky-500">Your Health</span><br>
-                            and <span class="text-sky-500">Family</span> First
-                        @endif
-                    </h1>
+        <!-- Hero Foreground Content: Centered, Bold, Dropping from top smoothly -->
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center w-full">
 
-                    <!-- Subtitle Description -->
-                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8">
-                        {{ $isRtl 
-                            ? 'مستشفى أورا يقدم أحدث التقنيات الجراحية والتشخيصية بكوادر طبية استشارية متمرسة وخدمة طوارئ 24/7 مستعدة دوماً لضمان أعلى معايير بيئة استشفائية آمنة.' 
-                            : 'Aura Hospital offers surgical and diagnostic innovations backed by senior consultants and 24/7 emergency preparedness for the highest quality of patient care.' }}
-                    </p>
-
-                    <!-- CTA Buttons & Hotline -->
-                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-10">
-                        <a href="{{ route('register') }}" class="btn-shimmer btn-ripple inline-flex items-center gap-2.5 bg-[#084c61] hover:bg-[#063b4c] text-white px-7 py-3 rounded-xl font-bold text-sm shadow-md shadow-[#084c61]/20 transition transform hover:-translate-y-0.5">
-                            <span>{{ $isRtl ? 'احجز موعدك الآن' : 'Book Appointment' }}</span>
-                            <i class="fas fa-calendar-check text-sm"></i>
-                        </a>
-
-                        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $emergencyPhone) }}" class="btn-shimmer btn-ripple inline-flex items-center gap-2 bg-[#dc2626] hover:bg-[#b91c1c] text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-rose-600/20 transition transform hover:-translate-y-0.5">
-                            <i class="fas fa-phone-volume text-sm"></i>
-                            <span>{{ $isRtl ? 'استشارة عاجلة' : 'Emergency Consultation' }}</span>
-                        </a>
-
-                        <div class="inline-flex items-center gap-2 text-slate-500 text-xs font-bold ps-2">
-                            <i class="fas fa-headset text-slate-400 text-sm"></i>
-                            <span>{{ $isRtl ? 'خط المساعدة المجاني:' : 'Toll-free Hotline:' }}</span>
-                            <span dir="ltr" class="font-extrabold text-slate-700">{{ $emergencyPhone }}</span>
-                        </div>
-                    </div>
-
-                    <!-- 4 Metric Stats Cards in a Row with Animated Counters -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-slate-200/80">
-                        <!-- Card 1 -->
-                        <div class="hover-lift bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-sm text-center">
-                            <div class="text-xl sm:text-2xl font-black text-[#084c61]" data-counter="99.8" data-suffix="%">99.8%</div>
-                            <div class="text-[11px] font-bold text-slate-500 mt-1">
-                                {{ $isRtl ? 'دقة تشخيصية رقمية' : 'Diagnostic Accuracy' }}
-                            </div>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="hover-lift bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-sm text-center">
-                            <div class="text-xl sm:text-2xl font-black text-[#084c61]" data-counter="120" data-prefix="+ ">+ 120</div>
-                            <div class="text-[11px] font-bold text-slate-500 mt-1">
-                                {{ $isRtl ? 'طبيب واستشاري دولي' : 'Senior Consultants' }}
-                            </div>
-                        </div>
-
-                        <!-- Card 3 -->
-                        <div class="hover-lift bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-sm text-center">
-                            <div class="text-xl sm:text-2xl font-black text-rose-600 inline-flex items-center justify-center gap-1.5">
-                                <span class="emergency-pulse-dot"></span>
-                                24/7
-                            </div>
-                            <div class="text-[11px] font-bold text-slate-500 mt-1">
-                                {{ $isRtl ? 'طوارئ وإنعاش فوري' : 'Emergency & Trauma' }}
-                            </div>
-                        </div>
-
-                        <!-- Card 4 -->
-                        <div class="hover-lift bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-sm text-center">
-                            <div class="text-xl sm:text-2xl font-black text-[#084c61]">1 : 1</div>
-                            <div class="text-[11px] font-bold text-slate-500 mt-1">
-                                {{ $isRtl ? 'رعاية تمريضية فردية' : 'Personal Nursing' }}
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Left Column: Visual OR Surgeons Image with Smooth Floating Badge -->
-                <div class="lg:col-span-5 relative reveal reveal-delay-2">
-                    <div class="relative mx-auto max-w-md lg:max-w-none">
-                        <!-- Image Container with White Border & Shadow -->
-                        <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900 group">
-                            <img
-                                src="{{ URL::asset('Dashboard/img/hero-surgeons.jpg') }}"
-                                alt="Aura Hospital Advanced Surgical Suite"
-                                class="w-full h-[400px] sm:h-[460px] object-cover group-hover:scale-105 transition-transform duration-700"
-                                loading="eager"
-                            >
-                        </div>
-
-                        <!-- Floating Card at Bottom (Gentle Animated Float) -->
-                        <div class="animate-float-gentle absolute -bottom-6 start-3 sm:-start-6 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-slate-100 max-w-[280px] z-20">
-                            <div class="flex items-center justify-between gap-2 mb-2">
-                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                                    <i class="fas fa-check-circle text-emerald-500"></i>
-                                    {{ $isRtl ? 'معتمد من وزارة الصحة' : 'MOH Certified' }}
-                                </span>
-                                <a href="{{ route('register') }}" class="btn-ripple bg-cyan-500 hover:bg-cyan-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full transition shadow-sm">
-                                    {{ $isRtl ? 'الحجز الفوري' : 'Instant' }}
-                                </a>
-                            </div>
-                            <div class="text-xs font-bold text-slate-900 leading-snug">
-                                {{ $isRtl ? 'نتائج الفحوص والتشخيص المبكر' : 'Early Diagnostics & Test Results' }}
-                            </div>
-                            <div class="text-[10px] text-slate-500 mt-0.5">
-                                {{ $isRtl ? 'نظام سرعة بروتوكول متقدم لسلامة المرضى' : 'Advanced safety clinical protocols' }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- 1. Top Dropping Pill Badge -->
+            <div class="hero-drop-1 inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-xl text-sky-200 text-xs sm:text-sm font-bold mb-7 border border-white/20 shadow-2xl shadow-sky-950/50 transition">
+                <span class="flex h-3 w-3 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-80"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-400"></span>
+                </span>
+                <span class="tracking-wide">
+                    {{ $isRtl ? 'مستشفى أورا التخصصي • صرح طبي متكامل 24/7' : 'Aura Medical Hospital • 24/7 Advanced Healthcare' }}
+                </span>
+                <i class="fas fa-certificate text-sky-400 text-xs"></i>
             </div>
+
+            <!-- 2. Main Headline (Cascading smoothly from top with Shimmer Glow) -->
+            <h1 class="hero-drop-2 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.25] sm:leading-[1.18] mb-6 drop-shadow-2xl">
+                @if ($isRtl)
+                    رعاية صحية فائقة تليق بك <br>
+                    <span class="text-gradient-shimmer">بأحدث المعايير الطبية العالمية</span>
+                @else
+                    World-Class Medical Care <br>
+                    <span class="text-gradient-shimmer">Designed Around Your Family</span>
+                @endif
+            </h1>
+
+            <!-- 3. Hospital Facilities / Services Chips (Entrance, Reception, Clinics, ICU, Pharmacy) -->
+            <div class="hero-drop-3 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 max-w-4xl mx-auto mb-7">
+                <!-- Entrance & Reception -->
+                <div class="hero-facility-chip inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-slate-100 shadow-sm">
+                    <i class="fas fa-hospital text-sky-400"></i>
+                    <span>{{ $isRtl ? 'المدخل والاستقبال الفندقي' : 'Reception & Concierge' }}</span>
+                </div>
+                <!-- Specialized Clinics -->
+                <div class="hero-facility-chip inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-slate-100 shadow-sm">
+                    <i class="fas fa-stethoscope text-cyan-400"></i>
+                    <span>{{ $isRtl ? 'العيادات التخصصية الشاملة' : 'Specialized Outpatient Clinics' }}</span>
+                </div>
+                <!-- ICU & Emergency -->
+                <div class="hero-facility-chip inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-slate-100 shadow-sm">
+                    <i class="fas fa-heart-pulse text-rose-400 animate-pulse"></i>
+                    <span>{{ $isRtl ? 'العنايات المركزة والطوارئ 24/7' : 'ICU & 24/7 Emergency Care' }}</span>
+                </div>
+                <!-- Smart Pharmacy -->
+                <div class="hero-facility-chip inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-slate-100 shadow-sm">
+                    <i class="fas fa-pills text-emerald-400"></i>
+                    <span>{{ $isRtl ? 'الصيدلية السريرية الذكية' : 'Clinical Smart Pharmacy' }}</span>
+                </div>
+                <!-- Radiology & Lab -->
+                <div class="hero-facility-chip inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-slate-100 shadow-sm">
+                    <i class="fas fa-flask-vial text-purple-400"></i>
+                    <span>{{ $isRtl ? 'مختبرات وأشعة تشخيصية' : 'Digital Labs & Radiology' }}</span>
+                </div>
+            </div>
+
+            <!-- 4. Subtitle Description -->
+            <p class="hero-drop-4 text-sm sm:text-lg md:text-xl text-slate-200/90 font-medium leading-relaxed max-w-3xl mx-auto mb-9 drop-shadow">
+                {{ $isRtl
+                    ? 'نقدم منظومة استشفائية متطورة تجمع بين نخبة من كبار الأطباء والاستشاريين، وأحدث تجهيزات العناية المركزة والعمليات الجراحية، لضمان سلامتك وسلامة أسرتك على مدار الساعة.'
+                    : 'A comprehensive medical facility delivering senior consultants, precision diagnostic technology, advanced ICU suites, and 24/7 emergency preparedness for you and your loved ones.' }}
+            </p>
+
+            <!-- 5. Eye-catching Call-to-Actions -->
+            <div class="hero-drop-5 flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+                <!-- Primary Booking Button -->
+                <a href="{{ route('register') }}" class="btn-shimmer btn-ripple group inline-flex items-center gap-3 bg-gradient-to-r from-sky-500 via-blue-600 to-sky-600 hover:from-sky-400 hover:to-blue-500 text-white px-8 py-4 rounded-2xl font-black text-sm sm:text-base shadow-2xl shadow-sky-500/40 transition transform hover:-translate-y-1">
+                    <span>{{ $isRtl ? 'احجز موعد كشف الآن' : 'Book An Appointment' }}</span>
+                    <i class="fas fa-calendar-check text-base group-hover:rotate-12 transition-transform"></i>
+                </a>
+
+                <!-- Emergency Hotline Button with glowing red aura -->
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $emergencyPhone) }}" class="btn-ripple inline-flex items-center gap-3 bg-rose-600 hover:bg-rose-500 text-white px-7 py-4 rounded-2xl font-black text-sm sm:text-base border border-rose-400/40 shadow-2xl shadow-rose-900/50 transition transform hover:-translate-y-1">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-80"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                    </span>
+                    <i class="fas fa-phone-volume text-base"></i>
+                    <span>{{ $isRtl ? 'طوارئ وخط ساخن:' : 'Emergency Hotline:' }}</span>
+                    <span dir="ltr" class="font-black tracking-wide">{{ $emergencyPhone }}</span>
+                </a>
+
+                <!-- Explore Services Button -->
+                <a href="#departments" class="inline-flex items-center gap-2.5 px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 text-white font-bold text-sm sm:text-base shadow-lg transition transform hover:-translate-y-1">
+                    <i class="fas fa-compass text-sky-400"></i>
+                    <span>{{ $isRtl ? 'استكشف الأقسام والخدمات' : 'Explore Departments' }}</span>
+                </a>
+            </div>
+
+            <!-- Scroll indicator bouncing downward -->
+            <div class="pt-12 sm:pt-16">
+                <a href="#quick-search" class="inline-flex flex-col items-center gap-2 text-slate-400 hover:text-white transition text-xs font-semibold group">
+                    <span class="opacity-75 group-hover:opacity-100 transition">{{ $isRtl ? 'مرر للأسفل' : 'Scroll Down' }}</span>
+                    <div class="hero-scroll-indicator w-8 h-8 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center text-sky-400 shadow-sm">
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                </a>
+            </div>
+
         </div>
     </section>
 
     <!-- =========================================================================
          2. QUICK SEARCH & APPOINTMENT SCHEDULING (FLOATING BANNER)
          ========================================================================= -->
-    <section class="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 mb-20 reveal">
+    <section id="quick-search" class="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 mb-20 reveal">
         <div class="bg-white rounded-3xl shadow-xl border border-slate-200/80 p-6 sm:p-8 hover-lift">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-5 border-b border-slate-100">
                 <div class="flex items-center gap-3">
