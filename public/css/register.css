@@ -163,15 +163,45 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        max-width: 440px;
-        margin: 0 auto 1.5rem auto;
+        max-width: 600px;
+        margin: 0 auto 1.25rem auto;
     }
 
     .login-box {
         width: 100%;
-        max-width: 440px;
+        max-width: 600px;
         margin: auto;
-        padding: 1rem 0;
+        padding: 0.75rem 0;
+    }
+
+    /* Section Dividers */
+    .form-section-divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 1.25rem 0 0.85rem 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .form-section-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #e2e8f0;
+    }
+
+    .form-section-divider i {
+        color: #0162e8;
+        font-size: 14px;
+    }
+
+    select.form-control-custom {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
     }
 
     .login-footer-bar {

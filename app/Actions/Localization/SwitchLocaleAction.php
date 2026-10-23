@@ -42,11 +42,6 @@ class SwitchLocaleAction
             }
             $cleanPath = implode('/', $segments);
 
-            // لو الصفحة من صفحات المصادقة (Auth) التي لا تحتوي على بادئة لغة
-            $unprefixedRoutes = ['login', 'register', 'forgot-password', 'reset-password'];
-            if (in_array($cleanPath, $unprefixedRoutes, true) || str_starts_with($cleanPath, 'reset-password/')) {
-                return $previousUrl;
-            }
 
             try {
                 return LaravelLocalization::getLocalizedURL($locale, $previousUrl, [], true);

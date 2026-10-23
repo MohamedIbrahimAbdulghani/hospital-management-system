@@ -17,6 +17,21 @@ class DoctorSeeder extends Seeder
     {
         $doctorsData = [
             [
+                'name' => 'د. محمد يوسف',
+                'name_en' => 'Dr. Mohamed Youssef',
+                'email' => 'doctor@hospital.com',
+                'password' => '123',
+                'specialization_en' => 'Cardiology & Cardiac Surgery',
+                'title' => 'استشاري أول أمراض القلب',
+                'bio' => 'استشاري أمراض القلب والأوعية الدموية بخبرة تزيد عن 15 عاماً.',
+                'experience_years' => 15,
+                'consultation_fee' => 300.00,
+                'rating' => 5.00,
+                'avatar' => 'Dashboard/img/faces/1.jpg',
+                'license_number' => 'DOC-9982',
+                'sort_order' => 1,
+            ],
+            [
                 'name' => 'د. أحمد مصطفى الكردي',
                 'name_en' => 'Dr. Ahmed Mustafa',
                 'email' => 'dr.ahmed@hospital.com',
@@ -126,8 +141,8 @@ class DoctorSeeder extends Seeder
             $user = User::updateOrCreate(
                 ['email' => $doc['email']],
                 [
-                    'name' => app()->getLocale() === 'en' ? $doc['name_en'] : $doc['name'],
-                    'password' => Hash::make('password123'),
+                    'name' => $doc['name'],
+                    'password' => Hash::make($doc['password'] ?? '123'),
                     'role' => 'doctor',
                     'is_active' => true,
                     'avatar' => $doc['avatar'],
@@ -151,6 +166,7 @@ class DoctorSeeder extends Seeder
                 [
                     'specialization_id' => $specialization?->id,
                     'name_en' => $doc['name_en'],
+                    'license_number' => $doc['license_number'] ?? ('DOC-' . rand(1000, 9999)),
                     'title' => $doc['title'],
                     'bio' => $doc['bio'],
                     'experience_years' => $doc['experience_years'],

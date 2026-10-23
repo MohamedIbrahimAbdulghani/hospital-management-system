@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('name_en');       // English name
             $table->string('icon')->nullable(); // FontAwesome or svg icon name
             $table->text('description')->nullable();
+            $table->text('description_en')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
         });
     }

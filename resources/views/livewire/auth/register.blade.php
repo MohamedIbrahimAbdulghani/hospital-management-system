@@ -11,8 +11,8 @@
 <div class="container-fluid login-container-fluid">
     <div class="row no-gutters login-row">
 
-        {{-- الجانب الأيسر - فيديو دكتور استشاري داخل المستشفى يرحب بالمرضى --}}
-        <div class="col-md-6 col-lg-6 col-xl-7 d-none d-md-flex login-hero-side">
+        {{-- الجانب الأيسر - فيديو دكتور استشاري ومحتوى ترحيبي --}}
+        <div class="col-md-5 col-lg-5 col-xl-6 d-none d-md-flex login-hero-side">
             <video
                 autoplay
                 muted
@@ -35,20 +35,20 @@
                         رعاية صحية بمعايير عالمية وإدارة طبية متطورة
                     </h1>
                     <p class="login-hero-desc">
-                        منظومة متكاملة لربط الأطباء، شؤون المرضى، والخدمات الطبية في بيئة آمنة وسلسة تدعم التحول الرقمي الكامل.
+                        سجل الآن للوصول إلى ملفك الطبي الرقمي، متابعة التحاليل والأشعة، وحجز استشاراتك مع كبار الاستشاريين.
                     </p>
                     <div class="login-hero-features">
                         <div class="login-hero-pill">
-                            <i class="fas fa-heartbeat text-danger"></i>
-                            <span>ملفات طبية فورية</span>
+                            <i class="fas fa-file-medical-alt text-danger"></i>
+                            <span>ملف طبي رقمي فوري</span>
                         </div>
                         <div class="login-hero-pill">
                             <i class="fas fa-calendar-check text-success"></i>
-                            <span>جدولة دقيقة للمواعيد</span>
+                            <span>حجز استشارات بدون انتظار</span>
                         </div>
                         <div class="login-hero-pill">
                             <i class="fas fa-user-shield text-info"></i>
-                            <span>أعلى معايير الأمان والخصوصية</span>
+                            <span>أعلى درجات الخصوصية والأمان</span>
                         </div>
                     </div>
                 @else
@@ -60,16 +60,16 @@
                         World-Class Care & Advanced Healthcare Management
                     </h1>
                     <p class="login-hero-desc">
-                        An integrated, secure platform connecting physicians, patients, and clinical administration with peak efficiency.
+                        Create your account today for seamless access to digital health records, diagnostic reports, and effortless doctor consultations.
                     </p>
                     <div class="login-hero-features">
                         <div class="login-hero-pill">
-                            <i class="fas fa-heartbeat text-danger"></i>
-                            <span>Real-Time Health Records</span>
+                            <i class="fas fa-file-medical-alt text-danger"></i>
+                            <span>Instant Digital Record</span>
                         </div>
                         <div class="login-hero-pill">
                             <i class="fas fa-calendar-check text-success"></i>
-                            <span>Smart Scheduling</span>
+                            <span>Priority Scheduling</span>
                         </div>
                         <div class="login-hero-pill">
                             <i class="fas fa-user-shield text-info"></i>
@@ -80,10 +80,10 @@
             </div>
         </div>
 
-        {{-- الجانب الأيمن - نموذج إنشاء حساب المريض --}}
-        <div class="col-md-6 col-lg-6 col-xl-5 login-form-side">
+        {{-- الجانب الأيمن - نموذج إنشاء حساب المريض الموسع --}}
+        <div class="col-md-7 col-lg-7 col-xl-6 login-form-side">
 
-            {{-- الشريط العلوي (الرجوع للرئيسية + تبديل اللغة متطابق مع حدود الفورم) --}}
+            {{-- الشريط العلوي (الرجوع للرئيسية + تبديل اللغة) --}}
             <div class="login-top-bar">
                 <a href="{{ route('home') }}" class="back-role-link">
                     <i class="fas fa-home"></i>
@@ -94,7 +94,7 @@
                 <x-language-switcher />
             </div>
 
-            {{-- صندوق إنشاء الحساب في المنتصف --}}
+            {{-- صندوق إنشاء الحساب --}}
             <div class="login-box">
 
                 {{-- الشعار والعنوان --}}
@@ -110,11 +110,13 @@
 
                 {{-- العنوان الترحيبي --}}
                 <div class="mb-3">
-                    <h3 class="font-weight-bold text-dark mb-1" style="font-size: 1.5rem;">
-                        {{ app()->getLocale() === 'ar' ? 'إنشاء حساب جديد للمريض' : 'Create Patient Account' }}
+                    <h3 class="font-weight-bold text-dark mb-1" style="font-size: 1.45rem;">
+                        {{ app()->getLocale() === 'ar' ? 'إنشاء حساب مريض جديد' : 'Create Patient Account' }}
                     </h3>
                     <p class="text-muted tx-13 mb-0">
-                        {{ app()->getLocale() === 'ar' ? 'يرجى إدخال بياناتك بدقة لإنشاء ملفك الطبي' : 'Please enter your details accurately to register your medical profile' }}
+                        {{ app()->getLocale() === 'ar'
+                            ? 'أدخل بياناتك الشخصية والطبية لفتح ملف رقمي فوري في المستشفى'
+                            : 'Fill in your personal and medical details to activate your digital hospital record' }}
                     </p>
                 </div>
 
@@ -128,13 +130,13 @@
                         </div>
                         <div class="role-badge-desc">
                             {{ app()->getLocale() === 'ar'
-                                ? 'متابعة المواعيد، الفحوصات والملف الطبي. حسابات الأطباء والموظفين تُنشأ عبر الإدارة.'
-                                : 'For patients to access medical records and appointments. Staff accounts are created by administration.' }}
+                                ? 'حسابات الأطباء وموظفي المستشفى تُنشأ حصرياً عبر إدارة النظام.'
+                                : 'Doctor and staff accounts are provisioned exclusively by system administration.' }}
                         </div>
                     </div>
                 </div>
 
-                {{-- رسائل التنبيه والخطأ العامة (إن وجدت) --}}
+                {{-- رسائل التنبيه والخطأ العامة --}}
                 @if (session('status'))
                     <div class="alert alert-success py-2 px-3 mb-3 tx-13 rounded">
                         <i class="fas fa-check-circle mr-1 ml-1"></i>
@@ -142,9 +144,13 @@
                     </div>
                 @endif
 
-                @if ($errors->any() && !$errors->has('name') && !$errors->has('email') && !$errors->has('password') && !$errors->has('password_confirmation'))
+                @if ($errors->any())
                     <div class="alert alert-danger py-2 px-3 mb-3 tx-13 rounded">
-                        <ul class="mb-0 pr-3 pl-3">
+                        <div class="font-weight-bold mb-1">
+                            <i class="fas fa-exclamation-triangle mr-1 ml-1"></i>
+                            {{ app()->getLocale() === 'ar' ? 'يرجى تصحيح الأخطاء التالية:' : 'Please correct the following errors:' }}
+                        </div>
+                        <ul class="mb-0 pr-3 pl-3 tx-12">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
@@ -153,13 +159,19 @@
                 @endif
 
                 {{-- نموذج إنشاء الحساب --}}
-                <form method="POST" action="{{ route('register') }}" id="register-form">
+                <form method="POST" action="{{ route('register') }}" id="register-form" novalidate>
                     @csrf
+
+                    {{-- القسم الأول: البيانات الشخصية والطبية --}}
+                    <div class="form-section-divider">
+                        <i class="fas fa-id-card-alt"></i>
+                        <span>{{ app()->getLocale() === 'ar' ? 'البيانات الشخصية والطبية' : 'Personal & Medical Information' }}</span>
+                    </div>
 
                     {{-- الاسم الكامل --}}
                     <div class="form-group mb-3">
                         <label for="name">
-                            {{ app()->getLocale() === 'ar' ? 'الاسم الكامل' : 'Full Name' }}
+                            {{ app()->getLocale() === 'ar' ? 'الاسم الكامل ثلاثياً على الأقل' : 'Full Name (at least 3 parts)' }} <span class="text-danger">*</span>
                         </label>
                         <div class="form-input-wrapper">
                             <i class="fas fa-user form-input-icon"></i>
@@ -172,7 +184,7 @@
                                 autofocus
                                 autocomplete="name"
                                 class="form-control form-control-custom @error('name') is-invalid @enderror"
-                                placeholder="{{ app()->getLocale() === 'ar' ? 'أدخل اسمك ثلاثياً' : 'Enter your full name' }}"
+                                placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: محمد أحمد علي' : 'e.g. Mohamed Ahmed Ali' }}"
                             >
                         </div>
                         @error('name')
@@ -180,93 +192,268 @@
                         @enderror
                     </div>
 
-                    {{-- البريد الإلكتروني --}}
-                    <div class="form-group mb-3">
-                        <label for="email">
-                            {{ app()->getLocale() === 'ar' ? 'البريد الإلكتروني' : 'Email Address' }}
-                        </label>
-                        <div class="form-input-wrapper">
-                            <i class="fas fa-envelope form-input-icon"></i>
-                            <input
-                                id="email"
-                                type="email"
-                                name="email"
-                                value="{{ old('email') }}"
-                                required
-                                autocomplete="email"
-                                class="form-control form-control-custom @error('email') is-invalid @enderror"
-                                placeholder="name@example.com"
-                            >
+                    {{-- صف: البريد الإلكتروني + رقم الهاتف --}}
+                    <div class="row">
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="email">
+                                {{ app()->getLocale() === 'ar' ? 'البريد الإلكتروني' : 'Email Address' }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-envelope form-input-icon"></i>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    value="{{ old('email') }}"
+                                    required
+                                    autocomplete="email"
+                                    class="form-control form-control-custom @error('email') is-invalid @enderror"
+                                    placeholder="patient@example.com"
+                                >
+                            </div>
+                            @error('email')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
-                        @error('email')
-                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
-                        @enderror
+
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="phone">
+                                {{ app()->getLocale() === 'ar' ? 'رقم الهاتف المحمول' : 'Mobile Phone Number' }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-phone-alt form-input-icon"></i>
+                                <input
+                                    id="phone"
+                                    type="tel"
+                                    name="phone"
+                                    value="{{ old('phone') }}"
+                                    required
+                                    autocomplete="tel"
+                                    class="form-control form-control-custom @error('phone') is-invalid @enderror"
+                                    placeholder="01012345678"
+                                    maxlength="15"
+                                >
+                            </div>
+                            @error('phone')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                    {{-- كلمة المرور --}}
-                    <div class="form-group mb-3">
-                        <label for="password">
-                            {{ app()->getLocale() === 'ar' ? 'كلمة المرور' : 'Password' }}
-                        </label>
-                        <div class="form-input-wrapper">
-                            <i class="fas fa-lock form-input-icon"></i>
-                            <input
-                                id="password"
-                                type="password"
-                                name="password"
-                                required
-                                autocomplete="new-password"
-                                class="form-control form-control-custom @error('password') is-invalid @enderror"
-                                placeholder="••••••••"
-                            >
-                            <button
-                                type="button"
-                                class="password-toggle-btn"
-                                onclick="toggleFieldVisibility('password', 'password-toggle-icon-1')"
-                                aria-label="Toggle password"
-                            >
-                                <i class="fas fa-eye" id="password-toggle-icon-1"></i>
-                            </button>
+                    {{-- صف: الرقم القومي + النوع --}}
+                    <div class="row">
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="national_id">
+                                {{ app()->getLocale() === 'ar' ? 'الرقم القومي (14 رقماً)' : 'National ID (14 digits)' }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-address-card form-input-icon"></i>
+                                <input
+                                    id="national_id"
+                                    type="text"
+                                    name="national_id"
+                                    value="{{ old('national_id') }}"
+                                    required
+                                    maxlength="14"
+                                    class="form-control form-control-custom @error('national_id') is-invalid @enderror"
+                                    placeholder="29501011234567"
+                                >
+                            </div>
+                            @error('national_id')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
-                        @error('password')
-                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
-                        @enderror
+
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="gender">
+                                {{ app()->getLocale() === 'ar' ? 'النوع' : 'Gender' }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-venus-mars form-input-icon"></i>
+                                <select
+                                    id="gender"
+                                    name="gender"
+                                    required
+                                    class="form-control form-control-custom @error('gender') is-invalid @enderror"
+                                >
+                                    <option value="" disabled {{ old('gender') ? '' : 'selected' }}>
+                                        {{ app()->getLocale() === 'ar' ? 'اختر النوع...' : 'Select Gender...' }}
+                                    </option>
+                                    <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>
+                                        {{ app()->getLocale() === 'ar' ? 'ذكر (Male)' : 'Male' }}
+                                    </option>
+                                    <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>
+                                        {{ app()->getLocale() === 'ar' ? 'أنثى (Female)' : 'Female' }}
+                                    </option>
+                                </select>
+                            </div>
+                            @error('gender')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                    {{-- تأكيد كلمة المرور --}}
-                    <div class="form-group mb-4">
-                        <label for="password_confirmation">
-                            {{ app()->getLocale() === 'ar' ? 'تأكيد كلمة المرور' : 'Confirm Password' }}
-                        </label>
-                        <div class="form-input-wrapper">
-                            <i class="fas fa-shield-alt form-input-icon"></i>
-                            <input
-                                id="password_confirmation"
-                                type="password"
-                                name="password_confirmation"
-                                required
-                                autocomplete="new-password"
-                                class="form-control form-control-custom @error('password_confirmation') is-invalid @enderror"
-                                placeholder="••••••••"
-                            >
-                            <button
-                                type="button"
-                                class="password-toggle-btn"
-                                onclick="toggleFieldVisibility('password_confirmation', 'password-toggle-icon-2')"
-                                aria-label="Toggle password confirmation"
-                            >
-                                <i class="fas fa-eye" id="password-toggle-icon-2"></i>
-                            </button>
+                    {{-- صف: تاريخ الميلاد + فصيلة الدم --}}
+                    <div class="row">
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="date_of_birth">
+                                {{ app()->getLocale() === 'ar' ? 'تاريخ الميلاد' : 'Date of Birth' }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-calendar-alt form-input-icon"></i>
+                                <input
+                                    id="date_of_birth"
+                                    type="date"
+                                    name="date_of_birth"
+                                    value="{{ old('date_of_birth') }}"
+                                    required
+                                    max="{{ date('Y-m-d') }}"
+                                    class="form-control form-control-custom @error('date_of_birth') is-invalid @enderror"
+                                >
+                            </div>
+                            @error('date_of_birth')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
-                        @error('password_confirmation')
-                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
-                        @enderror
+
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="blood_type">
+                                {{ app()->getLocale() === 'ar' ? 'فصيلة الدم (اختياري)' : 'Blood Type (Optional)' }}
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-tint form-input-icon text-danger"></i>
+                                <select
+                                    id="blood_type"
+                                    name="blood_type"
+                                    class="form-control form-control-custom @error('blood_type') is-invalid @enderror"
+                                >
+                                    <option value="">{{ app()->getLocale() === 'ar' ? 'غير محددة حالياً' : 'Not specified yet' }}</option>
+                                    @foreach(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as $bt)
+                                        <option value="{{ $bt }}" {{ old('blood_type') === $bt ? 'selected' : '' }}>{{ $bt }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('blood_type')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- صف: المدينة / المحافظة + هاتف الطوارئ --}}
+                    <div class="row">
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="city">
+                                {{ app()->getLocale() === 'ar' ? 'المدينة / المحافظة (اختياري)' : 'City / Governorate (Optional)' }}
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-map-marker-alt form-input-icon"></i>
+                                <input
+                                    id="city"
+                                    type="text"
+                                    name="city"
+                                    value="{{ old('city') }}"
+                                    class="form-control form-control-custom @error('city') is-invalid @enderror"
+                                    placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: القاهرة، الجيزة، الإسكندرية' : 'e.g. Cairo, Giza, Alexandria' }}"
+                                >
+                            </div>
+                            @error('city')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="emergency_contact_phone">
+                                {{ app()->getLocale() === 'ar' ? 'هاتف الطوارئ / قريب المريض (اختياري)' : 'Emergency Contact Phone (Optional)' }}
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-ambulance form-input-icon text-danger"></i>
+                                <input
+                                    id="emergency_contact_phone"
+                                    type="tel"
+                                    name="emergency_contact_phone"
+                                    value="{{ old('emergency_contact_phone') }}"
+                                    class="form-control form-control-custom @error('emergency_contact_phone') is-invalid @enderror"
+                                    placeholder="{{ app()->getLocale() === 'ar' ? 'رقم هاتف شخص قريب للطوارئ' : 'Relative / Emergency phone' }}"
+                                    maxlength="15"
+                                >
+                            </div>
+                            @error('emergency_contact_phone')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- القسم الثاني: بيانات الأمان وكلمة المرور --}}
+                    <div class="form-section-divider">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>{{ app()->getLocale() === 'ar' ? 'بيانات الأمان وكلمة المرور' : 'Security & Password' }}</span>
+                    </div>
+
+                    {{-- صف: كلمة المرور وتأكيدها --}}
+                    <div class="row">
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="password">
+                                {{ app()->getLocale() === 'ar' ? 'كلمة المرور' : 'Password' }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-lock form-input-icon"></i>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    required
+                                    autocomplete="new-password"
+                                    class="form-control form-control-custom @error('password') is-invalid @enderror"
+                                    placeholder="••••••••"
+                                >
+                                <button
+                                    type="button"
+                                    class="password-toggle-btn"
+                                    onclick="toggleFieldVisibility('password', 'password-toggle-icon-1')"
+                                    aria-label="Toggle password"
+                                >
+                                    <i class="fas fa-eye" id="password-toggle-icon-1"></i>
+                                </button>
+                            </div>
+                            @error('password')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="password_confirmation">
+                                {{ app()->getLocale() === 'ar' ? 'تأكيد كلمة المرور' : 'Confirm Password' }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-check-double form-input-icon"></i>
+                                <input
+                                    id="password_confirmation"
+                                    type="password"
+                                    name="password_confirmation"
+                                    required
+                                    autocomplete="new-password"
+                                    class="form-control form-control-custom @error('password_confirmation') is-invalid @enderror"
+                                    placeholder="••••••••"
+                                >
+                                <button
+                                    type="button"
+                                    class="password-toggle-btn"
+                                    onclick="toggleFieldVisibility('password_confirmation', 'password-toggle-icon-2')"
+                                    aria-label="Toggle password confirmation"
+                                >
+                                    <i class="fas fa-eye" id="password-toggle-icon-2"></i>
+                                </button>
+                            </div>
+                            @error('password_confirmation')
+                                <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
                     {{-- زر إنشاء الحساب --}}
-                    <button class="btn btn-login-submit" type="submit" id="register-button">
+                    <button class="btn btn-login-submit mt-3" type="submit" id="register-button">
                         <i class="fas fa-user-plus"></i>
-                        <span>{{ app()->getLocale() === 'ar' ? 'إنشاء حساب المريض' : 'Create Patient Account' }}</span>
+                        <span>{{ app()->getLocale() === 'ar' ? 'إنشاء حساب المريض وتفعيل الملف' : 'Create Patient Account & Activate Record' }}</span>
                     </button>
 
                 </form>
@@ -314,6 +501,22 @@
         const form = document.getElementById('register-form');
         const btn  = document.getElementById('register-button');
         const nameInput = document.getElementById('name');
+        const nidInput  = document.getElementById('national_id');
+        const phoneInput = document.getElementById('phone');
+
+        // قفل الإدخال في الرقم القومي على الأرقام فقط (14 رقم)
+        if (nidInput) {
+            nidInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14);
+            });
+        }
+
+        // قفل الإدخال في رقم الهاتف على الأرقام و +
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9+]/g, '').slice(0, 15);
+            });
+        }
 
         function validateName() {
             if (!nameInput) return true;
@@ -343,7 +546,7 @@
                 if (typeof form.checkValidity === 'function' && !form.checkValidity()) return;
                 btn.style.pointerEvents = 'none';
                 btn.style.opacity = '0.85';
-                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>{{ app()->getLocale() === "ar" ? "جاري إنشاء الحساب..." : "Creating Account..." }}</span>';
+                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>{{ app()->getLocale() === "ar" ? "جاري إنشاء الحساب والملف الطبي..." : "Creating Account & Record..." }}</span>';
             });
         }
     });

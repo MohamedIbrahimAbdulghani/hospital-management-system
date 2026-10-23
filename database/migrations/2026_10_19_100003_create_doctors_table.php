@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
             $table->foreignId('specialization_id')->nullable()->constrained('specializations')->nullOnDelete();
+            $table->string('name_en')->nullable();
 
             $table->string('license_number', 50)->unique()->nullable();
             $table->string('title')->default('Specialist'); // Consultant, Specialist, Professor, etc.
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->decimal('rating', 3, 2)->default(5.00);
             $table->boolean('is_available')->default(true);
             $table->unsignedInteger('appointments_per_day')->default(20);
+            $table->unsignedInteger('sort_order')->default(0);
 
             $table->timestamps();
             $table->softDeletes();
