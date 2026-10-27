@@ -126,17 +126,8 @@
                     </div>
                 @endif
 
-                {{-- رسائل الخطأ --}}
-                @if ($errors->any())
-                    <div class="alert alert-danger py-2 px-3 mb-3 tx-13 rounded">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-exclamation-circle mr-1 ml-1 text-danger"></i>
-                            <span>
-                                {{ $errors->first('email') ?: $errors->first() }}
-                            </span>
-                        </div>
-                    </div>
-                @endif
+                {{-- رسائل الخطأ: عرض أخطاء المصادقة العامة في البانر العلوي مرة واحدة فقط --}}
+                <x-auth-validation-alert />
 
                 {{-- نموذج تسجيل الدخول الموحد --}}
                 <form method="POST" action="{{ route('login.store') }}" id="login-form">
@@ -161,9 +152,9 @@
                                 autocomplete="username"
                             >
                         </div>
-                        @error('email')
-                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
-                        @enderror
+                        @if (\App\Helpers\AuthErrorHelper::shouldShowInlineError('email', $errors))
+                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $errors->first('email') }}</div>
+                        @endif
                     </div>
 
                     {{-- كلمة المرور --}}
@@ -198,9 +189,9 @@
                                 <i class="fas fa-eye" id="password-toggle-icon"></i>
                             </button>
                         </div>
-                        @error('password')
-                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $message }}</div>
-                        @enderror
+                        @if (\App\Helpers\AuthErrorHelper::shouldShowInlineError('password', $errors))
+                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $errors->first('password') }}</div>
+                        @endif
                     </div>
 
                     {{-- تذكرني --}}

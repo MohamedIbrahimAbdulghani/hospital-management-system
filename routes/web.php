@@ -16,12 +16,14 @@ use App\Http\Controllers\Auth\TwoFactorChallengeController;
 // راوت تبديل اللغة الموحد لجميع صفحات الموقع
 Route::get('/locale/{locale}', [LocalizationController::class, 'switch'])->name('locale.switch');
 
-// تحويل أي طلب مباشر لـ /login أو /register بدون بادئة لغة إلى الرابط المحتوي على اللغة تلقائياً
-Route::get('/login', function () {
-    return redirect()->to(LaravelLocalization::getLocalizedURL(null, 'login'));
+// تحويل أي طلب مباشر لـ /login أو /register بدون بادئة لغة إلى الرابط المحتوي على اللغة المفضلة للمستخدم تلقائياً
+Route::get('/login', function (\Illuminate\Http\Request $request) {
+    $locale = \App\Helpers\LocaleHelper::getLocale($request);
+    return redirect()->to(LaravelLocalization::getLocalizedURL($locale, 'login'));
 });
-Route::get('/register', function () {
-    return redirect()->to(LaravelLocalization::getLocalizedURL(null, 'register'));
+Route::get('/register', function (\Illuminate\Http\Request $request) {
+    $locale = \App\Helpers\LocaleHelper::getLocale($request);
+    return redirect()->to(LaravelLocalization::getLocalizedURL($locale, 'register'));
 });
 
 Route::group([
@@ -37,14 +39,16 @@ Route::group([
         ->middleware(['guest:'.config('fortify.guard')])
         ->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-        ->middleware(['guest:'.config('fortify.guard')]);
+        ->middleware(['guest:'.config('fortify.guard')])
+        ->name('login.store');
 
     // صفحة إنشاء حساب جديد ببادئة اللغة (/ar/register أو /en/register)
     Route::get('/register', [RegisteredUserController::class, 'create'])
         ->middleware(['guest:'.config('fortify.guard')])
         ->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store'])
-        ->middleware(['guest:'.config('fortify.guard')]);
+        ->middleware(['guest:'.config('fortify.guard')])
+        ->name('register.store');
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/welcome', fn () => redirect()->route('home'))->name('welcome');
@@ -56,6 +60,9 @@ Route::group([
         ->name('two-factor.login');
     Route::post('/two-factor-challenge', [TwoFactorChallengeController::class, 'store'])
         ->name('two-factor.login.store');
+    Route::post('/two-factor-challenge/resend', [TwoFactorChallengeController::class, 'resend'])
+        ->name('two-factor.resend');
+
 
     // Central dashboard redirect based on authenticated user role
     Route::get('/dashboard', function () {

@@ -13,7 +13,7 @@
     x-init="$watch('mobileMenu', value => document.body.classList.toggle('overflow-hidden', value))"
     class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all duration-300"
 >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl 2xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20 gap-3 sm:gap-4">
 
             {{-- 1. Brand Logo --}}
@@ -26,7 +26,7 @@
             </a>
 
             {{-- 2. Desktop Navigation Menu --}}
-            <nav class="hidden xl:flex items-center gap-6 2xl:gap-8">
+            <nav class="hidden xl:flex items-center gap-5 2xl:gap-7">
                 <a href="{{ route('home') }}#hero" class="text-sm font-bold text-slate-900 hover:text-sky-600 transition">
                     {{ __('messages.nav_home') }}
                 </a>
@@ -50,8 +50,8 @@
                 </a>
             </nav>
 
-            {{-- 3. Header Action Buttons (Emergency Hotline, Sign in, Book appointment) --}}
-            <div class="hidden lg:flex items-center gap-2.5 2xl:gap-3 shrink-0">
+            {{-- 3. Header Action Buttons (Emergency Hotline, Language Switcher, Sign in, Book appointment) --}}
+            <div class="hidden xl:flex items-center gap-2.5 2xl:gap-3 shrink-0">
                 {{-- Emergency Hotline (Red Pill with pulse) --}}
                 <a
                     href="tel:{{ preg_replace('/[^0-9+]/', '', $emergencyPhone) }}"
@@ -59,7 +59,7 @@
                     title="{{ __('messages.emergency_247') }}"
                 >
                     <i class="fas fa-heart-pulse text-rose-500 animate-pulse text-xs"></i>
-                    <span>{{ $isRtl ? 'طوارئ وخط ساخن' : 'Emergency Hotline' }}</span>
+                    <span>{{ $isRtl ? 'طوارئ' : 'Emergency' }}</span>
                     <span dir="ltr" class="font-extrabold">{{ $emergencyPhone }}</span>
                 </a>
 
@@ -124,7 +124,7 @@
 
             {{-- 4. Mobile / Tablet Hamburger & Quick Call --}}
             <div class="flex xl:hidden items-center gap-2 shrink-0">
-                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $emergencyPhone) }}" class="lg:hidden p-2.5 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 transition" title="{{ $emergencyPhone }}">
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $emergencyPhone) }}" class="p-2.5 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 transition" title="{{ $emergencyPhone }}">
                     <i class="fas fa-phone-alt text-xs"></i>
                 </a>
                 <button
@@ -254,11 +254,17 @@
                         </form>
                     @endguest
 
-                    <div class="text-center pt-2">
+                    <div class="text-center pt-2 flex flex-col items-center gap-2">
                         <a href="tel:{{ preg_replace('/[^0-9+]/', '', $emergencyPhone) }}" class="text-xs text-rose-600 font-bold inline-flex items-center justify-center gap-1.5">
                             <span class="emergency-pulse-dot"></span>
                             <span>{{ __('messages.emergency_247') }}: {{ $emergencyPhone }}</span>
                         </a>
+                        @if (!empty($hotlinePhone))
+                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $hotlinePhone) }}" class="text-xs text-sky-600 font-semibold inline-flex items-center justify-center gap-1.5">
+                                <i class="fas fa-headset text-sky-500 text-xs"></i>
+                                <span>{{ $isRtl ? 'الخط الساخن' : 'Hotline' }}: <span dir="ltr">{{ $hotlinePhone }}</span></span>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>

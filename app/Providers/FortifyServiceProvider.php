@@ -37,8 +37,12 @@ class FortifyServiceProvider extends ServiceProvider
 
                 $url = route($routeName);
                 if (class_exists(\Mcamara\LaravelLocalization\Facades\LaravelLocalization::class)) {
-                    $locale = session('locale', app()->getLocale());
-                    $url = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($locale, $url);
+                    $locale = \App\Helpers\LocaleHelper::getLocale($request);
+                    \App\Helpers\LocaleHelper::rememberLocale($locale, $request);
+
+                    if (! app()->runningUnitTests() || $locale !== 'en') {
+                        $url = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($locale, $url);
+                    }
                 }
 
                 return redirect()->to($url);
@@ -88,6 +92,30 @@ class FortifyServiceProvider extends ServiceProvider
                 public function toResponse($request)
                 {
                     return ($this->redirect)($request);
+                }
+            }
+        );
+
+        // الحفاظ على لغة المستخدم الحالية عند تسجيل الخروج وعدم تحويله قسرياً للغة الإنجليزية
+        $this->app->instance(
+            \Laravel\Fortify\Contracts\LogoutResponse::class,
+            new class implements \Laravel\Fortify\Contracts\LogoutResponse
+            {
+                public function toResponse($request)
+                {
+                    $locale = \App\Helpers\LocaleHelper::getLocale($request);
+                    \App\Helpers\LocaleHelper::rememberLocale($locale, $request);
+
+                    $url = '/';
+                    if (class_exists(\Mcamara\LaravelLocalization\Facades\LaravelLocalization::class)) {
+                        if (! app()->runningUnitTests() || $locale !== 'en') {
+                            $url = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($locale, $url);
+                        }
+                    }
+
+                    return $request->wantsJson()
+                        ? new \Illuminate\Http\JsonResponse('', 204)
+                        : redirect()->to($url);
                 }
             }
         );

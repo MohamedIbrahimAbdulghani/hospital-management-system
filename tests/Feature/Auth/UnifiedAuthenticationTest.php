@@ -73,7 +73,7 @@ class UnifiedAuthenticationTest extends TestCase
         $email = 'patient_' . Str::random(8) . '@hospital.com';
         $patient = User::factory()->create([
             'email' => $email,
-            'phone' => '050' . rand(1000000, 9999999),
+            'phone' => '010' . rand(10000000, 99999999),
             'password' => Hash::make('password123'),
             'role' => 'patient',
             'is_active' => true,
@@ -100,7 +100,7 @@ class UnifiedAuthenticationTest extends TestCase
 
     public function test_user_can_login_using_phone_number(): void
     {
-        $phone = '055' . rand(1000000, 9999999);
+        $phone = '011' . rand(10000000, 99999999);
         $patient = User::factory()->create([
             'email' => 'phone_' . Str::random(8) . '@hospital.com',
             'phone' => $phone,
@@ -151,7 +151,7 @@ class UnifiedAuthenticationTest extends TestCase
         ]);
     }
 
-    public function test_doctor_completes_2fa_and_redirects_to_doctor_dashboard(): void
+    public function test_doctor_authenticates_directly_without_2fa_and_redirects_to_doctor_dashboard(): void
     {
         $email = 'doctor_' . Str::random(8) . '@hospital.com';
         $doctor = User::factory()->create([
@@ -163,27 +163,47 @@ class UnifiedAuthenticationTest extends TestCase
         ]);
         $doctor->assignRole('doctor');
 
-        // Step 1: Login triggers 2FA
+        $response = $this->post(route('login.store'), [
+            'email' => $email,
+            'password' => 'password123',
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $this->assertAuthenticatedAs($doctor);
+        $response->assertRedirect(route('doctor.dashboard'));
+    }
+
+    public function test_admin_completes_2fa_and_redirects_to_admin_dashboard(): void
+    {
+        $email = 'admin_' . Str::random(8) . '@hospital.com';
+        $admin = User::factory()->create([
+            'email' => $email,
+            'password' => Hash::make('password123'),
+            'role' => 'admin',
+            'is_active' => true,
+            'must_change_password' => false,
+        ]);
+        $admin->assignRole('admin');
+
         $this->post(route('login.store'), [
             'email' => $email,
             'password' => 'password123',
         ]);
 
-        // Step 2: 2FA challenge code
         $twoFactorService = app(TwoFactorService::class);
-        $otp = $twoFactorService->generateAndSendOtp($doctor);
+        $otp = $twoFactorService->generateAndSendOtp($admin);
 
-        $response = $this->withSession(['login.id' => $doctor->id])
+        $response = $this->withSession(['login.id' => $admin->id])
             ->post(route('two-factor.login.store'), [
                 'code' => $otp,
             ]);
 
         $response->assertSessionHasNoErrors();
-        $this->assertAuthenticatedAs($doctor);
-        $response->assertRedirect(route('doctor.dashboard'));
+        $this->assertAuthenticatedAs($admin);
+        $response->assertRedirect(route('admin.dashboard'));
 
         $this->assertDatabaseHas('audit_logs', [
-            'user_id' => $doctor->id,
+            'user_id' => $admin->id,
             'action' => '2fa_success',
         ]);
     }
@@ -262,7 +282,10 @@ class UnifiedAuthenticationTest extends TestCase
             'email' => $email,
             'password' => 'password123',
             'password_confirmation' => 'password123',
-            'phone' => '0501234567',
+            'phone' => '01012345678',
+            'national_id' => '2980101' . rand(1000000, 9999999),
+            'gender' => 'male',
+            'date_of_birth' => '1995-05-15',
             'role' => 'admin', // Malicious attempt to self-promote to admin
         ]);
 
@@ -291,4 +314,109 @@ class UnifiedAuthenticationTest extends TestCase
 
         $response->assertRedirect(route('password.change.force'));
     }
+
+    public function test_two_factor_roles_configuration_is_respected(): void
+    {
+        $twoFactorService = app(TwoFactorService::class);
+
+        $admin = User::factory()->make(['role' => 'admin']);
+        $doctor = User::factory()->make(['role' => 'doctor']);
+        $patient = User::factory()->make(['role' => 'patient']);
+
+        // Default: admin only
+        config(['hospital.two_factor_roles' => ['admin']]);
+        $this->assertTrue($twoFactorService->isTwoFactorRequired($admin));
+        $this->assertFalse($twoFactorService->isTwoFactorRequired($doctor));
+        $this->assertFalse($twoFactorService->isTwoFactorRequired($patient));
+
+        // Config changed to doctor only
+        config(['hospital.two_factor_roles' => ['doctor']]);
+        $this->assertFalse($twoFactorService->isTwoFactorRequired($admin));
+        $this->assertTrue($twoFactorService->isTwoFactorRequired($doctor));
+
+        // Restore default
+        config(['hospital.two_factor_roles' => ['admin']]);
+    }
+
+    public function test_authentication_failure_renders_error_once_in_alert_banner_and_not_inline(): void
+    {
+        $email = 'unknown_' . Str::random(8) . '@hospital.com';
+
+        $viewResponse = $this->followingRedirects()
+            ->from(route('login'))
+            ->post(route('login.store'), [
+                'email' => $email,
+                'password' => 'wrongpassword',
+            ]);
+
+        $viewResponse->assertOk();
+        $content = $viewResponse->getContent();
+
+        // Error message appears in the top alert banner
+        $errorMessage = trans('auth.failed');
+        $this->assertStringContainsString($errorMessage, $content);
+
+        // Count occurrences of the message in the entire rendered HTML
+        $count = substr_count($content, $errorMessage);
+        $this->assertEquals(1, $count, "The auth failure error message must appear exactly once in the rendered HTML.");
+    }
+
+    public function test_field_validation_error_renders_inline_only_and_not_in_top_alert_banner(): void
+    {
+        $viewResponse = $this->followingRedirects()
+            ->from(route('login'))
+            ->post(route('login.store'), [
+                'email' => '',
+                'password' => '',
+            ]);
+
+        $viewResponse->assertOk();
+
+        // Top auth alert banner should NOT be rendered when errors are only field validation errors
+        $viewResponse->assertDontSee('alert-danger');
+
+        // Field inline feedback should be visible under the fields
+        $viewResponse->assertSee('invalid-feedback');
+    }
+
+    public function test_two_factor_challenge_page_redesign_renders_required_elements(): void
+    {
+        $admin = User::factory()->create([
+            'role' => 'admin',
+            'is_active' => true,
+        ]);
+
+        $response = $this->withSession(['login.id' => $admin->id])
+            ->get(route('two-factor.login'));
+
+        $response->assertOk();
+        $response->assertSee('two-factor-card');
+        $response->assertSee('otp-digit-box');
+        $response->assertSee('two-factor-shield-icon');
+        $response->assertSee('toggle-recovery-link');
+        $response->assertSee(__('auth.two_factor_badge'));
+        $response->assertDontSee('Mandatory for Medical & Admin Staff');
+    }
+
+    public function test_demo_2fa_code_is_only_rendered_when_local_and_debug_enabled(): void
+    {
+        $admin = User::factory()->create([
+            'role' => 'admin',
+            'is_active' => true,
+        ]);
+
+        // When debug is false, demo code notice should NOT render
+        config(['app.debug' => false]);
+
+        $response = $this->withSession([
+            'login.id' => $admin->id,
+            'demo_2fa_code' => '428706',
+        ])->get(route('two-factor.login'));
+
+        $response->assertDontSee('428706');
+
+        // Restore config
+        config(['app.debug' => true]);
+    }
 }
+

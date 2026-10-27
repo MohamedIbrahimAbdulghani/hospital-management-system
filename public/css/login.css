@@ -167,6 +167,29 @@
         margin: 0 auto 1.5rem auto;
     }
 
+    .back-role-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 5px 12px;
+        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+        transition: all 0.2s ease;
+    }
+
+    .back-role-link:hover {
+        color: #0162e8;
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        text-decoration: none;
+    }
+
     .login-box {
         width: 100%;
         max-width: 440px;

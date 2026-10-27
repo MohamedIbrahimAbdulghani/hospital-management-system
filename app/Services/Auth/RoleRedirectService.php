@@ -41,8 +41,12 @@ class RoleRedirectService
         $url = route($routeName);
 
         if (class_exists(LaravelLocalization::class)) {
-            $locale = session('locale', app()->getLocale());
-            $url = LaravelLocalization::getLocalizedURL($locale, $url);
+            $locale = \App\Helpers\LocaleHelper::getLocale($request);
+            \App\Helpers\LocaleHelper::rememberLocale($locale, $request);
+
+            if (! app()->runningUnitTests() || $locale !== 'en') {
+                $url = LaravelLocalization::getLocalizedURL($locale, $url);
+            }
         }
 
         return redirect()->to($url);

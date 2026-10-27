@@ -144,22 +144,11 @@
                     </div>
                 @endif
 
-                @if ($errors->any())
-                    <div class="alert alert-danger py-2 px-3 mb-3 tx-13 rounded">
-                        <div class="font-weight-bold mb-1">
-                            <i class="fas fa-exclamation-triangle mr-1 ml-1"></i>
-                            {{ app()->getLocale() === 'ar' ? 'يرجى تصحيح الأخطاء التالية:' : 'Please correct the following errors:' }}
-                        </div>
-                        <ul class="mb-0 pr-3 pl-3 tx-12">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                {{-- رسائل الخطأ: أخطاء المصادقة العامة فقط في البانر وأخطاء الحقول تظهر تحت كل حقل فقط --}}
+                <x-auth-validation-alert />
 
                 {{-- نموذج إنشاء الحساب --}}
-                <form method="POST" action="{{ route('register') }}" id="register-form" novalidate>
+                <form method="POST" action="{{ route('register.store') }}" id="register-form" novalidate>
                     @csrf
 
                     {{-- القسم الأول: البيانات الشخصية والطبية --}}

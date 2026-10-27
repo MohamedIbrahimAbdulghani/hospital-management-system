@@ -262,14 +262,8 @@
                 </div>
             @endif
 
-            @if ($errors->any())
-                <div class="mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs">
-                    <div class="flex items-center gap-2 font-semibold mb-1">
-                        <i class="fas fa-exclamation-triangle text-rose-600"></i>
-                        <span>{{ $errors->first() }}</span>
-                    </div>
-                </div>
-            @endif
+            {{-- Authentication errors only in top banner --}}
+            <x-auth-validation-alert />
 
             {{-- Main Form / Content Slot --}}
             {{ $slot }}

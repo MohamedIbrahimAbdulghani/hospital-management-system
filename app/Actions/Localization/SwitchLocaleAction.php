@@ -2,13 +2,13 @@
 
 namespace App\Actions\Localization;
 
-use Illuminate\Support\Facades\App;
+use App\Helpers\LocaleHelper;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class SwitchLocaleAction
 {
     /**
-     * تبديل لغة التطبيق وحفظها في السيشن وتحديد رابط التحويل المناسب
+     * تبديل لغة التطبيق وحفظها في السيشن والكوكيز الدائم وتحديد رابط التحويل المناسب
      *
      * @param string $locale كود اللغة المراد التحويل إليها
      * @param string|null $previousUrl الرابط السابق للعودة إليه
@@ -16,17 +16,15 @@ class SwitchLocaleAction
      */
     public function execute(string $locale, ?string $previousUrl = null): string
     {
-        $supportedLocales = LaravelLocalization::getSupportedLocales();
+        $supportedLocales = LocaleHelper::getSupportedLocales();
 
         // لو كود اللغة مش مدعوم، بنعتمد اللغة الافتراضية
         if (! array_key_exists($locale, $supportedLocales)) {
             $locale = config('app.fallback_locale', 'en');
         }
 
-        // هنا بنحفظ اللغة في السيشن وبنحدث لغة التطبيق الحالية
-        session(['locale' => $locale]);
-        App::setLocale($locale);
-        LaravelLocalization::setLocale($locale);
+        // هنا بنحفظ اللغة في السيشن والكوكيز الدائم وبنحدث لغة التطبيق الحالية
+        LocaleHelper::rememberLocale($locale);
 
         $previousUrl = $previousUrl ?: url()->previous();
         $root = request()->root();

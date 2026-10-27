@@ -14,12 +14,17 @@ class TwoFactorService
 {
     /**
      * Determine if Two Factor Authentication is required for this user.
-     * Mandatory for Admin and Doctor, or any user who voluntarily enabled 2FA.
+     * Mandatory for configured roles (default: admin only), or any user who voluntarily enabled 2FA.
      */
     public function isTwoFactorRequired(User $user): bool
     {
-        if ($user->isAdmin() || $user->isDoctor()) {
-            return true;
+        // التحقق من الأدوار الملزمة بالتحقق الثنائي عبر ملف الإعدادات
+        $configuredRoles = (array) config('hospital.two_factor_roles', ['admin']);
+
+        foreach ($configuredRoles as $role) {
+            if ($user->role === $role || $user->hasRole($role)) {
+                return true;
+            }
         }
 
         return ! empty($user->two_factor_secret);
@@ -28,21 +33,29 @@ class TwoFactorService
     /**
      * Generate an OTP code for user, cache it, and record audit log.
      */
-    public function generateAndSendOtp(User $user, ?Request $request = null): string
+    public function generateAndSendOtp(User $user, ?Request $request = null, bool $isResend = false): string
     {
         $code = sprintf('%06d', random_int(100000, 999999));
+        $expiryMinutes = (int) config('hospital.two_factor_expiry_minutes', 5);
 
-        Cache::put("2fa_otp_{$user->id}", Hash::make($code), now()->addMinutes(10));
+        // تخزين الرمز مجزّأً في الكاش للحماية القصوى
+        Cache::put("2fa_otp_{$user->id}", Hash::make($code), now()->addMinutes($expiryMinutes));
 
-        // For local development / review, flash demo code to session so testing is effortless
-        if (app()->environment('local', 'testing') || config('app.debug')) {
-            session()->flash('demo_2fa_code', $code);
+        // تخزين الكود التجريبي للمطور في البيئة المحلية فقط مع بقائه طوال مدة الصلاحية
+        if (app()->environment('local')) {
+            Cache::put("2fa_demo_code_{$user->id}", $code, now()->addMinutes($expiryMinutes));
+            session()->put('demo_2fa_code', $code);
+        } else {
+            Cache::forget("2fa_demo_code_{$user->id}");
+            session()->forget('demo_2fa_code');
         }
 
-        Log::info("HMS 2FA Verification Code for {$user->email}: [{$code}]");
+        // الأمان: لا نسجل كود التحقق أبداً في السجلات العامة
+        Log::info("HMS 2FA verification code generated for {$user->email}");
 
+        // تسجيل الحدث في سجل التدقيق الأمني بدون الكود
         AuditLog::record(
-            action: '2fa_challenged',
+            action: $isResend ? '2fa_resent' : '2fa_challenged',
             email: $user->email,
             userId: $user->id,
             details: ['role' => $user->role, 'method' => 'otp_and_totp'],
@@ -50,6 +63,48 @@ class TwoFactorService
         );
 
         return $code;
+    }
+
+    /**
+     * Resend a fresh OTP code to user, invalidating any previous code.
+     * Failed attempts counter is intentionally preserved to prevent bypasses.
+     */
+    public function resendOtp(User $user, ?Request $request = null): string
+    {
+        // إلغاء الكود القديم فوراً
+        Cache::forget("2fa_otp_{$user->id}");
+        Cache::forget("2fa_demo_code_{$user->id}");
+
+        // توليد كود جديد وتجديد الصلاحية
+        return $this->generateAndSendOtp($user, $request, isResend: true);
+    }
+
+    /**
+     * Retrieve the dev demo code strictly in local environment.
+     */
+    public function getDemoCode(User $user): ?string
+    {
+        if (! app()->environment('local')) {
+            return null;
+        }
+
+        return Cache::get("2fa_demo_code_{$user->id}") ?? session('demo_2fa_code');
+    }
+
+    /**
+     * Clear all pending two-factor data for this user.
+     */
+    public function clearPendingTwoFactor(User $user, ?Request $request = null): void
+    {
+        Cache::forget("2fa_otp_{$user->id}");
+        Cache::forget("2fa_demo_code_{$user->id}");
+        Cache::forget("2fa_attempts_{$user->id}");
+        Cache::forget("2fa_resend_cooldown_{$user->id}");
+
+        $req = $request ?: request();
+        if ($req && $req->hasSession()) {
+            $req->session()->forget(['login.id', 'login.remember', 'demo_2fa_code']);
+        }
     }
 
     /**
@@ -63,6 +118,7 @@ class TwoFactorService
         $hashedOtp = Cache::get("2fa_otp_{$user->id}");
         if ($hashedOtp && Hash::check($code, $hashedOtp)) {
             Cache::forget("2fa_otp_{$user->id}");
+            Cache::forget("2fa_demo_code_{$user->id}");
             return true;
         }
 
@@ -78,11 +134,12 @@ class TwoFactorService
             }
         }
 
-        // 3. Convenience demo fallback for local / testing
-        if ((app()->environment('local', 'testing') || config('app.debug')) && $code === '123456') {
+        // 3. Convenience demo fallback strictly for local development with debug enabled
+        if (app()->environment('local') && config('app.debug') && $code === '123456') {
             return true;
         }
 
         return false;
     }
 }
+
