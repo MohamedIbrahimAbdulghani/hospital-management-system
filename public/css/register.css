@@ -21,17 +21,17 @@
         margin: 0;
     }
 
-    /* Left Side: Exact Same Hero Showcase as Login */
+    /* Left Side: Exact Same Hero Showcase as Landing Page Hero */
     .login-hero-side {
         position: relative;
         min-height: 100vh;
         height: 100vh;
         overflow: hidden;
-        background: #090e17;
+        background: #020617;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding: 3rem 4rem;
+        padding: 3rem 3rem;
     }
 
     .login-hero-bg {
@@ -46,15 +46,19 @@
         object-position: center 20%;
         z-index: 1;
         pointer-events: none;
+        filter: brightness(0.85) contrast(1.05);
+        transform: scale(1.02);
+        transition: opacity 1s ease;
     }
 
+    /* شاشة سودا خفيفة وشفافة تظهر الفيديو بوضوح وتبرز الكلام */
     .login-hero-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to left,
-                rgba(9, 14, 23, 0.65) 0%,
-                rgba(9, 14, 23, 0.35) 45%,
-                rgba(9, 14, 23, 0.15) 100%);
+        background:
+            radial-gradient(circle at 45% 35%, rgba(14, 165, 233, 0.12) 0%, transparent 70%),
+            linear-gradient(to bottom, rgba(2, 6, 23, 0.35) 0%, rgba(2, 6, 23, 0.25) 40%, rgba(2, 6, 23, 0.50) 100%),
+            linear-gradient(to right, rgba(2, 6, 23, 0.45) 0%, rgba(2, 6, 23, 0.20) 60%, rgba(2, 6, 23, 0.35) 100%);
         z-index: 2;
         pointer-events: none;
     }
@@ -63,62 +67,156 @@
         position: relative;
         z-index: 3;
         color: #ffffff;
-        max-width: 540px;
+        max-width: 500px;
         width: 100%;
-        margin-inline-start: 2.5rem;
+        margin-inline-start: 1.75rem;
         margin-inline-end: auto;
         padding: 0;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
-        animation: fadeInHero 0.8s ease-out;
     }
 
-    @keyframes fadeInHero {
-        from {
+    /* Hero Cascading Smooth Drop Animations */
+    @keyframes heroSlideDown {
+        0% {
             opacity: 0;
-            transform: translateY(16px);
+            transform: translateY(-30px);
+            filter: blur(6px);
         }
-
-        to {
+        100% {
             opacity: 1;
             transform: translateY(0);
+            filter: blur(0);
         }
     }
 
+    @keyframes heroTextShimmer {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .hero-drop-1 {
+        animation: heroSlideDown 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+    }
+
+    .hero-drop-2 {
+        animation: heroSlideDown 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+    }
+
+    .hero-drop-3 {
+        animation: heroSlideDown 1.15s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+    }
+
+    .hero-drop-4 {
+        animation: heroSlideDown 1.25s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
+    }
+
+    /* Pulsing Badge Indicator */
+    .hero-ping-container {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 10px;
+        height: 10px;
+        margin-inline-end: 4px;
+        vertical-align: middle;
+    }
+
+    .hero-ping-anim {
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
+        background-color: #22d3ee;
+        opacity: 0.8;
+        animation: heroPing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    .hero-ping-dot {
+        position: relative;
+        display: inline-block;
+        border-radius: 9999px;
+        width: 8px;
+        height: 8px;
+        background-color: #06b6d4;
+    }
+
+    @keyframes heroPing {
+        75%, 100% {
+            transform: scale(2.2);
+            opacity: 0;
+        }
+    }
+
+    /* Hero Badge matching landingpage */
     .login-hero-badge {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        color: #ffffff;
-        padding: 6px 14px;
+        gap: 9px;
+        background: rgba(255, 255, 255, 0.10);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        color: #bae6fd;
+        padding: 6px 16px;
         border-radius: 50px;
         font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1.35rem;
+        box-shadow: 0 10px 25px -5px rgba(2, 6, 23, 0.5);
+        transition: all 0.3s ease;
     }
 
-    .login-hero-title {
-        font-size: 2.1rem;
-        font-weight: 800;
-        line-height: 1.35;
-        margin-bottom: 0.9rem;
+    .login-hero-badge:hover {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(56, 189, 248, 0.5);
         color: #ffffff;
-        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
     }
 
+    .text-sky-400 {
+        color: #38bdf8 !important;
+    }
+
+    /* Main Headline with Shimmer Glow */
+    .login-hero-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        line-height: 1.35;
+        margin-bottom: 1rem;
+        color: #ffffff;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .text-gradient-shimmer {
+        background: linear-gradient(110deg, #ffffff 15%, #bae6fd 45%, #38bdf8 65%, #ffffff 85%);
+        background-size: 220% 100%;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: heroTextShimmer 5s ease-in-out infinite;
+        display: inline-block;
+    }
+
+    /* Subtitle Description */
     .login-hero-desc {
-        font-size: 0.95rem;
-        line-height: 1.65;
-        color: rgba(255, 255, 255, 0.92);
-        margin-bottom: 1.5rem;
-        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+        font-size: 0.98rem;
+        line-height: 1.75;
+        color: rgba(226, 232, 240, 0.92);
+        font-weight: 500;
+        margin-bottom: 1.6rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
     }
 
+    /* Features / Chips */
     .login-hero-features {
         display: flex;
         flex-wrap: wrap;
@@ -128,21 +226,27 @@
     .login-hero-pill {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background: rgba(15, 23, 42, 0.70);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 12.5px;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.10);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        padding: 7px 16px;
+        border-radius: 9999px;
+        font-size: 13px;
+        font-weight: 600;
         color: #f1f5f9;
-        transition: transform 0.2s ease, background 0.2s ease;
+        box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .login-hero-pill:hover {
-        background: rgba(15, 23, 42, 0.85);
-        transform: translateY(-2px);
+    .login-hero-pill:hover,
+    .hero-facility-chip:hover {
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(56, 189, 248, 0.6);
+        color: #ffffff;
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.35);
     }
 
     /* Right Side: Form (Identical layout to Login) */

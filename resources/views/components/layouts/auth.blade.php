@@ -221,7 +221,7 @@
         <div class="auth-card">
 
             {{-- Top Header Row: Home Link & Language Switcher in opposite corners --}}
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex items-center justify-between mb-4">
                 <a href="{{ route('home') }}" class="back-home-link">
                     <span class="arrow-icon"><i class="fas fa-arrow-right"></i></span>
                     <span>{{ __('messages.back_to_home') }}</span>
@@ -244,7 +244,7 @@
                 @endif
 
                 @if(isset($badge))
-                    <span class="auth-badge bg-blue-50 text-blue-700 border border-blue-200">
+                    <span class="text-blue-700 border border-blue-200 auth-badge bg-blue-50">
                         {{ $badge }}
                     </span>
                 @endif
@@ -256,7 +256,7 @@
 
             {{-- Flash Messages --}}
             @if (session('status'))
-                <div class="mb-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+                <div class="flex items-center gap-2 p-3 mb-4 text-xs border rounded-lg bg-emerald-50 border-emerald-200 text-emerald-800">
                     <i class="fas fa-check-circle text-emerald-600"></i>
                     <span>{{ session('status') }}</span>
                 </div>

@@ -27,51 +27,61 @@
 
             <div class="login-hero-content">
                 @if (app()->getLocale() === 'ar')
-                    <div class="login-hero-badge">
-                        <i class="fas fa-hospital-alt"></i>
+                    <div class="login-hero-badge hero-drop-1">
+                        <span class="hero-ping-container">
+                            <span class="hero-ping-anim"></span>
+                            <span class="hero-ping-dot"></span>
+                        </span>
                         <span>{{ __('messages.unified_portal') }}</span>
+                        <i class="fas fa-certificate text-sky-400"></i>
                     </div>
-                    <h1 class="login-hero-title">
-                        رعاية صحية بمعايير عالمية وإدارة طبية متطورة
+                    <h1 class="login-hero-title hero-drop-2">
+                        رعاية صحية فائقة تليق بك <br>
+                        <span class="text-gradient-shimmer">بأحدث المعايير الطبية العالمية</span>
                     </h1>
-                    <p class="login-hero-desc">
+                    <p class="login-hero-desc hero-drop-3">
                         منظومة متكاملة لربط الأطباء، شؤون المرضى، والخدمات الطبية في بيئة آمنة وسلسة تدعم التحول الرقمي الكامل.
                     </p>
-                    <div class="login-hero-features">
-                        <div class="login-hero-pill">
+                    <div class="login-hero-features hero-drop-4">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-heartbeat text-danger"></i>
                             <span>ملفات طبية فورية</span>
                         </div>
-                        <div class="login-hero-pill">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-calendar-check text-success"></i>
                             <span>جدولة دقيقة للمواعيد</span>
                         </div>
-                        <div class="login-hero-pill">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-user-shield text-info"></i>
                             <span>أعلى معايير الأمان والخصوصية</span>
                         </div>
                     </div>
                 @else
-                    <div class="login-hero-badge">
-                        <i class="fas fa-hospital-alt"></i>
-                        <span>Smart Hospital Management</span>
+                    <div class="login-hero-badge hero-drop-1">
+                        <span class="hero-ping-container">
+                            <span class="hero-ping-anim"></span>
+                            <span class="hero-ping-dot"></span>
+                        </span>
+                        <span>Smart Hospital Portal</span>
+                        <i class="fas fa-certificate text-sky-400"></i>
                     </div>
-                    <h1 class="login-hero-title">
-                        World-Class Care & Advanced Healthcare Management
+                    <h1 class="login-hero-title hero-drop-2">
+                        World-Class Medical Care <br>
+                        <span class="text-gradient-shimmer">Designed Around Your Family</span>
                     </h1>
-                    <p class="login-hero-desc">
+                    <p class="login-hero-desc hero-drop-3">
                         An integrated, secure platform connecting physicians, patients, and clinical administration with peak efficiency.
                     </p>
-                    <div class="login-hero-features">
-                        <div class="login-hero-pill">
+                    <div class="login-hero-features hero-drop-4">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-heartbeat text-danger"></i>
                             <span>Real-Time Health Records</span>
                         </div>
-                        <div class="login-hero-pill">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-calendar-check text-success"></i>
                             <span>Smart Scheduling</span>
                         </div>
-                        <div class="login-hero-pill">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-user-shield text-info"></i>
                             <span>Enterprise-Grade Security</span>
                         </div>
@@ -110,18 +120,18 @@
 
                 {{-- العنوان الترحيبي --}}
                 <div class="mb-3">
-                    <h3 class="font-weight-bold text-dark mb-1" style="font-size: 1.5rem;">
+                    <h3 class="mb-1 font-weight-bold text-dark" style="font-size: 1.5rem;">
                         {{ __('auth.login') }}
                     </h3>
-                    <p class="text-muted tx-13 mb-0">
+                    <p class="mb-0 text-muted tx-13">
                         {{ __('auth.sign_in_desc') }}
                     </p>
                 </div>
 
                 {{-- رسائل التنبيه والنجاح --}}
                 @if (session('status'))
-                    <div class="alert alert-success py-2 px-3 mb-3 tx-13 rounded">
-                        <i class="fas fa-check-circle mr-1 ml-1"></i>
+                    <div class="px-3 py-2 mb-3 rounded alert alert-success tx-13">
+                        <i class="ml-1 mr-1 fas fa-check-circle"></i>
                         {{ session('status') }}
                     </div>
                 @endif
@@ -134,7 +144,7 @@
                     @csrf
 
                     {{-- البريد الإلكتروني أو رقم الهاتف --}}
-                    <div class="form-group mb-3">
+                    <div class="mb-3 form-group">
                         <label for="email">
                             {{ __('auth.email_or_phone') }}
                         </label>
@@ -153,13 +163,13 @@
                             >
                         </div>
                         @if (\App\Helpers\AuthErrorHelper::shouldShowInlineError('email', $errors))
-                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $errors->first('email') }}</div>
+                            <div class="mt-1 invalid-feedback d-block tx-12">{{ $errors->first('email') }}</div>
                         @endif
                     </div>
 
                     {{-- كلمة المرور --}}
-                    <div class="form-group mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
+                    <div class="mb-3 form-group">
+                        <div class="mb-1 d-flex justify-content-between align-items-center">
                             <label for="password" class="mb-0">
                                 {{ __('auth.password_label') }}
                             </label>
@@ -190,16 +200,16 @@
                             </button>
                         </div>
                         @if (\App\Helpers\AuthErrorHelper::shouldShowInlineError('password', $errors))
-                            <div class="invalid-feedback d-block tx-12 mt-1">{{ $errors->first('password') }}</div>
+                            <div class="mt-1 invalid-feedback d-block tx-12">{{ $errors->first('password') }}</div>
                         @endif
                     </div>
 
                     {{-- تذكرني --}}
-                    <div class="form-group d-flex align-items-center mb-4">
-                        <label class="ckbox mb-0 d-flex align-items-center" style="gap: 8px; cursor: pointer;">
+                    <div class="mb-4 form-group d-flex align-items-center">
+                        <label class="mb-0 ckbox d-flex align-items-center" style="gap: 8px; cursor: pointer;">
                             <input type="checkbox" name="remember" id="remember"
                                 {{ old('remember') ? 'checked' : '' }}>
-                            <span class="tx-13 mr-1 ml-1 text-muted">
+                            <span class="ml-1 mr-1 tx-13 text-muted">
                                 {{ __('auth.remember_me') }}
                             </span>
                         </label>
@@ -219,7 +229,7 @@
                         <span class="tx-13 text-muted">
                             {{ __('auth.dont_have_account') }}
                         </span>
-                        <a href="{{ route('register') }}" class="font-weight-bold text-primary ml-1 mr-1 tx-13">
+                        <a href="{{ route('register') }}" class="ml-1 mr-1 font-weight-bold text-primary tx-13">
                             {{ __('auth.register') }}
                         </a>
                     </div>

@@ -27,51 +27,61 @@
 
             <div class="login-hero-content">
                 @if (app()->getLocale() === 'ar')
-                    <div class="login-hero-badge">
-                        <i class="fas fa-heartbeat"></i>
+                    <div class="login-hero-badge hero-drop-1">
+                        <span class="hero-ping-container">
+                            <span class="hero-ping-anim"></span>
+                            <span class="hero-ping-dot"></span>
+                        </span>
                         <span>بوابة المرضى المعتمدة</span>
+                        <i class="fas fa-certificate text-sky-400"></i>
                     </div>
-                    <h1 class="login-hero-title">
-                        رعاية صحية بمعايير عالمية وإدارة طبية متطورة
+                    <h1 class="login-hero-title hero-drop-2">
+                        رعاية صحية فائقة تليق بك <br>
+                        <span class="text-gradient-shimmer">بأحدث المعايير الطبية العالمية</span>
                     </h1>
-                    <p class="login-hero-desc">
+                    <p class="login-hero-desc hero-drop-3">
                         سجل الآن للوصول إلى ملفك الطبي الرقمي، متابعة التحاليل والأشعة، وحجز استشاراتك مع كبار الاستشاريين.
                     </p>
-                    <div class="login-hero-features">
-                        <div class="login-hero-pill">
+                    <div class="login-hero-features hero-drop-4">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-file-medical-alt text-danger"></i>
                             <span>ملف طبي رقمي فوري</span>
                         </div>
-                        <div class="login-hero-pill">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-calendar-check text-success"></i>
                             <span>حجز استشارات بدون انتظار</span>
                         </div>
-                        <div class="login-hero-pill">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-user-shield text-info"></i>
                             <span>أعلى درجات الخصوصية والأمان</span>
                         </div>
                     </div>
                 @else
-                    <div class="login-hero-badge">
-                        <i class="fas fa-heartbeat"></i>
+                    <div class="login-hero-badge hero-drop-1">
+                        <span class="hero-ping-container">
+                            <span class="hero-ping-anim"></span>
+                            <span class="hero-ping-dot"></span>
+                        </span>
                         <span>Official Patient Portal</span>
+                        <i class="fas fa-certificate text-sky-400"></i>
                     </div>
-                    <h1 class="login-hero-title">
-                        World-Class Care & Advanced Healthcare Management
+                    <h1 class="login-hero-title hero-drop-2">
+                        World-Class Medical Care <br>
+                        <span class="text-gradient-shimmer">Designed Around Your Family</span>
                     </h1>
-                    <p class="login-hero-desc">
+                    <p class="login-hero-desc hero-drop-3">
                         Create your account today for seamless access to digital health records, diagnostic reports, and effortless doctor consultations.
                     </p>
-                    <div class="login-hero-features">
-                        <div class="login-hero-pill">
+                    <div class="login-hero-features hero-drop-4">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-file-medical-alt text-danger"></i>
                             <span>Instant Digital Record</span>
                         </div>
-                        <div class="login-hero-pill">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-calendar-check text-success"></i>
                             <span>Priority Scheduling</span>
                         </div>
-                        <div class="login-hero-pill">
+                        <div class="login-hero-pill hero-facility-chip">
                             <i class="fas fa-user-shield text-info"></i>
                             <span>Enterprise-Grade Security</span>
                         </div>
