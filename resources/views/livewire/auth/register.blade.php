@@ -1,6 +1,6 @@
 @extends('Dashboard.layouts.master2')
 
-@section('title', app()->getLocale() === 'ar' ? 'إنشاء حساب مريض جديد - نظام إدارة المستشفى' : 'Patient Registration - Hospital Management System')
+@section('title', __('register.page_title'))
 
 @section('css')
 <link href="{{ URL::asset('Dashboard/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css') }}" rel="stylesheet">
@@ -26,67 +26,38 @@
             <div class="login-hero-overlay"></div>
 
             <div class="login-hero-content">
-                @if (app()->getLocale() === 'ar')
-                    <div class="login-hero-badge hero-drop-1">
-                        <span class="hero-ping-container">
-                            <span class="hero-ping-anim"></span>
-                            <span class="hero-ping-dot"></span>
-                        </span>
-                        <span>بوابة المرضى المعتمدة</span>
-                        <i class="fas fa-certificate text-sky-400"></i>
+                <div class="login-hero-badge hero-drop-1">
+                    <span class="hero-ping-container">
+                        <span class="hero-ping-anim"></span>
+                        <span class="hero-ping-dot"></span>
+                    </span>
+                    <span>{{ __('register.hero_badge') }}</span>
+                    <i class="fas fa-certificate text-sky-400"></i>
+                </div>
+
+                <h1 class="login-hero-title hero-drop-2">
+                    {{ __('register.hero_title_line1') }} <br>
+                    <span class="text-gradient-shimmer">{{ __('register.hero_title_line2') }}</span>
+                </h1>
+
+                <p class="login-hero-desc hero-drop-3">
+                    {{ __('register.hero_desc') }}
+                </p>
+
+                <div class="login-hero-features hero-drop-4">
+                    <div class="login-hero-pill hero-facility-chip">
+                        <i class="fas fa-file-medical-alt text-danger"></i>
+                        <span>{{ __('register.feature_record') }}</span>
                     </div>
-                    <h1 class="login-hero-title hero-drop-2">
-                        رعاية صحية فائقة تليق بك <br>
-                        <span class="text-gradient-shimmer">بأحدث المعايير الطبية العالمية</span>
-                    </h1>
-                    <p class="login-hero-desc hero-drop-3">
-                        سجل الآن للوصول إلى ملفك الطبي الرقمي، متابعة التحاليل والأشعة، وحجز استشاراتك مع كبار الاستشاريين.
-                    </p>
-                    <div class="login-hero-features hero-drop-4">
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-file-medical-alt text-danger"></i>
-                            <span>ملف طبي رقمي فوري</span>
-                        </div>
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-calendar-check text-success"></i>
-                            <span>حجز استشارات بدون انتظار</span>
-                        </div>
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-user-shield text-info"></i>
-                            <span>أعلى درجات الخصوصية والأمان</span>
-                        </div>
+                    <div class="login-hero-pill hero-facility-chip">
+                        <i class="fas fa-calendar-check text-success"></i>
+                        <span>{{ __('register.feature_booking') }}</span>
                     </div>
-                @else
-                    <div class="login-hero-badge hero-drop-1">
-                        <span class="hero-ping-container">
-                            <span class="hero-ping-anim"></span>
-                            <span class="hero-ping-dot"></span>
-                        </span>
-                        <span>Official Patient Portal</span>
-                        <i class="fas fa-certificate text-sky-400"></i>
+                    <div class="login-hero-pill hero-facility-chip">
+                        <i class="fas fa-user-shield text-info"></i>
+                        <span>{{ __('register.feature_security') }}</span>
                     </div>
-                    <h1 class="login-hero-title hero-drop-2">
-                        World-Class Medical Care <br>
-                        <span class="text-gradient-shimmer">Designed Around Your Family</span>
-                    </h1>
-                    <p class="login-hero-desc hero-drop-3">
-                        Create your account today for seamless access to digital health records, diagnostic reports, and effortless doctor consultations.
-                    </p>
-                    <div class="login-hero-features hero-drop-4">
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-file-medical-alt text-danger"></i>
-                            <span>Instant Digital Record</span>
-                        </div>
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-calendar-check text-success"></i>
-                            <span>Priority Scheduling</span>
-                        </div>
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-user-shield text-info"></i>
-                            <span>Enterprise-Grade Security</span>
-                        </div>
-                    </div>
-                @endif
+                </div>
             </div>
         </div>
 
@@ -97,7 +68,7 @@
             <div class="login-top-bar">
                 <a href="{{ route('home') }}" class="back-role-link">
                     <i class="fas fa-home"></i>
-                    <span>{{ app()->getLocale() === 'ar' ? 'الرئيسية' : 'Home' }}</span>
+                    <span>{{ __('register.home') }}</span>
                 </a>
 
                 {{-- زر تبديل اللغة الموحد --}}
@@ -121,12 +92,10 @@
                 {{-- العنوان الترحيبي --}}
                 <div class="mb-3">
                     <h3 class="font-weight-bold text-dark mb-1" style="font-size: 1.45rem;">
-                        {{ app()->getLocale() === 'ar' ? 'إنشاء حساب مريض جديد' : 'Create Patient Account' }}
+                        {{ __('register.title') }}
                     </h3>
                     <p class="text-muted tx-13 mb-0">
-                        {{ app()->getLocale() === 'ar'
-                            ? 'أدخل بياناتك الشخصية والطبية لفتح ملف رقمي فوري في المستشفى'
-                            : 'Fill in your personal and medical details to activate your digital hospital record' }}
+                        {{ __('register.subtitle') }}
                     </p>
                 </div>
 
@@ -135,13 +104,11 @@
                     <span class="role-badge-icon">👤</span>
                     <div>
                         <div class="role-badge-title">
-                            {{ app()->getLocale() === 'ar' ? 'تسجيل مخصص لـ: ' : 'Registration for: ' }}
-                            <strong>{{ app()->getLocale() === 'ar' ? 'بوابة المرضى فقط' : 'Patients Portal Only' }}</strong>
+                            {{ __('register.role_label') }}
+                            <strong>{{ __('register.role_name') }}</strong>
                         </div>
                         <div class="role-badge-desc">
-                            {{ app()->getLocale() === 'ar'
-                                ? 'حسابات الأطباء وموظفي المستشفى تُنشأ حصرياً عبر إدارة النظام.'
-                                : 'Doctor and staff accounts are provisioned exclusively by system administration.' }}
+                            {{ __('register.role_desc') }}
                         </div>
                     </div>
                 </div>
@@ -164,13 +131,13 @@
                     {{-- القسم الأول: البيانات الشخصية والطبية --}}
                     <div class="form-section-divider">
                         <i class="fas fa-id-card-alt"></i>
-                        <span>{{ app()->getLocale() === 'ar' ? 'البيانات الشخصية والطبية' : 'Personal & Medical Information' }}</span>
+                        <span>{{ __('register.section_personal') }}</span>
                     </div>
 
                     {{-- الاسم الكامل --}}
                     <div class="form-group mb-3">
                         <label for="name">
-                            {{ app()->getLocale() === 'ar' ? 'الاسم الكامل ثلاثياً على الأقل' : 'Full Name (at least 3 parts)' }} <span class="text-danger">*</span>
+                            {{ __('register.full_name') }} <span class="text-danger">*</span>
                         </label>
                         <div class="form-input-wrapper">
                             <i class="fas fa-user form-input-icon"></i>
@@ -183,7 +150,7 @@
                                 autofocus
                                 autocomplete="name"
                                 class="form-control form-control-custom @error('name') is-invalid @enderror"
-                                placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: محمد أحمد علي' : 'e.g. Mohamed Ahmed Ali' }}"
+                                placeholder="{{ __('register.full_name_placeholder') }}"
                             >
                         </div>
                         @error('name')
@@ -195,7 +162,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
                             <label for="email">
-                                {{ app()->getLocale() === 'ar' ? 'البريد الإلكتروني' : 'Email Address' }} <span class="text-danger">*</span>
+                                {{ __('register.email') }} <span class="text-danger">*</span>
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-envelope form-input-icon"></i>
@@ -217,7 +184,7 @@
 
                         <div class="col-md-6 form-group mb-3">
                             <label for="phone">
-                                {{ app()->getLocale() === 'ar' ? 'رقم الهاتف المحمول' : 'Mobile Phone Number' }} <span class="text-danger">*</span>
+                                {{ __('register.phone') }} <span class="text-danger">*</span>
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-phone-alt form-input-icon"></i>
@@ -243,7 +210,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
                             <label for="national_id">
-                                {{ app()->getLocale() === 'ar' ? 'الرقم القومي (14 رقماً)' : 'National ID (14 digits)' }} <span class="text-danger">*</span>
+                                {{ __('register.national_id') }} <span class="text-danger">*</span>
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-address-card form-input-icon"></i>
@@ -265,7 +232,7 @@
 
                         <div class="col-md-6 form-group mb-3">
                             <label for="gender">
-                                {{ app()->getLocale() === 'ar' ? 'النوع' : 'Gender' }} <span class="text-danger">*</span>
+                                {{ __('register.gender') }} <span class="text-danger">*</span>
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-venus-mars form-input-icon"></i>
@@ -276,13 +243,13 @@
                                     class="form-control form-control-custom @error('gender') is-invalid @enderror"
                                 >
                                     <option value="" disabled {{ old('gender') ? '' : 'selected' }}>
-                                        {{ app()->getLocale() === 'ar' ? 'اختر النوع...' : 'Select Gender...' }}
+                                        {{ __('register.gender_select') }}
                                     </option>
                                     <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>
-                                        {{ app()->getLocale() === 'ar' ? 'ذكر (Male)' : 'Male' }}
+                                        {{ __('register.gender_male') }}
                                     </option>
                                     <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>
-                                        {{ app()->getLocale() === 'ar' ? 'أنثى (Female)' : 'Female' }}
+                                        {{ __('register.gender_female') }}
                                     </option>
                                 </select>
                             </div>
@@ -296,7 +263,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
                             <label for="date_of_birth">
-                                {{ app()->getLocale() === 'ar' ? 'تاريخ الميلاد' : 'Date of Birth' }} <span class="text-danger">*</span>
+                                {{ __('register.date_of_birth') }} <span class="text-danger">*</span>
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-calendar-alt form-input-icon"></i>
@@ -317,7 +284,7 @@
 
                         <div class="col-md-6 form-group mb-3">
                             <label for="blood_type">
-                                {{ app()->getLocale() === 'ar' ? 'فصيلة الدم (اختياري)' : 'Blood Type (Optional)' }}
+                                {{ __('register.blood_type') }}
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-tint form-input-icon text-danger"></i>
@@ -326,7 +293,7 @@
                                     name="blood_type"
                                     class="form-control form-control-custom @error('blood_type') is-invalid @enderror"
                                 >
-                                    <option value="">{{ app()->getLocale() === 'ar' ? 'غير محددة حالياً' : 'Not specified yet' }}</option>
+                                    <option value="">{{ __('register.blood_type_none') }}</option>
                                     @foreach(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as $bt)
                                         <option value="{{ $bt }}" {{ old('blood_type') === $bt ? 'selected' : '' }}>{{ $bt }}</option>
                                     @endforeach
@@ -342,7 +309,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
                             <label for="city">
-                                {{ app()->getLocale() === 'ar' ? 'المدينة / المحافظة (اختياري)' : 'City / Governorate (Optional)' }}
+                                {{ __('register.city') }}
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-map-marker-alt form-input-icon"></i>
@@ -352,7 +319,7 @@
                                     name="city"
                                     value="{{ old('city') }}"
                                     class="form-control form-control-custom @error('city') is-invalid @enderror"
-                                    placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: القاهرة، الجيزة، الإسكندرية' : 'e.g. Cairo, Giza, Alexandria' }}"
+                                    placeholder="{{ __('register.city_placeholder') }}"
                                 >
                             </div>
                             @error('city')
@@ -362,7 +329,7 @@
 
                         <div class="col-md-6 form-group mb-3">
                             <label for="emergency_contact_phone">
-                                {{ app()->getLocale() === 'ar' ? 'هاتف الطوارئ / قريب المريض (اختياري)' : 'Emergency Contact Phone (Optional)' }}
+                                {{ __('register.emergency_phone') }}
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-ambulance form-input-icon text-danger"></i>
@@ -372,7 +339,7 @@
                                     name="emergency_contact_phone"
                                     value="{{ old('emergency_contact_phone') }}"
                                     class="form-control form-control-custom @error('emergency_contact_phone') is-invalid @enderror"
-                                    placeholder="{{ app()->getLocale() === 'ar' ? 'رقم هاتف شخص قريب للطوارئ' : 'Relative / Emergency phone' }}"
+                                    placeholder="{{ __('register.emergency_placeholder') }}"
                                     maxlength="15"
                                 >
                             </div>
@@ -385,14 +352,14 @@
                     {{-- القسم الثاني: بيانات الأمان وكلمة المرور --}}
                     <div class="form-section-divider">
                         <i class="fas fa-shield-alt"></i>
-                        <span>{{ app()->getLocale() === 'ar' ? 'بيانات الأمان وكلمة المرور' : 'Security & Password' }}</span>
+                        <span>{{ __('register.section_security') }}</span>
                     </div>
 
                     {{-- صف: كلمة المرور وتأكيدها --}}
                     <div class="row">
                         <div class="col-md-6 form-group mb-3">
                             <label for="password">
-                                {{ app()->getLocale() === 'ar' ? 'كلمة المرور' : 'Password' }} <span class="text-danger">*</span>
+                                {{ __('register.password') }} <span class="text-danger">*</span>
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-lock form-input-icon"></i>
@@ -409,7 +376,7 @@
                                     type="button"
                                     class="password-toggle-btn"
                                     onclick="toggleFieldVisibility('password', 'password-toggle-icon-1')"
-                                    aria-label="Toggle password"
+                                    aria-label="{{ __('register.toggle_password') }}"
                                 >
                                     <i class="fas fa-eye" id="password-toggle-icon-1"></i>
                                 </button>
@@ -421,7 +388,7 @@
 
                         <div class="col-md-6 form-group mb-3">
                             <label for="password_confirmation">
-                                {{ app()->getLocale() === 'ar' ? 'تأكيد كلمة المرور' : 'Confirm Password' }} <span class="text-danger">*</span>
+                                {{ __('register.password_confirm') }} <span class="text-danger">*</span>
                             </label>
                             <div class="form-input-wrapper">
                                 <i class="fas fa-check-double form-input-icon"></i>
@@ -438,7 +405,7 @@
                                     type="button"
                                     class="password-toggle-btn"
                                     onclick="toggleFieldVisibility('password_confirmation', 'password-toggle-icon-2')"
-                                    aria-label="Toggle password confirmation"
+                                    aria-label="{{ __('register.toggle_password_confirm') }}"
                                 >
                                     <i class="fas fa-eye" id="password-toggle-icon-2"></i>
                                 </button>
@@ -452,7 +419,7 @@
                     {{-- زر إنشاء الحساب --}}
                     <button class="btn btn-login-submit mt-3" type="submit" id="register-button">
                         <i class="fas fa-user-plus"></i>
-                        <span>{{ app()->getLocale() === 'ar' ? 'إنشاء حساب المريض وتفعيل الملف' : 'Create Patient Account & Activate Record' }}</span>
+                        <span>{{ __('register.submit') }}</span>
                     </button>
 
                 </form>
@@ -460,10 +427,10 @@
                 {{-- رابط تسجيل الدخول الموحد --}}
                 <div class="mt-4 text-center">
                     <span class="tx-13 text-muted">
-                        {{ app()->getLocale() === 'ar' ? 'لديك حساب مريض بالفعل؟' : 'Already have a patient account?' }}
+                        {{ __('register.have_account') }}
                     </span>
                     <a href="{{ route('login') }}" class="font-weight-bold text-primary ml-1 mr-1 tx-13">
-                        {{ app()->getLocale() === 'ar' ? 'تسجيل الدخول' : 'Sign In' }}
+                        {{ __('register.sign_in') }}
                     </a>
                 </div>
 
@@ -471,7 +438,7 @@
 
             {{-- الفوتر السفلي --}}
             <div class="login-footer-bar">
-                <span>&copy; {{ date('Y') }} Hospital Management System. All rights reserved.</span>
+                <span>&copy; {{ date('Y') }} {{ config('app.name', 'Hospital Management System') }}. {{ __('register.rights_reserved') }}</span>
             </div>
 
         </div>{{-- end col --}}
@@ -522,7 +489,7 @@
             const val = nameInput.value.trim();
             const words = val.split(/\s+/).filter(Boolean);
             if (val.length > 0 && words.length < 3) {
-                const msg = '{{ app()->getLocale() === "ar" ? "يرجى إدخال الاسم ثلاثياً على الأقل (مثال: محمد أحمد علي)" : "Please enter your full name (at least 3 parts)" }}';
+                const msg = @json(__('register.name_validation'));
                 nameInput.setCustomValidity(msg);
                 return false;
             } else {
@@ -545,7 +512,7 @@
                 if (typeof form.checkValidity === 'function' && !form.checkValidity()) return;
                 btn.style.pointerEvents = 'none';
                 btn.style.opacity = '0.85';
-                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>{{ app()->getLocale() === "ar" ? "جاري إنشاء الحساب والملف الطبي..." : "Creating Account & Record..." }}</span>';
+                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>' + @json(__('register.creating')) + '</span>';
             });
         }
     });

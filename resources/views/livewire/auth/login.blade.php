@@ -1,6 +1,6 @@
 @extends('Dashboard.layouts.master2')
 
-@section('title', app()->getLocale() === 'ar' ? 'تسجيل الدخول الموحد - نظام إدارة المستشفى' : 'Unified Sign In - Hospital Management System')
+@section('title', __('login.page_title'))
 
 @section('css')
 <link href="{{ URL::asset('Dashboard/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css') }}" rel="stylesheet">
@@ -26,67 +26,38 @@
             <div class="login-hero-overlay"></div>
 
             <div class="login-hero-content">
-                @if (app()->getLocale() === 'ar')
-                    <div class="login-hero-badge hero-drop-1">
-                        <span class="hero-ping-container">
-                            <span class="hero-ping-anim"></span>
-                            <span class="hero-ping-dot"></span>
-                        </span>
-                        <span>{{ __('messages.unified_portal') }}</span>
-                        <i class="fas fa-certificate text-sky-400"></i>
+                <div class="login-hero-badge hero-drop-1">
+                    <span class="hero-ping-container">
+                        <span class="hero-ping-anim"></span>
+                        <span class="hero-ping-dot"></span>
+                    </span>
+                    <span>{{ __('login.hero_badge') }}</span>
+                    <i class="fas fa-certificate text-sky-400"></i>
+                </div>
+
+                <h1 class="login-hero-title hero-drop-2">
+                    {{ __('login.hero_title_line1') }} <br>
+                    <span class="text-gradient-shimmer">{{ __('login.hero_title_line2') }}</span>
+                </h1>
+
+                <p class="login-hero-desc hero-drop-3">
+                    {{ __('login.hero_desc') }}
+                </p>
+
+                <div class="login-hero-features hero-drop-4">
+                    <div class="login-hero-pill hero-facility-chip">
+                        <i class="fas fa-heartbeat text-danger"></i>
+                        <span>{{ __('login.feature_records') }}</span>
                     </div>
-                    <h1 class="login-hero-title hero-drop-2">
-                        رعاية صحية فائقة تليق بك <br>
-                        <span class="text-gradient-shimmer">بأحدث المعايير الطبية العالمية</span>
-                    </h1>
-                    <p class="login-hero-desc hero-drop-3">
-                        منظومة متكاملة لربط الأطباء، شؤون المرضى، والخدمات الطبية في بيئة آمنة وسلسة تدعم التحول الرقمي الكامل.
-                    </p>
-                    <div class="login-hero-features hero-drop-4">
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-heartbeat text-danger"></i>
-                            <span>ملفات طبية فورية</span>
-                        </div>
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-calendar-check text-success"></i>
-                            <span>جدولة دقيقة للمواعيد</span>
-                        </div>
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-user-shield text-info"></i>
-                            <span>أعلى معايير الأمان والخصوصية</span>
-                        </div>
+                    <div class="login-hero-pill hero-facility-chip">
+                        <i class="fas fa-calendar-check text-success"></i>
+                        <span>{{ __('login.feature_schedule') }}</span>
                     </div>
-                @else
-                    <div class="login-hero-badge hero-drop-1">
-                        <span class="hero-ping-container">
-                            <span class="hero-ping-anim"></span>
-                            <span class="hero-ping-dot"></span>
-                        </span>
-                        <span>Smart Hospital Portal</span>
-                        <i class="fas fa-certificate text-sky-400"></i>
+                    <div class="login-hero-pill hero-facility-chip">
+                        <i class="fas fa-user-shield text-info"></i>
+                        <span>{{ __('login.feature_security') }}</span>
                     </div>
-                    <h1 class="login-hero-title hero-drop-2">
-                        World-Class Medical Care <br>
-                        <span class="text-gradient-shimmer">Designed Around Your Family</span>
-                    </h1>
-                    <p class="login-hero-desc hero-drop-3">
-                        An integrated, secure platform connecting physicians, patients, and clinical administration with peak efficiency.
-                    </p>
-                    <div class="login-hero-features hero-drop-4">
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-heartbeat text-danger"></i>
-                            <span>Real-Time Health Records</span>
-                        </div>
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-calendar-check text-success"></i>
-                            <span>Smart Scheduling</span>
-                        </div>
-                        <div class="login-hero-pill hero-facility-chip">
-                            <i class="fas fa-user-shield text-info"></i>
-                            <span>Enterprise-Grade Security</span>
-                        </div>
-                    </div>
-                @endif
+                </div>
             </div>
         </div>
 
@@ -97,7 +68,7 @@
             <div class="login-top-bar">
                 <a href="{{ route('home') }}" class="back-role-link">
                     <i class="fas fa-home"></i>
-                    <span>{{ app()->getLocale() === 'ar' ? 'الرئيسية' : 'Home' }}</span>
+                    <span>{{ __('login.home') }}</span>
                 </a>
 
                 {{-- زر تبديل اللغة الموحد --}}
@@ -194,7 +165,7 @@
                                 type="button"
                                 class="password-toggle-btn"
                                 onclick="togglePasswordVisibility()"
-                                aria-label="Toggle password"
+                                aria-label="{{ __('login.toggle_password') }}"
                             >
                                 <i class="fas fa-eye" id="password-toggle-icon"></i>
                             </button>
@@ -239,7 +210,7 @@
 
             {{-- الفوتر السفلي --}}
             <div class="login-footer-bar">
-                <span>&copy; {{ date('Y') }} {{ config('app.name', 'Hospital Management System') }}. All rights reserved.</span>
+                <span>&copy; {{ date('Y') }} {{ config('app.name', 'Hospital Management System') }}. {{ __('login.rights_reserved') }}</span>
             </div>
 
         </div>{{-- end col --}}
@@ -272,7 +243,7 @@
                 if (typeof form.checkValidity === 'function' && !form.checkValidity()) return;
                 btn.style.pointerEvents = 'none';
                 btn.style.opacity = '0.85';
-                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>{{ app()->getLocale() === "ar" ? "جاري تسجيل الدخول..." : "Signing in..." }}</span>';
+                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>' + @json(__('login.signing_in')) + '</span>';
             });
         }
     });

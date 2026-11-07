@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Dashboard\DoctorDashboardController;
 use App\Http\Controllers\Dashboard\HrDashboardController;
 use App\Http\Controllers\Dashboard\PatientDashboardController;
+use App\Http\Controllers\Dashboard\AdminSettingsController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -22,8 +23,8 @@ Route::group([
         ->name('admin.')
         ->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-            Route::get('/settings', [\App\Http\Controllers\Dashboard\AdminSettingsController::class, 'index'])->name('settings.index');
-            Route::post('/settings', [\App\Http\Controllers\Dashboard\AdminSettingsController::class, 'update'])->name('settings.update');
+            Route::get('/settings', [AdminSettingsController::class, 'index'])->name('settings.index');
+            Route::post('/settings', [AdminSettingsController::class, 'update'])->name('settings.update');
         });
     Route::get('/dashboard/admin', fn () => redirect()->route('admin.dashboard'))
         ->middleware(['auth', 'role:admin']);
