@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Models\Patient;
-use App\Models\Specialization;
+use App\Models\Section;
 use App\Models\User;
 use Illuminate\View\View;
 
@@ -19,7 +19,7 @@ class AdminDashboardController extends Controller
         $stats = [
             'doctors_count'         => Doctor::count(),
             'patients_count'        => Patient::count(),
-            'specializations_count' => Specialization::count(),
+            'sections_count'        => Section::count(),
             'staff_count'           => User::whereIn('role', ['admin', 'hr'])->count(),
         ];
 

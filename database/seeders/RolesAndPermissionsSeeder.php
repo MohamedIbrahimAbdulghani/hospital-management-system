@@ -29,7 +29,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'access_admin_dashboard',
             'manage_users',
             'manage_roles_permissions',
-            'manage_specializations',
+            'manage_sections',
             'view_system_logs',
             'access_doctor_dashboard',
             'manage_doctors',

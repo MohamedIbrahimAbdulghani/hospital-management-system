@@ -22,7 +22,7 @@
 
 
 	// Activate sidebar slide toggle
-	$("[data-toggle='slide']").click(function(event) {
+	$(document).on('click', "[data-toggle='slide']", function(event) {
 		event.preventDefault();
 		if(!$(this).parent().hasClass('is-expanded')) {
 			slideMenu.find("[data-toggle='slide']").parent().removeClass('is-expanded');
@@ -30,7 +30,7 @@
 		$(this).parent().toggleClass('is-expanded');
 	});
 	
-	$("[data-toggle='sub-slide']").click(function(event) {
+	$(document).on('click', "[data-toggle='sub-slide']", function(event) {
 		event.preventDefault();
 		if(!$(this).parent().hasClass('is-expanded')) {
 			slideMenu.find("[data-toggle='sub-slide']").parent().removeClass('is-expanded');

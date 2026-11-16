@@ -63,19 +63,19 @@
         </div>
     </div>
 
-    <!-- Specializations Card -->
+    <!-- Sections Card -->
     <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
         <div class="card overflow-hidden sales-card bg-success-gradient shadow-sm">
             <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-3 tx-14 text-white font-weight-bold">{{ __('الأقسام والتخصصات') }}</h6>
+                    <h6 class="mb-3 tx-14 text-white font-weight-bold">{{ __('الأقسام الطبية') }}</h6>
                     <i class="fas fa-stethoscope text-white-50 tx-24"></i>
                 </div>
                 <div class="pb-0 mt-0">
                     <div class="d-flex">
                         <div>
-                            <h4 class="tx-22 font-weight-bold mb-1 text-white">{{ $stats['specializations_count'] }}</h4>
-                            <p class="mb-0 tx-12 text-white op-7">{{ __('تخصص طبي متاح') }}</p>
+                            <h4 class="tx-22 font-weight-bold mb-1 text-white">{{ $stats['sections_count'] }}</h4>
+                            <p class="mb-0 tx-12 text-white op-7">{{ __('قسم طبي متاح') }}</p>
                         </div>
                     </div>
                 </div>

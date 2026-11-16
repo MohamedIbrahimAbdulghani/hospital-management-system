@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
+use App\Models\Section;
 use App\Models\Service;
 use App\Models\SiteSetting;
-use App\Models\Specialization;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
@@ -30,10 +30,8 @@ class HomeController extends Controller
             'hospital_address_en' => SiteSetting::get('hospital_address_en', 'Medical City - King Fahd Road'),
         ];
 
-        // 2. Departments (Specializations) - Active, ordered with translations
-        $departments = Specialization::query()
-            ->where('is_active', true)
-            ->orderBy('sort_order', 'asc')
+        // 2. Sections (Departments) - with translations
+        $departments = Section::query()
             ->with('translations')
             ->get();
 
@@ -44,14 +42,14 @@ class HomeController extends Controller
             ->with('translations')
             ->get();
 
-        // 4. Featured Doctors (8 active with user and specialization eager loaded)
+        // 4. Featured Doctors (8 active with user and section eager loaded)
         $doctors = Doctor::query()
             ->with([
                 'translations',
                 'user' => function ($query) {
                     $query->select(['id', 'name', 'avatar', 'is_active']);
                 },
-                'specialization.translations',
+                'section.translations',
             ])
             ->where('is_available', true)
             ->whereHas('user', function ($query) {
@@ -63,7 +61,7 @@ class HomeController extends Controller
 
         // 5. Dynamic Statistics
         $doctorsCount = Doctor::where('is_available', true)->count();
-        $departmentsCount = Specialization::where('is_active', true)->count();
+        $departmentsCount = Section::count();
 
         $stats = (object) [
             'doctors_count' => $doctorsCount > 0 ? $doctorsCount : 50,

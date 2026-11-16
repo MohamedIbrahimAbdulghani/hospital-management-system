@@ -4,7 +4,7 @@
 
 @section('css')
 <link href="{{ URL::asset('Dashboard/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('css/register.css') }}">
+<link rel="stylesheet" href="{{ asset('css/register.css') }}?v={{ file_exists(public_path('css/register.css')) ? filemtime(public_path('css/register.css')) : time() }}">
 @endsection
 
 @section('content')

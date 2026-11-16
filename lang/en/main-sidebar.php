@@ -32,6 +32,7 @@ return [
     'echart' => 'Echart',
     'sparkline' => 'Sparkline',
     'chart_peity' => 'Chart-peity',
+    'sections' => 'Sections',
 
     'ecommerce' => 'Ecommerce',
     'products' => 'Products',

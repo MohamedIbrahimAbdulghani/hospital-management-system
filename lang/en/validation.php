@@ -209,7 +209,7 @@ return [
         'avatar' => 'profile picture',
         'code' => 'verification code',
         'recovery_code' => 'recovery code',
-        'specialization_id' => 'department / specialization',
+        'section_id' => 'medical section / department',
         'doctor_id' => 'doctor',
         'patient_id' => 'patient',
         'appointment_date' => 'appointment date',

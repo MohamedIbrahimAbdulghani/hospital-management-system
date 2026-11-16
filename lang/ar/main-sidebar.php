@@ -32,6 +32,7 @@ return [
     'echart' => 'مخططات Echart',
     'sparkline' => 'مخططات Sparkline',
     'chart_peity' => 'مخططات Peity',
+    'sections' => 'الاقسام',
 
     'ecommerce' => 'المتجر الإلكتروني',
     'products' => 'المنتجات',

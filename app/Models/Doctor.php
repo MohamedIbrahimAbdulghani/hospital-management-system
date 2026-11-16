@@ -31,7 +31,7 @@ class Doctor extends Model implements TranslatableContract
      */
     protected $fillable = [
         'user_id',
-        'specialization_id',
+        'section_id',
         'license_number',
         'experience_years',
         'consultation_fee',
@@ -67,11 +67,11 @@ class Doctor extends Model implements TranslatableContract
     }
 
     /**
-     * Specialization relation
+     * Section relation
      */
-    public function specialization(): BelongsTo
+    public function section(): BelongsTo
     {
-        return $this->belongsTo(Specialization::class, 'specialization_id');
+        return $this->belongsTo(Section::class, 'section_id');
     }
 
     /**
@@ -103,10 +103,10 @@ class Doctor extends Model implements TranslatableContract
     }
 
     /**
-     * Localized Specialization Name
+     * Localized Section Name
      */
-    public function getSpecializationNameAttribute(): string
+    public function getSectionNameAttribute(): string
     {
-        return $this->specialization?->name ?? '';
+        return $this->section?->name ?? '';
     }
 }

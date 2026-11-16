@@ -91,7 +91,7 @@
                     <div class="d-flex">
                         <div>
                             <h4 class="tx-22 font-weight-bold mb-1 text-white">{{ $doctor?->consultation_fee ?? 0 }} ج.م</h4>
-                            <p class="mb-0 tx-12 text-white op-7">{{ $doctor?->specialization?->name ?? __('عام') }}</p>
+                            <p class="mb-0 tx-12 text-white op-7">{{ $doctor?->section?->name ?? __('عام') }}</p>
                         </div>
                     </div>
                 </div>

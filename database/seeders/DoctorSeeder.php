@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Doctor;
-use App\Models\Specialization;
+use App\Models\Section;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +19,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'doctor@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'Cardiology & Cardiac Surgery',
+                'section_en' => 'Cardiology & Cardiac Surgery',
                 'experience_years' => 15,
                 'consultation_fee' => 300.00,
                 'rating' => 5.00,
@@ -40,7 +40,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'dr.ahmed@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'Cardiology & Cardiac Surgery',
+                'section_en' => 'Cardiology & Cardiac Surgery',
                 'experience_years' => 18,
                 'consultation_fee' => 450.00,
                 'rating' => 4.95,
@@ -61,7 +61,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'dr.sara@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'Ophthalmology & LASIK',
+                'section_en' => 'Ophthalmology & LASIK',
                 'experience_years' => 14,
                 'consultation_fee' => 380.00,
                 'rating' => 4.90,
@@ -82,7 +82,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'dr.mahmoud@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'Orthopedics & Spine Center',
+                'section_en' => 'Orthopedics & Spine Center',
                 'experience_years' => 20,
                 'consultation_fee' => 500.00,
                 'rating' => 4.98,
@@ -103,7 +103,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'dr.mona@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'Pediatrics & NICU',
+                'section_en' => 'Pediatrics & NICU',
                 'experience_years' => 16,
                 'consultation_fee' => 350.00,
                 'rating' => 4.88,
@@ -124,7 +124,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'dr.karim@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'Neurology & Neurosurgery',
+                'section_en' => 'Neurology & Neurosurgery',
                 'experience_years' => 19,
                 'consultation_fee' => 550.00,
                 'rating' => 4.96,
@@ -145,7 +145,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'dr.rania@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'Dermatology & Aesthetic Care',
+                'section_en' => 'Dermatology & Aesthetic Care',
                 'experience_years' => 12,
                 'consultation_fee' => 320.00,
                 'rating' => 4.85,
@@ -166,7 +166,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'dr.tarek@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'General & Laparoscopic Surgery',
+                'section_en' => 'General & Laparoscopic Surgery',
                 'experience_years' => 17,
                 'consultation_fee' => 420.00,
                 'rating' => 4.92,
@@ -187,7 +187,7 @@ class DoctorSeeder extends Seeder
             [
                 'email' => 'dr.noha@hospital.com',
                 'password' => '123',
-                'specialization_en' => 'Obstetrics, Gynecology & IVF',
+                'section_en' => 'Obstetrics, Gynecology & IVF',
                 'experience_years' => 15,
                 'consultation_fee' => 400.00,
                 'rating' => 4.94,
@@ -228,13 +228,13 @@ class DoctorSeeder extends Seeder
                 }
             }
 
-            $specialization = Specialization::whereTranslation('name', $doc['specialization_en'], 'en')->first()
-                ?? Specialization::first();
+            $section = Section::whereTranslation('name', $doc['section_en'] ?? $doc['section_en'], 'en')->first()
+                ?? Section::first();
 
             $doctor = Doctor::updateOrCreate(
                 ['user_id' => $user->id],
                 [
-                    'specialization_id' => $specialization?->id,
+                    'section_id' => $section?->id,
                     'license_number' => $doc['license_number'] ?? ('DOC-' . rand(1000, 9999)),
                     'experience_years' => $doc['experience_years'],
                     'consultation_fee' => $doc['consultation_fee'],

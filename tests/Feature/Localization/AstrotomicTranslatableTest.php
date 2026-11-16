@@ -3,21 +3,39 @@
 namespace Tests\Feature\Localization;
 
 use App\Models\Doctor;
+use App\Models\Section;
 use App\Models\Service;
-use App\Models\Specialization;
+use App\Models\User;
+use Database\Seeders\RolesAndPermissionsSeeder;
+use Database\Seeders\SectionSeeder;
+use Database\Seeders\ServiceSeeder;
+use Database\Seeders\DoctorSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AstrotomicTranslatableTest extends TestCase
 {
-    public function test_specialization_translates_name_and_description(): void
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(RolesAndPermissionsSeeder::class);
+        $this->seed(SectionSeeder::class);
+        $this->seed(ServiceSeeder::class);
+        $this->seed(DoctorSeeder::class);
+    }
+
+    public function test_section_translates_name(): void
     {
         app()->setLocale('ar');
-        $spec = Specialization::whereTranslation('name', 'قسم أمراض وجراحة القلب', 'ar')->first();
-        $this->assertNotNull($spec);
-        $this->assertEquals('قسم أمراض وجراحة القلب', $spec->name);
+        $sec = Section::whereTranslation('name', 'قسم أمراض وجراحة القلب', 'ar')->first();
+        $this->assertNotNull($sec);
+        $this->assertEquals('قسم أمراض وجراحة القلب', $sec->name);
 
         app()->setLocale('en');
-        $this->assertEquals('Cardiology & Cardiac Surgery', $spec->name);
+        $this->assertEquals('Cardiology & Cardiac Surgery', $sec->name);
     }
 
     public function test_service_translates_title_and_description(): void
@@ -46,15 +64,15 @@ class AstrotomicTranslatableTest extends TestCase
         $this->assertStringContainsString('Cardiovascular Medicine', $doctor->bio);
     }
 
-    public function test_doctor_specialization_name_accessor(): void
+    public function test_doctor_section_name_accessor(): void
     {
-        $doctor = Doctor::with('specialization.translations')->first();
+        $doctor = Doctor::with('section.translations')->first();
         $this->assertNotNull($doctor);
 
         app()->setLocale('ar');
-        $this->assertNotEmpty($doctor->specialization_name);
+        $this->assertNotEmpty($doctor->section_name);
 
         app()->setLocale('en');
-        $this->assertNotEmpty($doctor->specialization_name);
+        $this->assertNotEmpty($doctor->section_name);
     }
 }

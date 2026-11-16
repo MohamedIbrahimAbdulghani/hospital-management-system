@@ -197,7 +197,7 @@ return [
         'remember' => 'تذكرني',
 
         // النطاق الطبي وإدارة المستشفى
-        'specialization_id' => 'القسم الطبي / التخصص',
+        'section_id' => 'القسم الطبي',
         'doctor_id' => 'الطبيب',
         'patient_id' => 'المريض',
         'appointment_date' => 'موعد الكشف',

@@ -8,7 +8,7 @@ enum Permission: string
     case ACCESS_ADMIN_DASHBOARD = 'admin.dashboard.access';
     case MANAGE_USERS = 'users.manage';
     case MANAGE_ROLES_PERMISSIONS = 'roles.manage';
-    case MANAGE_SPECIALIZATIONS = 'specializations.manage';
+    case MANAGE_SECTIONS = 'sections.manage';
     case VIEW_SYSTEM_LOGS = 'system_logs.view';
 
     // Doctor Management & Schedule

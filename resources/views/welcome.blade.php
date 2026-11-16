@@ -563,7 +563,7 @@
                                             loading="lazy"
                                         >
                                         <span class="absolute top-3 end-3 bg-white/90 backdrop-blur-md text-[#084c61] text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm">
-                                            {{ $doc->specialization_name }}
+                                            {{ $doc->section_name }}
                                         </span>
                                     </div>
 
