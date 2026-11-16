@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
                     action: 'login_success',
                     email: $event->user->email,
                     userId: $event->user->id,
-                    details: ['role' => $event->user->role, 'guard' => $event->guard]
+                    details: ['role' => $event->user->role instanceof \App\Enums\UserRole ? $event->user->role->value : (string) $event->user->role, 'guard' => $event->guard]
                 );
             }
         });
@@ -69,7 +69,7 @@ class AppServiceProvider extends ServiceProvider
                     action: 'logout',
                     email: $event->user->email,
                     userId: $event->user->id,
-                    details: ['role' => $event->user->role]
+                    details: ['role' => $event->user->role instanceof \App\Enums\UserRole ? $event->user->role->value : (string) $event->user->role]
                 );
             }
         });

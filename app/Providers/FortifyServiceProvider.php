@@ -27,11 +27,14 @@ class FortifyServiceProvider extends ServiceProvider
             $user = $request->user();
 
             if ($user) {
-                $routeName = match ($user->role) {
-                    'admin' => 'admin.dashboard',
-                    'doctor' => 'doctor.dashboard',
-                    'hr' => 'hr.dashboard',
-                    'patient' => 'patient.dashboard',
+                $roleValue = $user->role instanceof \App\Enums\UserRole ? $user->role->value : (string) $user->role;
+                $roleEnum = \App\Enums\UserRole::tryFrom($roleValue);
+
+                $routeName = match ($roleEnum) {
+                    \App\Enums\UserRole::ADMIN => 'admin.dashboard',
+                    \App\Enums\UserRole::DOCTOR => 'doctor.dashboard',
+                    \App\Enums\UserRole::HR => 'hr.dashboard',
+                    \App\Enums\UserRole::PATIENT => 'patient.dashboard',
                     default => 'dashboard',
                 };
 

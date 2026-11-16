@@ -8,20 +8,27 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * Creates the specializations table for doctors.
+     * Creates the specializations table and its translations table (Astrotomic Translatable).
      */
     public function up(): void
     {
         Schema::create('specializations', function (Blueprint $table) {
             $table->id();
-            $table->string('name_ar');       // Arabic name
-            $table->string('name_en');       // English name
             $table->string('icon')->nullable(); // FontAwesome or svg icon name
-            $table->text('description')->nullable();
-            $table->text('description_en')->nullable();
             $table->boolean('is_active')->default(true);
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
+        });
+
+        // To Create specialization's translations table in database
+        Schema::create('specialization_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('specialization_id')->constrained('specializations')->cascadeOnDelete();
+            $table->string('locale')->index();
+            $table->string('name');
+            $table->text('description')->nullable();
+
+            $table->unique(['specialization_id', 'locale']);
         });
     }
 
@@ -30,6 +37,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('specialization_translations');
         Schema::dropIfExists('specializations');
     }
 };

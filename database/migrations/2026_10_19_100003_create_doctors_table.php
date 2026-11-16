@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * Creates doctors profile table linked to users.
+     * Creates doctors profile table and its translations table (Astrotomic Translatable).
      */
     public function up(): void
     {
@@ -16,11 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
             $table->foreignId('specialization_id')->nullable()->constrained('specializations')->nullOnDelete();
-            $table->string('name_en')->nullable();
 
             $table->string('license_number', 50)->unique()->nullable();
-            $table->string('title')->default('Specialist'); // Consultant, Specialist, Professor, etc.
-            $table->text('bio')->nullable();
             $table->unsignedSmallInteger('experience_years')->default(0);
             $table->decimal('consultation_fee', 8, 2)->default(0.00);
             $table->decimal('rating', 3, 2)->default(5.00);
@@ -31,6 +28,17 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('doctor_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('doctor_id')->constrained('doctors')->cascadeOnDelete();
+            $table->string('locale')->index();
+            $table->string('name')->nullable();
+            $table->string('title')->nullable();
+            $table->text('bio')->nullable();
+
+            $table->unique(['doctor_id', 'locale']);
+        });
     }
 
     /**
@@ -38,6 +46,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('doctor_translations');
         Schema::dropIfExists('doctors');
     }
 };

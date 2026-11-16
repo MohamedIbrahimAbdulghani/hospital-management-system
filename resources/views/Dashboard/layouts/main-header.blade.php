@@ -1,5 +1,61 @@
 <!-- main-header opened -->
-			<div class="main-header sticky side-header nav nav-item">
+<div class="main-header sticky side-header nav nav-item">
+				<style>
+					/* إلغاء السهم/الخلفية الزرقاء خلف القائمة المنسدلة للغات وجعله متناسقاً باللون الأبيض */
+					.main-header .header-lang-dropdown .dropdown-menu:after,
+					.main-header .header-lang-dropdown .dropdown-menu::after {
+						border-bottom-color: #ffffff !important;
+					}
+
+					.dark-theme .main-header .header-lang-dropdown .dropdown-menu:after,
+					.dark-theme .main-header .header-lang-dropdown .dropdown-menu::after {
+						border-bottom-color: #1f2940 !important;
+					}
+
+					/* ضبط موقع السهم ليكون تحت العلم مباشرة */
+					html[dir="rtl"] .main-header .header-lang-dropdown .dropdown-menu:after,
+					html[dir="rtl"] .main-header .header-lang-dropdown .dropdown-menu::after {
+						right: 18px !important;
+						left: auto !important;
+					}
+
+					html[dir="ltr"] .main-header .header-lang-dropdown .dropdown-menu:after,
+					html[dir="ltr"] .main-header .header-lang-dropdown .dropdown-menu::after {
+						left: 18px !important;
+						right: auto !important;
+					}
+
+					/* إظهار أيقونة اللغة دائماً في الشاشات الصغيرة وتنسيقها */
+					.header-lang-link {
+						display: flex !important;
+						align-items: center;
+						cursor: pointer;
+					}
+
+					@media (max-width: 576px) {
+						.header-lang-link {
+							padding: 0.35rem 0.5rem !important;
+						}
+						.main-header .header-lang-dropdown .dropdown-menu:after,
+						.main-header .header-lang-dropdown .dropdown-menu::after {
+							display: none !important;
+						}
+						.main-header .header-lang-dropdown .dropdown-menu {
+							position: absolute !important;
+							min-width: 160px !important;
+							width: 160px !important;
+							margin-top: 0.5rem !important;
+						}
+						html[dir="rtl"] .main-header .header-lang-dropdown .dropdown-menu {
+							right: 0 !important;
+							left: auto !important;
+						}
+						html[dir="ltr"] .main-header .header-lang-dropdown .dropdown-menu {
+							left: 0 !important;
+							right: auto !important;
+						}
+					}
+				</style>
 				<div class="container-fluid">
 					<div class="main-header-left ">
 						<div class="responsive-logo">
@@ -19,31 +75,31 @@
 					<div class="main-header-right">
 						<ul class="nav">
 							<li class="nav-item">
-								<div class="dropdown d-flex">
-									<a href="#" class="d-flex nav-item nav-link pl-0 pr-0 country-flag1 align-items-center" data-toggle="dropdown" aria-expanded="false" title="{{ App::getLocale() == 'ar' ? 'تغيير اللغة' : 'Change Language' }}">
-										<span class="avatar country-Flag mr-1 ml-1 align-self-center bg-transparent">
-											<img src="{{ URL::asset('Dashboard/img/flags/' . (App::getLocale() == 'ar' ? 'eg_flag.svg' : 'us_flag.svg')) }}" 
-												 alt="{{ App::getLocale() }}" 
+								<div class="dropdown nav-itemd-none d-flex header-lang-dropdown">
+									<a href="#" class="d-flex nav-item nav-link pl-2 pr-2 header-lang-link align-items-center" data-toggle="dropdown" aria-expanded="false" title="{{ App::getLocale() == 'ar' ? 'تغيير اللغة' : 'Change Language' }}">
+										<span class="avatar country-Flag mr-1 ml-1 align-self-center bg-transparent" style="width: auto; height: auto;">
+											<img src="{{ URL::asset('Dashboard/img/flags/' . (App::getLocale() == 'ar' ? 'eg_flag.svg' : 'us_flag.svg')) }}"
+												 alt="{{ App::getLocale() }}"
 												 style="width: 24px; height: 16px; object-fit: cover; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.15);">
 										</span>
 										<div class="my-auto d-none d-sm-inline-block">
 											<strong class="mr-1 ml-1 my-auto text-dark">{{ App::getLocale() == 'ar' ? 'العربية' : 'English' }}</strong>
 										</div>
-										<i class="fe fe-chevron-down tx-11 text-muted mr-1 ml-1"></i>
+										<i class="fe fe-chevron-down tx-11 text-muted mr-1 ml-1 d-none d-sm-inline-block"></i>
 									</a>
 									<div class="dropdown-menu {{ App::getLocale() == 'ar' ? 'dropdown-menu-right' : 'dropdown-menu-left' }} dropdown-menu-arrow shadow-sm py-2" x-placement="bottom-end" style="min-width: 175px;">
 										<div class="dropdown-header text-uppercase font-weight-bold tx-11 text-muted px-3 py-1">
 											<i class="fas fa-globe ml-1 mr-1"></i> {{ App::getLocale() == 'ar' ? 'اختر اللغة' : 'Select Language' }}
 										</div>
 										@foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-											<a href="{{ route('locale.switch', $localeCode) }}" 
-											   class="dropdown-item d-flex align-items-center py-2 px-3" 
-											   rel="alternate" 
+											<a href="{{ route('locale.switch', $localeCode) }}"
+											   class="dropdown-item d-flex align-items-center py-2 px-3"
+											   rel="alternate"
 											   hreflang="{{ $localeCode }}"
 											   style="{{ App::getLocale() == $localeCode ? 'background: #fdf3ee; font-weight: 700; color: #141c2b;' : 'color: #141c2b;' }}">
 												<span class="avatar mr-2 ml-2 align-self-center bg-transparent" style="width: 22px; height: 15px;">
-													<img src="{{ URL::asset('Dashboard/img/flags/' . ($localeCode == 'ar' ? 'eg_flag.svg' : 'us_flag.svg')) }}" 
-														 alt="{{ $properties['native'] }}" 
+													<img src="{{ URL::asset('Dashboard/img/flags/' . ($localeCode == 'ar' ? 'eg_flag.svg' : 'us_flag.svg')) }}"
+														 alt="{{ $properties['native'] }}"
 														 style="width: 22px; height: 15px; object-fit: cover; border-radius: 2px;">
 												</span>
 												<div class="d-flex flex-grow-1 justify-content-between align-items-center">

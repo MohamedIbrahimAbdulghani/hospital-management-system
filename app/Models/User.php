@@ -72,23 +72,42 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the role as a type-safe BackedEnum instance.
+     */
+    public function getRoleEnumAttribute(): ?\App\Enums\UserRole
+    {
+        return $this->role instanceof \App\Enums\UserRole
+            ? $this->role
+            : \App\Enums\UserRole::tryFrom((string) $this->role);
+    }
+
+    /**
+     * Set the role attribute supporting both string and UserRole Enum.
+     */
+    public function setRoleAttribute($value): void
+    {
+        $this->attributes['role'] = $value instanceof \App\Enums\UserRole ? $value->value : (string) $value;
+    }
+
+    /**
      * The "booted" method of the model.
      * Automatically keeps Spatie roles synchronized with the role column.
      */
     protected static function booted(): void
     {
         static::saved(function (User $user) {
-            if (! empty($user->role)) {
+            $roleName = $user->role instanceof \App\Enums\UserRole ? $user->role->value : (string) $user->role;
+            if (! empty($roleName)) {
                 try {
-                    if (! $user->hasRole($user->role)) {
-                        $user->syncRoles([$user->role]);
+                    if (! $user->hasRole($roleName)) {
+                        $user->syncRoles([$roleName]);
                     }
                 } catch (\Spatie\Permission\Exceptions\RoleDoesNotExist $e) {
                     \Spatie\Permission\Models\Role::firstOrCreate([
-                        'name' => $user->role,
+                        'name' => $roleName,
                         'guard_name' => 'web',
                     ]);
-                    $user->syncRoles([$user->role]);
+                    $user->syncRoles([$roleName]);
                 }
             }
         });
@@ -131,7 +150,7 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->role === 'admin' || $this->hasRole('admin');
+        return $this->role === \App\Enums\UserRole::ADMIN->value || $this->hasRole(\App\Enums\UserRole::ADMIN->value);
     }
 
     /**
@@ -139,7 +158,7 @@ class User extends Authenticatable
      */
     public function isDoctor(): bool
     {
-        return $this->role === 'doctor' || $this->hasRole('doctor');
+        return $this->role === \App\Enums\UserRole::DOCTOR->value || $this->hasRole(\App\Enums\UserRole::DOCTOR->value);
     }
 
     /**
@@ -147,7 +166,7 @@ class User extends Authenticatable
      */
     public function isPatient(): bool
     {
-        return $this->role === 'patient' || $this->hasRole('patient');
+        return $this->role === \App\Enums\UserRole::PATIENT->value || $this->hasRole(\App\Enums\UserRole::PATIENT->value);
     }
 
     /**
@@ -155,7 +174,7 @@ class User extends Authenticatable
      */
     public function isHr(): bool
     {
-        return $this->role === 'hr' || $this->hasRole('hr');
+        return $this->role === \App\Enums\UserRole::HR->value || $this->hasRole(\App\Enums\UserRole::HR->value);
     }
 
     /**

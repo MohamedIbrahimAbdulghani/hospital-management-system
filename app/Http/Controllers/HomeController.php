@@ -30,66 +30,34 @@ class HomeController extends Controller
             'hospital_address_en' => SiteSetting::get('hospital_address_en', 'Medical City - King Fahd Road'),
         ];
 
-        // 2. Departments (Specializations) - Active, ordered, selected columns
+        // 2. Departments (Specializations) - Active, ordered with translations
         $departments = Specialization::query()
             ->where('is_active', true)
             ->orderBy('sort_order', 'asc')
-            ->select([
-                'id',
-                'name_ar',
-                'name_en',
-                'icon',
-                'description',
-                'description_en',
-                'sort_order',
-                'is_active',
-            ])
+            ->with('translations')
             ->get();
 
-        // 3. Services - Active, ordered, selected columns
+        // 3. Services - Active, ordered with translations
         $services = Service::query()
             ->where('is_active', true)
             ->orderBy('sort_order', 'asc')
-            ->select([
-                'id',
-                'title_ar',
-                'title_en',
-                'description_ar',
-                'description_en',
-                'icon',
-                'sort_order',
-                'is_active',
-            ])
+            ->with('translations')
             ->get();
 
         // 4. Featured Doctors (8 active with user and specialization eager loaded)
         $doctors = Doctor::query()
             ->with([
+                'translations',
                 'user' => function ($query) {
                     $query->select(['id', 'name', 'avatar', 'is_active']);
                 },
-                'specialization' => function ($query) {
-                    $query->select(['id', 'name_ar', 'name_en']);
-                },
+                'specialization.translations',
             ])
             ->where('is_available', true)
             ->whereHas('user', function ($query) {
                 $query->where('is_active', true);
             })
             ->orderBy('sort_order', 'asc')
-            ->select([
-                'id',
-                'user_id',
-                'specialization_id',
-                'name_en',
-                'title',
-                'bio',
-                'rating',
-                'experience_years',
-                'consultation_fee',
-                'sort_order',
-                'is_available',
-            ])
             ->take(8)
             ->get();
 

@@ -14,66 +14,92 @@ class ServiceSeeder extends Seeder
     {
         $services = [
             [
-                'title_ar' => 'العيادات الخارجية التخصصية',
-                'title_en' => 'Specialist Outpatient Clinics',
-                'description_ar' => 'حجز مسبق مع كبار الاستشاريين في كافة التخصصات الدقيقة مع تنظيم ذكي للمواعيد وتقليل فترات الانتظار.',
-                'description_en' => 'Seamless consultations with renowned senior consultants across medical subspecialties with zero queues.',
                 'icon' => 'fa-calendar-check',
                 'sort_order' => 1,
                 'is_active' => true,
+                'ar' => [
+                    'title' => 'العيادات الخارجية التخصصية',
+                    'description' => 'حجز مسبق مع كبار الاستشاريين في كافة التخصصات الدقيقة مع تنظيم ذكي للمواعيد وتقليل فترات الانتظار.',
+                ],
+                'en' => [
+                    'title' => 'Specialist Outpatient Clinics',
+                    'description' => 'Seamless consultations with renowned senior consultants across medical subspecialties with zero queues.',
+                ],
             ],
             [
-                'title_ar' => 'المختبرات والتحاليل الفورية',
-                'title_en' => 'Point-of-Care Laboratory',
-                'description_ar' => 'فحوصات مخبرية وجينية دقيقة تصدر نتائجها رقمياً في ملف المريض فور اعتمادها مع تنبيه فوري.',
-                'description_en' => 'Accredited pathology and automated molecular diagnostics publishing results directly to your digital record.',
                 'icon' => 'fa-vial-circle-check',
                 'sort_order' => 2,
                 'is_active' => true,
+                'ar' => [
+                    'title' => 'المختبرات والتحاليل الفورية',
+                    'description' => 'فحوصات مخبرية وجينية دقيقة تصدر نتائجها رقمياً في ملف المريض فور اعتمادها مع تنبيه فوري.',
+                ],
+                'en' => [
+                    'title' => 'Point-of-Care Laboratory',
+                    'description' => 'Accredited pathology and automated molecular diagnostics publishing results directly to your digital record.',
+                ],
             ],
             [
-                'title_ar' => 'العناية المركزة ICU و CCU',
-                'title_en' => 'Intensive & Critical Care',
-                'description_ar' => 'أسرّة مجهزة بأحدث أجهزة دعم ومراقبة المؤشرات الحيوية تحت إشراف أطباء العناية الحرجة على مدار الساعة.',
-                'description_en' => 'State-of-the-art hemodynamic monitoring and advanced life support led by 24/7 dedicated intensivists.',
                 'icon' => 'fa-bed-pulse',
                 'sort_order' => 3,
                 'is_active' => true,
+                'ar' => [
+                    'title' => 'العناية المركزة ICU و CCU',
+                    'description' => 'أسرّة مجهزة بأحدث أجهزة دعم ومراقبة المؤشرات الحيوية تحت إشراف أطباء العناية الحرجة على مدار الساعة.',
+                ],
+                'en' => [
+                    'title' => 'Intensive & Critical Care',
+                    'description' => 'State-of-the-art hemodynamic monitoring and advanced life support led by 24/7 dedicated intensivists.',
+                ],
             ],
             [
-                'title_ar' => 'الأشعة والتصوير التشخيصي الرقمي',
-                'title_en' => 'Diagnostic Imaging & Radiology',
-                'description_ar' => 'أجهزة رنين مغناطيسي 3T وأشعة مقطعية عالية السرعة وموجات فوق صوتية لتشخيص أدق التفاصيل بأمان.',
-                'description_en' => 'Ultra-high-field 3T MRI, low-dose multi-slice CT scans, and advanced 4D ultrasound imaging.',
                 'icon' => 'fa-x-ray',
                 'sort_order' => 4,
                 'is_active' => true,
+                'ar' => [
+                    'title' => 'الأشعة والتصوير التشخيصي الرقمي',
+                    'description' => 'أجهزة رنين مغناطيسي 3T وأشعة مقطعية عالية السرعة وموجات فوق صوتية لتشخيص أدق التفاصيل بأمان.',
+                ],
+                'en' => [
+                    'title' => 'Diagnostic Imaging & Radiology',
+                    'description' => 'Ultra-high-field 3T MRI, low-dose multi-slice CT scans, and advanced 4D ultrasound imaging.',
+                ],
             ],
             [
-                'title_ar' => 'جراحة اليوم الواحد والمناظير',
-                'title_en' => 'Day Surgery & Laparoscopy',
-                'description_ar' => 'عمليات جراحية دقيقة بأحدث تقنيات المناظير تتيح للمريض التعافي ومغادرة المستشفى في نفس اليوم بأمان.',
-                'description_en' => 'Minimally invasive laparoscopic and robotic surgical interventions enabling safe same-day recovery.',
                 'icon' => 'fa-hospital-user',
                 'sort_order' => 5,
                 'is_active' => true,
+                'ar' => [
+                    'title' => 'جراحة اليوم الواحد والمناظير',
+                    'description' => 'عمليات جراحية دقيقة بأحدث تقنيات المناظير تتيح للمريض التعافي ومغادرة المستشفى في نفس اليوم بأمان.',
+                ],
+                'en' => [
+                    'title' => 'Day Surgery & Laparoscopy',
+                    'description' => 'Minimally invasive laparoscopic and robotic surgical interventions enabling safe same-day recovery.',
+                ],
             ],
             [
-                'title_ar' => 'طوارئ وإسعاف القلب (24/7)',
-                'title_en' => 'Emergency & Trauma Care (24/7)',
-                'description_ar' => 'استجابة فائقة السرعة للحوادث والأزمات القلبية مع قسطرة طارئة وأسطول سيارات إسعاف مجهزة بأحدث المعدات.',
-                'description_en' => 'Instant trauma triage, rapid door-to-balloon cardiac resuscitation suites, and fully equipped mobile ICU units.',
                 'icon' => 'fa-truck-medical',
                 'sort_order' => 6,
                 'is_active' => true,
+                'ar' => [
+                    'title' => 'طوارئ وإسعاف القلب (24/7)',
+                    'description' => 'استجابة فائقة السرعة للحوادث والأزمات القلبية مع قسطرة طارئة وأسطول سيارات إسعاف مجهزة بأحدث المعدات.',
+                ],
+                'en' => [
+                    'title' => 'Emergency & Trauma Care (24/7)',
+                    'description' => 'Instant trauma triage, rapid door-to-balloon cardiac resuscitation suites, and fully equipped mobile ICU units.',
+                ],
             ],
         ];
 
-        foreach ($services as $service) {
-            Service::updateOrCreate(
-                ['title_en' => $service['title_en']],
-                $service
-            );
+        foreach ($services as $serviceData) {
+            $existing = Service::where('sort_order', $serviceData['sort_order'])->first();
+            if ($existing) {
+                $existing->update($serviceData);
+            } else {
+                Service::create($serviceData);
+            }
         }
     }
 }

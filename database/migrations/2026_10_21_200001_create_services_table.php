@@ -8,19 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * Creates services table and its translations table (Astrotomic Translatable).
      */
     public function up(): void
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('title_ar');
-            $table->string('title_en');
-            $table->text('description_ar')->nullable();
-            $table->text('description_en')->nullable();
             $table->string('icon')->nullable(); // FontAwesome icon class e.g. fa-briefcase-medical
             $table->unsignedInteger('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+        });
+
+        Schema::create('service_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('service_id')->constrained('services')->cascadeOnDelete();
+            $table->string('locale')->index();
+            $table->string('title');
+            $table->text('description')->nullable();
+
+            $table->unique(['service_id', 'locale']);
         });
     }
 
@@ -29,6 +36,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('service_translations');
         Schema::dropIfExists('services');
     }
 };

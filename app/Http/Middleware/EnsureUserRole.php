@@ -37,16 +37,18 @@ class EnsureUserRole
             }
         }
 
+        $userRole = $user->role instanceof \App\Enums\UserRole ? $user->role->value : (string) $user->role;
+
         // Check if user has role either via users.role or Spatie's hasAnyRole
-        $hasRole = in_array($user->role, $allowedRoles, true) || $user->hasAnyRole($allowedRoles);
+        $hasRole = in_array($userRole, $allowedRoles, true) || $user->hasAnyRole($allowedRoles);
 
         if (! $hasRole) {
             throw UnauthorizedException::forRoles($allowedRoles);
         }
 
         // Auto-heal: Ensure Spatie role is synchronized with users.role if out of sync
-        if ($user->role && ! $user->hasRole($user->role)) {
-            $user->syncRoles([$user->role]);
+        if (! empty($userRole) && ! $user->hasRole($userRole)) {
+            $user->syncRoles([$userRole]);
         }
 
         return $next($request);

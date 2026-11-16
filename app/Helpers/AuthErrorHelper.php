@@ -4,28 +4,83 @@ namespace App\Helpers;
 
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class AuthErrorHelper
 {
     /**
-     * Known authentication failure error patterns in all supported locales.
+     * Cache for dynamic auth failure messages across supported locales.
      */
-    protected static array $authFailurePhrases = [
-        'These credentials do not match our records.',
-        'بيانات الدخول غير صحيحة.',
-        'The provided password is incorrect.',
-        'كلمة المرور المستخدمة غير صحيحة.',
-        'This account has been deactivated. Please contact administration.',
-        'تم تعطيل هذا الحساب. يرجى التواصل مع إدارة المستشفى.',
-        'The provided two-factor authentication code was invalid.',
-        'The provided two factor authentication code was invalid.',
-        'رمز التحقق غير صحيح أو انتهت صلاحيته.',
-        'Your login session was canceled due to exceeding the maximum allowed attempts. Please sign in again.',
-        'تم إلغاء جلسة تسجيل الدخول بسبب استنفاد الحد الأقصى للمحاولات الخاطئة. يرجى تسجيل الدخول مجدداً.',
-    ];
+    protected static ?array $cachedAuthMessages = null;
+
+    /**
+     * Get all supported locales in the application dynamically.
+     *
+     * @return array<string>
+     */
+    public static function getSupportedLocales(): array
+    {
+        if (class_exists(LaravelLocalization::class)) {
+            $locales = LaravelLocalization::getSupportedLocales();
+            if (is_array($locales) && ! empty($locales)) {
+                return array_keys($locales);
+            }
+        }
+
+        return ['ar', 'en'];
+    }
+
+    /**
+     * Get all known authentication error messages dynamically from lang files.
+     * Everything is read directly from lang/{locale}/auth.php so editing a message in
+     * the lang file automatically takes effect here without changing code.
+     *
+     * @return array<string>
+     */
+    public static function getKnownAuthMessages(): array
+    {
+        if (self::$cachedAuthMessages !== null) {
+            return self::$cachedAuthMessages;
+        }
+
+        $locales = self::getSupportedLocales();
+
+        // Translation keys representing authentication/session failures
+        $authKeys = [
+            'auth.failed',
+            'auth.password',
+            'auth.account_deactivated',
+            'auth.must_change_password_notice',
+            'auth.two_factor_invalid_simple',
+            'auth.two_factor_locked',
+            'auth.two_factor_resend_limit_exceeded',
+        ];
+
+        $messages = [];
+
+        foreach ($locales as $locale) {
+            foreach ($authKeys as $key) {
+                $translated = trans($key, [], $locale);
+                if (is_string($translated) && $translated !== $key && trim($translated) !== '') {
+                    $messages[] = trim($translated);
+                }
+            }
+        }
+
+        return self::$cachedAuthMessages = array_values(array_unique($messages));
+    }
+
+    /**
+     * Reset the cached messages (useful for unit tests or dynamic language changes).
+     */
+    public static function flushCache(): void
+    {
+        self::$cachedAuthMessages = null;
+    }
 
     /**
      * Check if a given error message represents an authentication failure or throttling.
+     * Resolves dynamically against current and supported lang files.
      */
     public static function isAuthFailureMessage(?string $message): bool
     {
@@ -35,41 +90,54 @@ class AuthErrorHelper
 
         $trimmed = trim($message);
 
-        // التحقق من رسائل الترجمة الحالية
+        // 1. Direct match with dynamically fetched translation messages from lang/
+        $knownMessages = self::getKnownAuthMessages();
+        if (in_array($trimmed, $knownMessages, true)) {
+            return true;
+        }
+
+        // 2. Direct match with currently active locale translations
         if ($trimmed === trim(trans('auth.failed')) ||
             $trimmed === trim(trans('auth.password')) ||
             $trimmed === trim(trans('auth.account_deactivated')) ||
-            $trimmed === trim(trans('auth.two_factor_invalid')) ||
-            $trimmed === trim(trans('auth.two_factor_locked'))) {
+            $trimmed === trim(trans('auth.two_factor_locked')) ||
+            $trimmed === trim(trans('auth.two_factor_invalid_simple'))) {
             return true;
         }
 
-        // التحقق من رسائل رمز التحقق بخطوتين متغيرة المحاولات المتبقية
-        if (str_contains($trimmed, 'رمز التحقق غير صحيح') ||
-            str_contains($trimmed, 'Invalid verification code') ||
-            str_contains($trimmed, 'Remaining attempts') ||
-            str_contains($trimmed, 'المحاولات المتبقية')) {
-            return true;
-        }
+        // 3. Dynamic template matches (e.g. 2FA invalid code with remaining attempts or throttling seconds)
+        foreach (self::getSupportedLocales() as $locale) {
+            // Check base template of auth.two_factor_invalid
+            $twoFactorTemplate = trans('auth.two_factor_invalid', ['remaining' => '___PLACEHOLDER___'], $locale);
+            if (is_string($twoFactorTemplate) && str_contains($twoFactorTemplate, '___PLACEHOLDER___')) {
+                $parts = explode('___PLACEHOLDER___', $twoFactorTemplate);
+                $prefix = trim($parts[0] ?? '');
+                if ($prefix !== '' && str_starts_with($trimmed, $prefix)) {
+                    return true;
+                }
+            }
 
-        // التحقق من القائمة المعيارية للعبارات
-        foreach (self::$authFailurePhrases as $phrase) {
-            if ($trimmed === trim($phrase)) {
-                return true;
+            // Check base template of auth.throttle
+            $throttleTemplate = trans('auth.throttle', ['seconds' => '___PLACEHOLDER___'], $locale);
+            if (is_string($throttleTemplate) && str_contains($throttleTemplate, '___PLACEHOLDER___')) {
+                $parts = explode('___PLACEHOLDER___', $throttleTemplate);
+                $prefix = trim($parts[0] ?? '');
+                if ($prefix !== '' && str_starts_with($trimmed, $prefix)) {
+                    return true;
+                }
             }
         }
 
-        // التحقق من رسائل تجاوز المحاولات Throttling
+        // 4. Fallback check for common throttling / 2FA keywords
         if (str_contains($trimmed, 'Too many login attempts') ||
             str_contains($trimmed, 'محاولات دخول كثيرة جداً') ||
-            str_contains($trimmed, 'Please try again in') ||
-            str_contains($trimmed, 'يرجى المحاولة مرة أخرى')) {
+            str_contains($trimmed, 'رمز التحقق غير صحيح') ||
+            str_contains($trimmed, 'Invalid verification code')) {
             return true;
         }
 
         return false;
     }
-
 
     /**
      * Extract the single authentication error from errors bag, if one exists.

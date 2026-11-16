@@ -54,7 +54,7 @@ return [
     | $useTranslationFallback when defined
     |
     */
-    'use_fallback' => false,
+    'use_fallback' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return [
     | the fallback locale if the property is empty for the selected
     | locale. Note that 'use_fallback' must be enabled.
     |
-     */
+    */
     'use_property_fallback' => true,
 
     /*
@@ -82,7 +82,7 @@ return [
     | is used first. So "es" will be checked before "es_MX".
     |
     */
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ar',
 
     /*
     |--------------------------------------------------------------------------

@@ -2,24 +2,44 @@
 
 namespace App\Models;
 
+use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Specialization extends Model
+class Specialization extends Model implements TranslatableContract
 {
-    use HasFactory;
+    use HasFactory, Translatable; // use Translatable to add transaltion methods
 
-    protected $fillable = [
-        'name_ar',
-        'name_en',
-        'icon',
+    /**
+     * The attributes that are translatable via Astrotomic.
+     *
+     * @var array<int, string>
+     */
+
+    // To define which attributes needs to be transalte
+    public array $translatedAttributes = [
+        'name',
         'description',
-        'description_en',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'icon',
         'sort_order',
         'is_active',
     ];
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -29,27 +49,7 @@ class Specialization extends Model
     }
 
     /**
-     * Get name according to current application locale
-     */
-    public function getNameAttribute(): string
-    {
-        return app()->getLocale() === 'ar' ? $this->name_ar : ($this->name_en ?: $this->name_ar);
-    }
-
-    /**
-     * Get description according to current application locale
-     */
-    public function getDescriptionAttribute(): string
-    {
-        if (app()->getLocale() === 'ar') {
-            return $this->attributes['description'] ?? '';
-        }
-
-        return $this->description_en ?: ($this->attributes['description'] ?? '');
-    }
-
-    /**
-     * Doctors with this specialization
+     * Doctors associated with this specialization.
      */
     public function doctors(): HasMany
     {

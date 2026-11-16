@@ -197,6 +197,31 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'full name',
+        'full_name' => 'full name',
+        'email' => 'email address',
+        'password' => 'password',
+        'password_confirmation' => 'password confirmation',
+        'current_password' => 'current password',
+        'phone' => 'phone number',
+        'role' => 'role',
+        'avatar' => 'profile picture',
+        'code' => 'verification code',
+        'recovery_code' => 'recovery code',
+        'specialization_id' => 'department / specialization',
+        'doctor_id' => 'doctor',
+        'patient_id' => 'patient',
+        'appointment_date' => 'appointment date',
+        'notes' => 'notes',
+        'address' => 'address',
+        'date_of_birth' => 'date of birth',
+        'gender' => 'gender',
+        'blood_group' => 'blood group',
+        'price' => 'price',
+        'status' => 'status',
+        'title' => 'title',
+        'description' => 'description',
+    ],
 
 ];

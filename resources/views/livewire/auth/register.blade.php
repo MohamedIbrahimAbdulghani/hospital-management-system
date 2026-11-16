@@ -12,7 +12,7 @@
     <div class="row no-gutters login-row">
 
         {{-- الجانب الأيسر - فيديو دكتور استشاري ومحتوى ترحيبي --}}
-        <div class="col-md-5 col-lg-5 col-xl-6 d-none d-md-flex login-hero-side">
+        <div class="col-md-6 col-lg-6 col-xl-7 d-none d-md-flex login-hero-side">
             <video
                 autoplay
                 muted
@@ -62,7 +62,7 @@
         </div>
 
         {{-- الجانب الأيمن - نموذج إنشاء حساب المريض الموسع --}}
-        <div class="col-md-7 col-lg-7 col-xl-6 login-form-side">
+        <div class="col-md-6 col-lg-6 col-xl-5 login-form-side">
 
             {{-- الشريط العلوي (الرجوع للرئيسية + تبديل اللغة) --}}
             <div class="login-top-bar">
@@ -160,7 +160,7 @@
 
                     {{-- صف: البريد الإلكتروني + رقم الهاتف --}}
                     <div class="row">
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="email">
                                 {{ __('register.email') }} <span class="text-danger">*</span>
                             </label>
@@ -182,7 +182,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="phone">
                                 {{ __('register.phone') }} <span class="text-danger">*</span>
                             </label>
@@ -208,7 +208,7 @@
 
                     {{-- صف: الرقم القومي + النوع --}}
                     <div class="row">
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="national_id">
                                 {{ __('register.national_id') }} <span class="text-danger">*</span>
                             </label>
@@ -230,7 +230,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="gender">
                                 {{ __('register.gender') }} <span class="text-danger">*</span>
                             </label>
@@ -261,7 +261,7 @@
 
                     {{-- صف: تاريخ الميلاد + فصيلة الدم --}}
                     <div class="row">
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="date_of_birth">
                                 {{ __('register.date_of_birth') }} <span class="text-danger">*</span>
                             </label>
@@ -282,7 +282,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="blood_type">
                                 {{ __('register.blood_type') }}
                             </label>
@@ -307,7 +307,7 @@
 
                     {{-- صف: المدينة / المحافظة + هاتف الطوارئ --}}
                     <div class="row">
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="city">
                                 {{ __('register.city') }}
                             </label>
@@ -327,7 +327,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="emergency_contact_phone">
                                 {{ __('register.emergency_phone') }}
                             </label>
@@ -357,7 +357,7 @@
 
                     {{-- صف: كلمة المرور وتأكيدها --}}
                     <div class="row">
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="password">
                                 {{ __('register.password') }} <span class="text-danger">*</span>
                             </label>
@@ -386,7 +386,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6 form-group mb-3">
+                        <div class="col-12 col-xl-6 form-group mb-3">
                             <label for="password_confirmation">
                                 {{ __('register.password_confirm') }} <span class="text-danger">*</span>
                             </label>
