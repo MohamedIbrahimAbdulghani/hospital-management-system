@@ -4,15 +4,21 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Repositories\Sections\SectionRepositoryInterface;
 
 class SectionController extends Controller
 {
+    private $sectionRepository;
+    public function __construct(SectionRepositoryInterface $sectionRepository)
+    {
+        $this->sectionRepository = $sectionRepository;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return 'welcome section';
+        return $this->sectionRepository->index();
     }
 
     /**
