@@ -28,4 +28,9 @@ return [
     'hospital_brand' => 'Hospital',
     'unified_portal' => 'بوابة النظام الصحي الموحد',
     'password_changed_successfully' => 'تم تغيير كلمة المرور بنجاح.',
+
+    // flash messages
+    'add' => 'تمت إضافة البيانات بنجاح',
+    'edit' => 'تم تعديل البيانات بنجاح',
+    'delete' => 'تم حذف البيانات بنجاح',
 ];

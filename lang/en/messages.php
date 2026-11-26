@@ -28,4 +28,9 @@ return [
     'hospital_brand' => 'Hospital',
     'unified_portal' => 'Unified Healthcare Portal',
     'password_changed_successfully' => 'Password has been changed successfully.',
+
+    // flash messages
+    'add' => 'Data has been added successfully',
+    'edit' => 'Data has been updated successfully',
+    'delete' => 'Data has been deleted successfully',
 ];

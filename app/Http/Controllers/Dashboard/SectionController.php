@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreSectionRequest;
+use App\Http\Requests\UpdateSectionRequest;
 use App\Repositories\Sections\SectionRepositoryInterface;
 
 class SectionController extends Controller
@@ -32,9 +34,9 @@ class SectionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSectionRequest $request)
     {
-        //
+        return $this->sectionRepository->store($request);
     }
 
     /**
@@ -56,16 +58,16 @@ class SectionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSectionRequest $request, string $id)
     {
-        //
+        return $this->sectionRepository->update($request);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        return $this->sectionRepository->destroy($request);
     }
 }
